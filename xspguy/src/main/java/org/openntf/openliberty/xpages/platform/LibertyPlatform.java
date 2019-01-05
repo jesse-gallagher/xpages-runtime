@@ -187,4 +187,15 @@ public class LibertyPlatform extends WebAppServerPlatform {
 		return super.getProperty(prop);
 	}
 	
+	@Override
+	public boolean isPlatform(String name) {
+		switch(StringUtil.toString(name)) {
+		case "Domino":
+			// Sure I am
+			return true;
+		default:
+			return super.isPlatform(name);
+		}
+	}
+	
 }

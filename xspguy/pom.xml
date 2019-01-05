@@ -158,6 +158,12 @@
         </dependency>
         <dependency>
             <groupId>com.ibm.xsp</groupId>
+            <artifactId>com.ibm.domino.xsp.adapter.nsf</artifactId>
+            <version>10.0.1.20181128-2143</version>
+            <classifier>lwpd.domino.adapter.nsf</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.xsp</groupId>
             <artifactId>com.ibm.notes.java.api.win32.linux</artifactId>
             <version>9.0.1.20140404-1000</version>
             <classifier>Notes</classifier>
@@ -167,6 +173,11 @@
             <artifactId>com.ibm.domino.xsp.bootstrap</artifactId>
             <version>10.0.1.20181128-2143</version>
             <classifier>xsp.domino.bridge</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.xsp</groupId>
+            <artifactId>xsp.http.bootstrap</artifactId>
+            <version>10.0.1</version>
         </dependency>
     </dependencies>
 

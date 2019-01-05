@@ -2,6 +2,9 @@ package org.openntf.openliberty.xpages.wrapper;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
+
+import com.ibm.designer.runtime.domino.bootstrap.adapter.HttpServletRequestAdapter;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -11,8 +14,10 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
 
-public class LibertyServletRequestWrapper implements HttpServletRequest {
+public class LibertyServletRequestWrapper implements HttpServletRequest, HttpServletRequestAdapter {
     private final HttpServletRequest delegate;
+	
+	private Principal overridePrincipal;
 
     public LibertyServletRequestWrapper(HttpServletRequest delegate) {
         this.delegate = delegate;
@@ -95,7 +100,14 @@ public class LibertyServletRequestWrapper implements HttpServletRequest {
 
     @Override
     public Principal getUserPrincipal() {
-        return delegate.getUserPrincipal();
+    	if(this.overridePrincipal != null) {
+    		return this.overridePrincipal;
+    	}
+    	Principal d = delegate.getUserPrincipal();
+    	if(d == null) {
+    		return () -> "Anonymous";
+    	}
+    	return d;
     }
 
     @Override
@@ -364,4 +376,15 @@ public class LibertyServletRequestWrapper implements HttpServletRequest {
     public DispatcherType getDispatcherType() {
         return delegate.getDispatcherType();
     }
+
+	@Override
+	public String getConversationId() {
+		// TODO ???
+		return delegate.getRequestedSessionId();
+	}
+
+	@Override
+	public void setUserPrincipal(Principal var1) {
+		this.overridePrincipal = var1;
+	}
 }
