@@ -25,20 +25,21 @@ public class LibertyFactoryLookup extends FactoryLookup {
     }
 
     @Override
-    public Iterator getFactories() {
-        System.out.println("Asked for getFactories, which is " + super.getFactories());
+    public Iterator<?> getFactories() {
+//        System.out.println("Asked for getFactories, which is " + super.getFactories());
         return super.getFactories();
     }
 
-    @Override
-    public Iterator getFactories(Class aClass) {
-        System.out.println("Asked for factories for " + aClass);
+    @SuppressWarnings("rawtypes")
+	@Override
+    public Iterator<?> getFactories(Class aClass) {
+//        System.out.println("Asked for factories for " + aClass);
         return super.getFactories(aClass);
     }
 
     @Override
     public Object getFactory(String s) {
-        System.out.println("Asked for the factory for " + s + ", which is " + super.getFactory(s));
+//        System.out.println("Asked for the factory for " + s + ", which is " + super.getFactory(s));
         return super.getFactory(s);
     }
 }

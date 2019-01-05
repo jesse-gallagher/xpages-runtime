@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.openntf.openliberty.xpages.osgi.OSGiPatcher;
 import org.openntf.openliberty.xpages.platform.LibertyPlatform;
 import org.openntf.openliberty.xpages.wrapper.LibertyClassLoaderWrapper;
 import org.openntf.openliberty.xpages.wrapper.LibertyServletConfigWrapper;
@@ -39,11 +40,11 @@ public class LibertyFacesServlet extends HttpServlet {
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		NotesThread.sinitThread();
-		C.initLibrary(null);
 		
 		ServletConfig conf = new LibertyServletConfigWrapper(config);
 		LibertyPlatform.initContext(conf.getServletContext());
+		
+		
 //        XspRegistryLoader loader = new LiberyXspRegistryLoader();
 //        XspRegistryManager.initManager(loader, true);
 //        loader.initRegistryManager(XspRegistryManager.getManager());

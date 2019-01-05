@@ -15,13 +15,11 @@ public class LibertyServletContextWrapperWrapper extends ServletContextWrapper {
 
     @Override
     public URL getResource(String s) throws MalformedURLException {
-        System.out.println("!!! asked for resource " + s);
         return super.getResource(s);
     }
 
     @Override
     public InputStream getResourceAsStream(String s) {
-        System.out.println("!! asked for stream " + s);
         return super.getResourceAsStream(s);
     }
 }

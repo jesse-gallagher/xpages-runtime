@@ -5,6 +5,7 @@ import com.ibm.commons.platform.WebAppServerPlatform;
 import com.ibm.commons.util.StringUtil;
 import com.ibm.designer.runtime.Application;
 import com.ibm.designer.runtime.ApplicationException;
+import com.ibm.domino.napi.c.C;
 import com.ibm.domino.napi.c.Os;
 import com.ibm.domino.xsp.module.nsf.platform.AbstractNotesDominoPlatform;
 import com.ibm.domino.xsp.module.nsf.platform.JSDebuggerRuntime;
@@ -13,6 +14,8 @@ import com.ibm.xsp.context.DojoLibraryFactory;
 import com.ibm.xsp.domino.DominoLogger;
 import com.ibm.xsp.domino.context.DominoDojo;
 import com.ibm.xsp.model.domino.DominoUtils;
+
+import lotus.notes.NotesThread;
 
 import javax.servlet.ServletContext;
 
@@ -47,6 +50,9 @@ public class LibertyPlatform extends WebAppServerPlatform {
 
 	public LibertyPlatform() {
 		super();
+		
+		NotesThread.sinitThread();
+		C.initLibrary(null);
 
 		installationDirectory = new File(Os.OSGetExecutableDirectory());
 		dataDirectory = new File(Os.OSGetDataDirectory());

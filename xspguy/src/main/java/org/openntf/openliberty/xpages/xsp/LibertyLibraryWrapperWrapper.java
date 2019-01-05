@@ -7,7 +7,8 @@ import com.ibm.xsp.library.LibraryWrapper;
 public class LibertyLibraryWrapperWrapper extends LibraryWrapper {
     private final LibraryWrapper delegate;
 
-    public LibertyLibraryWrapperWrapper(LibraryWrapper delegate) {
+    @SuppressWarnings("deprecation")
+	public LibertyLibraryWrapperWrapper(LibraryWrapper delegate) {
         super(delegate.getLibraryId(), delegate.getWrapped());
         this.delegate = delegate;
     }

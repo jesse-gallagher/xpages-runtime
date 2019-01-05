@@ -25,11 +25,9 @@ public class LibertyServletContextWrapper implements ServletContext {
     		return getResource(".");
     	}
     	
-        System.out.println(">>> asked for " + path);
         URL url = delegate.getResource(path);
         if(url == null && !path.startsWith("/")) {
             url = getClass().getResource("/" + path);
-            System.out.println("Redirecting request for " + path + " to " + url);
         }
         return url;
     }
@@ -40,11 +38,9 @@ public class LibertyServletContextWrapper implements ServletContext {
     		return null;
     	}
     	
-        System.out.println(">>> asked for stream " + path);
         InputStream is = delegate.getResourceAsStream(path);
         if(is == null && !StringUtil.isEmpty(path) && !path.startsWith("/")) {
             is = getClass().getResourceAsStream("/" + path);
-            System.out.println("Redirecting request for " + path + " to " + is);
         }
         return is;
     }
@@ -99,16 +95,19 @@ public class LibertyServletContextWrapper implements ServletContext {
         return delegate.getNamedDispatcher(name);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public Servlet getServlet(String name) throws ServletException {
         return delegate.getServlet(name);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Enumeration<Servlet> getServlets() {
         return delegate.getServlets();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Enumeration<String> getServletNames() {
         return delegate.getServletNames();
@@ -119,6 +118,7 @@ public class LibertyServletContextWrapper implements ServletContext {
         delegate.log(msg);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void log(Exception exception, String msg) {
         delegate.log(exception, msg);

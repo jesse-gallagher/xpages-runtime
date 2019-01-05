@@ -148,6 +148,7 @@ public class LibertyServletRequestWrapper implements HttpServletRequest {
         return delegate.isRequestedSessionIdFromURL();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isRequestedSessionIdFromUrl() {
         return delegate.isRequestedSessionIdFromUrl();
@@ -308,6 +309,7 @@ public class LibertyServletRequestWrapper implements HttpServletRequest {
         return delegate.getRequestDispatcher(path);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public String getRealPath(String path) {
         return delegate.getRealPath(path);

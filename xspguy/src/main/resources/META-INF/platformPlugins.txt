@@ -1,0 +1,3 @@
+com.ibm.xsp.theme.oneuiv302.ThemeActivator
+com.ibm.xsp.theme.oneui_idx.ThemeActivator
+com.ibm.xsp.dojo.factory.DojoLibraryActivator

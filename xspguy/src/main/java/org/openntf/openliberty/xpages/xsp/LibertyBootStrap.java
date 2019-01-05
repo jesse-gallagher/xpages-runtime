@@ -27,8 +27,8 @@ public class LibertyBootStrap extends BootStrap {
 
     public void preloadFiles() {
         try {
-            List var1 = this.getConfigFiles();
-            List var2 = this.getExtraFiles();
+            List<String> var1 = this.getConfigFiles();
+            List<String> var2 = this.getExtraFiles();
             ServletContextWrapper var3 = new LibertyServletContextWrapperWrapper(servletContext, var1, var2);
             ServletContextEvent var4 = new ServletContextEvent(var3);
             this.getListener().contextInitialized(var4);
@@ -39,8 +39,8 @@ public class LibertyBootStrap extends BootStrap {
 
     protected void initContext(ServletContext var1) throws FacesException {
         try {
-            List var2 = this.getConfigFiles();
-            List var3 = this.getExtraFiles();
+            List<String> var2 = this.getConfigFiles();
+            List<String> var3 = this.getExtraFiles();
             ServletContextWrapper var4 = new LibertyServletContextWrapperWrapper(var1, var2, var3);
             ServletContextEvent var5 = new ServletContextEvent(var4);
             this.getListener().contextInitialized(var5);
