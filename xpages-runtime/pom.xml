@@ -6,6 +6,32 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <packaging>war</packaging>
+    
+    <inceptionYear>2019</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Jesse Gallagher</name>
+			<email>jesse@frostillic.us</email>
+		</developer>
+	</developers>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+    </properties>
+	
+	<prerequisites>
+		<maven>3.0.1</maven>
+	</prerequisites>
 
     <dependencies>
         <dependency>
@@ -260,12 +286,29 @@
     </dependencies>
 
     <build>
-        <finalName>xspguy</finalName>
+        <finalName>xpages-runtime</finalName>
+        
+        <plugins>
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<aggregate>true</aggregate>
+					<header>license.txt</header>
+					<excludes>
+						<exclude>**/pom.xml</exclude>
+			            <exclude>**/README</exclude>
+			            <exclude>src/test/resources/**</exclude>
+			            <exclude>src/main/resources/**</exclude>
+			            <exclude>src/main/java/xsp/**</exclude>
+					</excludes>
+					<properties>
+						<owner>Jesse Gallagher</owner>
+						<copyrightYear>2019</copyrightYear>
+					</properties>
+				</configuration>
+			</plugin>
+        </plugins>
     </build>
-
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <failOnMissingWebXml>false</failOnMissingWebXml>
-    </properties>
 </project>

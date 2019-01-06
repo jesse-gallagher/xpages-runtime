@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright © 2016-2018 Jesse Gallagher
+    Copyright © 2019 Jesse Gallagher
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,13 +22,4 @@
          version="4.0" metadata-complete="false">
 
     <display-name>XPages Runtime</display-name>
-    
-    <login-config>
-    	<auth-method>FORM</auth-method>
-    	<realm-name>XPagesRuntime</realm-name>
-		<form-login-config id="FormLoginConfig_1">
-			<form-login-page>/login.html</form-login-page>
-			<form-error-page>/error.html</form-error-page>
-		</form-login-config>
-    </login-config>
 </web-app>
