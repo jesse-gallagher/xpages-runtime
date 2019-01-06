@@ -4,10 +4,14 @@ import java.util.Enumeration;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSessionContext;
+
+import org.openntf.openliberty.xpages.wrapper.LibertyServletContextWrapper;
+
 import javax.servlet.http.HttpSession;
 
 import com.ibm.designer.runtime.domino.bootstrap.adapter.HttpSessionAdapter;
 
+@SuppressWarnings("deprecation")
 public class ServletHttpSessionAdapter implements HttpSessionAdapter {
 	private final HttpSession delegate;
 	
@@ -47,6 +51,7 @@ public class ServletHttpSessionAdapter implements HttpSessionAdapter {
 
 	@Override
 	public ServletContext getServletContext() {
+//		return new LibertyServletContextWrapper(delegate.getServletContext());
 		return delegate.getServletContext();
 	}
 

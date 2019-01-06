@@ -385,6 +385,7 @@ public class LibertyServletRequestWrapper implements HttpServletRequest, HttpSer
 
 	@Override
 	public void setUserPrincipal(Principal var1) {
+//		System.out.println("Setting user principal to " + var1);
 		this.overridePrincipal = var1;
 	}
 }
