@@ -14,3 +14,4 @@ target/
 .classpath
 .factorypath
 *.swp
+.metadata/
