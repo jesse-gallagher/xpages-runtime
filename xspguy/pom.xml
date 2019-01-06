@@ -23,36 +23,72 @@
             <artifactId>com.ibm.designer.lib.jsf</artifactId>
             <version>10.0.1.20181128-2143</version>
             <classifier>jsf-api</classifier>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.ibm.xsp</groupId>
+            		<artifactId>com.ibm.pvc.servlet</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.ibm.xsp</groupId>
             <artifactId>com.ibm.designer.lib.jsf</artifactId>
             <version>10.0.1.20181128-2143</version>
             <classifier>jsf-impl</classifier>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.ibm.xsp</groupId>
+            		<artifactId>com.ibm.pvc.servlet</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.ibm.xsp</groupId>
             <artifactId>com.ibm.designer.lib.jsf</artifactId>
             <version>10.0.1.20181128-2143</version>
             <classifier>commons-logging</classifier>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.ibm.xsp</groupId>
+            		<artifactId>com.ibm.pvc.servlet</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.ibm.xsp</groupId>
             <artifactId>com.ibm.designer.lib.jsf</artifactId>
             <version>10.0.1.20181128-2143</version>
             <classifier>commons-digester</classifier>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.ibm.xsp</groupId>
+            		<artifactId>com.ibm.pvc.servlet</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.ibm.xsp</groupId>
             <artifactId>com.ibm.designer.lib.jsf</artifactId>
             <version>10.0.1.20181128-2143</version>
             <classifier>commons-collections</classifier>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.ibm.xsp</groupId>
+            		<artifactId>com.ibm.pvc.servlet</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.ibm.xsp</groupId>
             <artifactId>com.ibm.designer.lib.jsf</artifactId>
             <version>10.0.1.20181128-2143</version>
             <classifier>commons-beanutils</classifier>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.ibm.xsp</groupId>
+            		<artifactId>com.ibm.pvc.servlet</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
 
 		<!--
@@ -63,12 +99,24 @@
             <artifactId>com.ibm.xsp.core</artifactId>
             <version>10.0.1.20181128-2143</version>
             <classifier>lwpd.xsp.core</classifier>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.ibm.xsp</groupId>
+            		<artifactId>com.ibm.pvc.servlet</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.ibm.xsp</groupId>
             <artifactId>com.ibm.xsp.extsn</artifactId>
             <version>10.0.1.20181128-2143</version>
             <classifier>lwpd.xsp.extsn</classifier>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.ibm.xsp</groupId>
+            		<artifactId>com.ibm.pvc.servlet</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.ibm.xsp</groupId>
@@ -93,12 +141,24 @@
             <artifactId>com.ibm.xsp.designer</artifactId>
             <version>10.0.1.20181128-2143</version>
             <classifier>lwpd.xsp.designer</classifier>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.ibm.xsp</groupId>
+            		<artifactId>com.ibm.pvc.servlet</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.ibm.xsp</groupId>
             <artifactId>com.ibm.designer.runtime</artifactId>
             <version>10.0.1.20181128-2143</version>
             <classifier>lwpd.runtime.designer</classifier>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.ibm.xsp</groupId>
+            		<artifactId>com.ibm.pvc.servlet</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.ibm.xsp</groupId>
@@ -143,6 +203,12 @@
             <artifactId>com.ibm.xsp.domino</artifactId>
             <version>9.0.1.20140404-1000</version>
             <classifier>lwpd.xsp.domino</classifier>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.ibm.xsp</groupId>
+            		<artifactId>com.ibm.pvc.servlet</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.ibm.xsp</groupId>
@@ -155,6 +221,12 @@
             <artifactId>com.ibm.domino.xsp.adapter</artifactId>
             <version>10.0.1.20181128-2143</version>
             <classifier>lwpd.domino.adapter</classifier>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.ibm.xsp</groupId>
+            		<artifactId>com.ibm.pvc.servlet</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.ibm.xsp</groupId>
@@ -173,6 +245,12 @@
             <artifactId>com.ibm.domino.xsp.bootstrap</artifactId>
             <version>10.0.1.20181128-2143</version>
             <classifier>xsp.domino.bridge</classifier>
+            <exclusions>
+            	<exclusion>
+            		<groupId>com.ibm.xsp</groupId>
+            		<artifactId>com.ibm.pvc.servlet</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.ibm.xsp</groupId>
