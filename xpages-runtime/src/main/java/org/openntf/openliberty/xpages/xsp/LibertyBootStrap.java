@@ -27,38 +27,38 @@ public class LibertyBootStrap extends BootStrap {
 
     public void preloadFiles() {
         try {
-            List<String> var1 = this.getConfigFiles();
-            List<String> var2 = this.getExtraFiles();
-            ServletContextWrapper var3 = new LibertyServletContextWrapperWrapper(servletContext, var1, var2);
-            ServletContextEvent var4 = new ServletContextEvent(var3);
-            this.getListener().contextInitialized(var4);
-        } catch (Throwable var5) {
-            throw new FacesExceptionEx(var5);
+            List<String> configFiles = this.getConfigFiles();
+            List<String> extraFiles = this.getExtraFiles();
+            ServletContextWrapper contextWrapper = new LibertyServletContextWrapperWrapper(servletContext, configFiles, extraFiles);
+            ServletContextEvent sce = new ServletContextEvent(contextWrapper);
+            this.getListener().contextInitialized(sce);
+        } catch (Throwable t) {
+            throw new FacesExceptionEx(t);
         }
     }
 
-    protected void initContext(ServletContext var1) throws FacesException {
+    protected void initContext(ServletContext servletContext) throws FacesException {
         try {
-            List<String> var2 = this.getConfigFiles();
-            List<String> var3 = this.getExtraFiles();
-            ServletContextWrapper var4 = new LibertyServletContextWrapperWrapper(var1, var2, var3);
-            ServletContextEvent var5 = new ServletContextEvent(var4);
-            this.getListener().contextInitialized(var5);
+            List<String> configFiles = this.getConfigFiles();
+            List<String> extraFiles = this.getExtraFiles();
+            ServletContextWrapper contextWrapper = new LibertyServletContextWrapperWrapper(servletContext, configFiles, extraFiles);
+            ServletContextEvent sce = new ServletContextEvent(contextWrapper);
+            this.getListener().contextInitialized(sce);
             ApplicationFactoryEx var6 = (ApplicationFactoryEx)FactoryFinder.getFactory("javax.faces.application.ApplicationFactory");
             var6.initCompleted();
-        } catch (Throwable var7) {
-            throw new FacesExceptionEx(var7);
+        } catch (Throwable t) {
+            throw new FacesExceptionEx(t);
         }
     }
 
-    protected void destroyContext(ServletContext var1) throws FacesException {
+    protected void destroyContext(ServletContext servletContext) throws FacesException {
         try {
-            ServletContextEvent var2 = new ServletContextEvent(var1);
-            this.getListener().contextDestroyed(var2);
+            ServletContextEvent sce = new ServletContextEvent(servletContext);
+            this.getListener().contextDestroyed(sce);
             FactoryFinder.releaseFactories();
             this.destroyListener();
-        } catch (Throwable var3) {
-            throw new FacesExceptionEx(var3);
+        } catch (Throwable t) {
+            throw new FacesExceptionEx(t);
         }
     }
 

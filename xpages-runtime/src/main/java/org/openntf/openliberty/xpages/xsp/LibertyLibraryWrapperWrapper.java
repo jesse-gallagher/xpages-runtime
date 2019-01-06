@@ -5,21 +5,13 @@ import org.openntf.openliberty.xpages.wrapper.LibertyClassLoaderWrapper;
 import com.ibm.xsp.library.LibraryWrapper;
 
 public class LibertyLibraryWrapperWrapper extends LibraryWrapper {
-    private final LibraryWrapper delegate;
-
-    @SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation")
 	public LibertyLibraryWrapperWrapper(LibraryWrapper delegate) {
-        super(delegate.getLibraryId(), delegate.getWrapped());
-        this.delegate = delegate;
-    }
+		super(delegate.getLibraryId(), delegate.getWrapped());
+	}
 
-    @Override
-    public ClassLoader getClassLoader() {
-        return new LibertyClassLoaderWrapper(super.getClassLoader());
-    }
-
-    @Override
-    public String[] getFacesConfigFiles() {
-        return super.getFacesConfigFiles();
-    }
+	@Override
+	public ClassLoader getClassLoader() {
+		return new LibertyClassLoaderWrapper(super.getClassLoader());
+	}
 }

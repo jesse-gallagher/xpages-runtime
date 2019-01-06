@@ -11,35 +11,48 @@ import com.ibm.xsp.model.ExtsnDataModelFactory;
 import java.util.Iterator;
 
 public class LibertyFactoryLookup extends FactoryLookup {
-    private final FactoryLookup delegate;
-    
-    public LibertyFactoryLookup(FactoryLookup delegate) {
-        this.delegate = delegate;
+	private final FactoryLookup delegate;
 
-        setFactory("com.ibm.xsp.XSP_CONTEXT_FACTORY", new ServletXSPContextFactory());
-        setFactory("com.ibm.xsp.EXTSN_DATAMODEL_FACTORY", new ExtsnDataModelFactory());
-        setFactory("com.ibm.xsp.JAVASCRIPT_FACTORY", new JavaScriptFactoryImpl());
-        setFactory("javascript", new JavaScriptBindingFactoryImpl());
-        setFactory("xpath", new XPathBindingFactoryImpl());
-        setFactory("id", new ClientIdBindingFactory());
-    }
+	public LibertyFactoryLookup(FactoryLookup delegate) {
+		this.delegate = delegate;
 
-    @Override
-    public Iterator<?> getFactories() {
-//        System.out.println("Asked for getFactories, which is " + super.getFactories());
-        return super.getFactories();
-    }
+		delegate.setFactory("com.ibm.xsp.XSP_CONTEXT_FACTORY", new ServletXSPContextFactory());
+		delegate.setFactory("com.ibm.xsp.EXTSN_DATAMODEL_FACTORY", new ExtsnDataModelFactory());
+		delegate.setFactory("com.ibm.xsp.JAVASCRIPT_FACTORY", new JavaScriptFactoryImpl());
+		delegate.setFactory("javascript", new JavaScriptBindingFactoryImpl());
+		delegate.setFactory("xpath", new XPathBindingFactoryImpl());
+		delegate.setFactory("id", new ClientIdBindingFactory());
+	}
 
-    @SuppressWarnings("rawtypes")
 	@Override
-    public Iterator<?> getFactories(Class aClass) {
-//        System.out.println("Asked for factories for " + aClass);
-        return super.getFactories(aClass);
-    }
+	public Iterator<?> getFactories() {
+		return delegate.getFactories();
+	}
 
-    @Override
-    public Object getFactory(String s) {
-//        System.out.println("Asked for the factory for " + s + ", which is " + super.getFactory(s));
-        return super.getFactory(s);
-    }
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Iterator<?> getFactories(Class aClass) {
+		return delegate.getFactories(aClass);
+	}
+
+	@Override
+	public Object getFactory(String s) {
+		return delegate.getFactory(s);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void setFactory(String s, Class aClass) throws InstantiationException, IllegalAccessException {
+		delegate.setFactory(s, aClass);
+	}
+	
+	@Override
+	public void setFactory(String s, Object factory) {
+		delegate.setFactory(s, factory);
+	}
+	
+	@Override
+	public void releaseFactories() {
+		delegate.releaseFactories();
+	}
 }

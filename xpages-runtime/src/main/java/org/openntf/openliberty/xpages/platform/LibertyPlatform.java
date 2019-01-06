@@ -1,6 +1,5 @@
 package org.openntf.openliberty.xpages.platform;
 
-import com.ibm.commons.ResourceHandler;
 import com.ibm.commons.platform.WebAppServerPlatform;
 import com.ibm.commons.util.StringUtil;
 import com.ibm.designer.runtime.Application;
@@ -11,7 +10,6 @@ import com.ibm.domino.xsp.module.nsf.platform.AbstractNotesDominoPlatform;
 import com.ibm.domino.xsp.module.nsf.platform.JSDebuggerRuntime;
 import com.ibm.jscript.JSContext;
 import com.ibm.xsp.context.DojoLibraryFactory;
-import com.ibm.xsp.domino.DominoLogger;
 import com.ibm.xsp.domino.context.DominoDojo;
 import com.ibm.xsp.model.domino.DominoUtils;
 
@@ -75,11 +73,6 @@ public class LibertyPlatform extends WebAppServerPlatform {
 	protected void initJSEngine() {
 		JSContext.ENABLE_JSDEBUGGER = this.isJavaDebugEnabled() && this.isJavaScriptDebugEnabled();
 		if (JSContext.ENABLE_JSDEBUGGER) {
-			if (DominoLogger.CORE.isInfoEnabled()) {
-				DominoLogger.CORE.infop(this, "initJSEngine", ResourceHandler.getLoggingString(
-						"info.AbstractNotesDominoPlatform.JavaScriptDebuggingisenabledresul"), new Object[0]);
-			}
-
 			JSContext.setDebuggerRuntime(new JSDebuggerRuntime());
 		}
 
@@ -126,53 +119,41 @@ public class LibertyPlatform extends WebAppServerPlatform {
 		return nsfDirectory;
 	}
 
-	public File getGlobalResourceFile(String paramString) {
-		File localFile = doGetGlobalResourceFile(paramString);
-		return localFile;
-	}
-
-	private File doGetGlobalResourceFile(String paramString) {
-		File localFile;
-		if (paramString.startsWith("/stylekits/")) {
-			localFile = new File(styleKitsDirectory, paramString.substring(11));
-			return localFile;
+	public File getGlobalResourceFile(String path) {
+		if(path.startsWith("/stylekits/")) {
+			return new File(styleKitsDirectory, path.substring("/stylekits/".length()));
 		}
-		if (paramString.startsWith("/server/")) {
-			localFile = new File(serverDirectory, paramString.substring(8));
-			return localFile;
+		if(path.startsWith("/server/")) {
+			return new File(serverDirectory, path.substring("/server/".length()));
 		}
-		if (paramString.startsWith("/domino/")) {
-			localFile = new File(dominoDirectory, paramString.substring(8));
-			return localFile;
+		if(path.startsWith("/domino/")) {
+			return new File(dominoDirectory, path.substring("/domino/".length()));
 		}
-		if (paramString.startsWith("/global/")) {
-			localFile = new File(serverDirectory, paramString.substring(8));
-			return localFile;
+		if(path.startsWith("/global/")) {
+			return new File(serverDirectory, path.substring("/global/".length()));
 		}
-		if (paramString.startsWith("/properties/")) {
+		if(path.startsWith("/properties/")) {
 
 			if (userDataDirectory != null) {
-				localFile = new File(userDataDirectory, "properties/" + paramString.substring(12));
+				File localFile = new File(userDataDirectory, "properties/" + path.substring("/properties/".length()));
 				if (localFile.exists()) {
 					return localFile;
 				}
 			}
 
 			if (sharedDataDirectory != null) {
-				localFile = new File(sharedDataDirectory, "properties/" + paramString.substring(12));
+				File localFile = new File(sharedDataDirectory, "properties/" + path.substring("/properties/".length()));
 				if (localFile.exists()) {
 					return localFile;
 				}
 			}
 
-			localFile = new File(propertiesDirectory, paramString.substring(12));
-			return localFile;
+			return new File(propertiesDirectory, path.substring("/properties/".length()));
 		}
-		if (paramString.startsWith("/icons/")) {
-			localFile = new File(notesIconsDirectory, paramString.substring(7));
-			return localFile;
+		if(path.startsWith("/icons/")) {
+			return new File(notesIconsDirectory, path.substring("/icons/".length()));
 		}
-		return super.getGlobalResourceFile(paramString);
+		return super.getGlobalResourceFile(path);
 	}
 	
 	@Override

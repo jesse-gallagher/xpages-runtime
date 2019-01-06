@@ -24,6 +24,18 @@ public class LibertyServletRequestWrapper implements HttpServletRequest, HttpSer
     }
 
     @Override
+    public Principal getUserPrincipal() {
+    	if(this.overridePrincipal != null) {
+    		return this.overridePrincipal;
+    	}
+    	Principal d = delegate.getUserPrincipal();
+    	if(d == null) {
+    		return () -> "Anonymous";
+    	}
+    	return d;
+    }
+
+    @Override
     public ServletContext getServletContext() {
         return new LibertyServletContextWrapper(delegate.getServletContext());
     }
@@ -96,18 +108,6 @@ public class LibertyServletRequestWrapper implements HttpServletRequest, HttpSer
     @Override
     public boolean isUserInRole(String role) {
         return delegate.isUserInRole(role);
-    }
-
-    @Override
-    public Principal getUserPrincipal() {
-    	if(this.overridePrincipal != null) {
-    		return this.overridePrincipal;
-    	}
-    	Principal d = delegate.getUserPrincipal();
-    	if(d == null) {
-    		return () -> "Anonymous";
-    	}
-    	return d;
     }
 
     @Override

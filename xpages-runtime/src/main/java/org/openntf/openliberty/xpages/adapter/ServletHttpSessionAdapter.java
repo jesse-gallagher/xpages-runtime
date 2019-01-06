@@ -5,8 +5,6 @@ import java.util.Enumeration;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSessionContext;
 
-import org.openntf.openliberty.xpages.wrapper.LibertyServletContextWrapper;
-
 import javax.servlet.http.HttpSession;
 
 import com.ibm.designer.runtime.domino.bootstrap.adapter.HttpSessionAdapter;
