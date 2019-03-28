@@ -22,7 +22,7 @@
         </dependency>
         
         <dependency>
-        	<groupId>org.openntf</groupId>
+        	<groupId>org.openntf.xpages</groupId>
         	<artifactId>xpages-runtime</artifactId>
         	<version>${project.version}</version>
         </dependency>
