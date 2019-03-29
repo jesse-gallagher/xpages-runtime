@@ -22,6 +22,6 @@ import javax.servlet.ServletContext;
 
 public class JakartaAppExecutionContext extends ServletExecutionContext {
     public JakartaAppExecutionContext(ServletContext servletContext) throws ApplicationException {
-        super("Liberty App", "libertyApp", servletContext);
+        super("Jakarta App", "jakartaApp", servletContext);
     }
 }

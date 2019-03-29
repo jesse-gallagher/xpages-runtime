@@ -36,10 +36,26 @@ public class JakartaPlatform extends WebAppServerPlatform {
 		JakartaPlatform.servletContext = servletContext;
 	}
 
+	private File installationDirectory;
+	private File userDataDirectory;
+	private File propertiesDirectory;
+	private File xspDirectory;
+	private File nsfDirectory;
+	private File styleKitsDirectory;
+	private File serverDirectory;
 	private Properties xspProperties;
 
 	public JakartaPlatform() {
 		super();
+
+		installationDirectory = new File(System.getProperty("user.dir"));
+		userDataDirectory = new File(installationDirectory, "xpages");
+		propertiesDirectory = new File(userDataDirectory, "properties");
+		xspDirectory = new File(userDataDirectory, "xsp");
+		nsfDirectory = new File(xspDirectory, "nsf");
+		styleKitsDirectory = new File(nsfDirectory, "themes");
+		serverDirectory = new File(userDataDirectory, StringUtil.replace("java/xsp", '/', File.separatorChar));
+		this.xspProperties = this.loadStaticProperties();
 		
 		DojoLibraryFactory.initializeLibraries();
 	}
@@ -62,6 +78,31 @@ public class JakartaPlatform extends WebAppServerPlatform {
 	}
 	
 	@Override
+	public File getGlobalResourceFile(String path) {
+		if(path.startsWith("/stylekits/")) {
+			return new File(styleKitsDirectory, path.substring("/stylekits/".length()));
+		}
+		if(path.startsWith("/server/")) {
+			return new File(serverDirectory, path.substring("/server/".length()));
+		}
+		if(path.startsWith("/global/")) {
+			return new File(serverDirectory, path.substring("/global/".length()));
+		}
+		if(path.startsWith("/properties/")) {
+
+			if (userDataDirectory != null) {
+				File localFile = new File(userDataDirectory, "properties/" + path.substring("/properties/".length()));
+				if (localFile.exists()) {
+					return localFile;
+				}
+			}
+
+			return new File(propertiesDirectory, path.substring("/properties/".length()));
+		}
+		return super.getGlobalResourceFile(path);
+	}
+	
+	@Override
 	public String getProperty(String prop) {
 		String var2;
 		if (this.xspProperties != null) {
@@ -76,8 +117,8 @@ public class JakartaPlatform extends WebAppServerPlatform {
 	@Override
 	public boolean isPlatform(String name) {
 		switch(StringUtil.toString(name)) {
-		case "Domino":
-			// Sure I am
+		case "Jakarta":
+			// Not currently used, but good to give it a name
 			return true;
 		default:
 			return super.isPlatform(name);
@@ -86,12 +127,16 @@ public class JakartaPlatform extends WebAppServerPlatform {
 
 	@Override
 	public File getInstallationDirectory() {
-		return null;
+		return installationDirectory;
 	}
 
 	@Override
 	public File getResourcesDirectory() {
-		return null;
+		return userDataDirectory;
+	}
+
+	protected Properties loadStaticProperties() {
+		return new Properties();
 	}
 	
 }

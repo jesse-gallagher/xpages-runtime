@@ -30,11 +30,14 @@ public class JakartaServletContextWrapperWrapper extends ServletContextWrapper {
 
     @Override
     public URL getResource(String s) throws MalformedURLException {
+    	System.out.println("res " + s + ": " + super.getResource(s));
         return super.getResource(s);
     }
 
     @Override
     public InputStream getResourceAsStream(String s) {
+    	System.out.println("res as stream " + s + ": " + super.getResourceAsStream(s));
+        
         return super.getResourceAsStream(s);
     }
 }

@@ -27,7 +27,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import org.openntf.xpages.runtime.platform.JakartaPlatform;
+import org.openntf.xpages.runtime.domino.platform.JakartaDominoPlatform;
 import org.openntf.xpages.runtime.wrapper.JakartaServletContextWrapper;
 
 import com.ibm.commons.util.StringUtil;
@@ -43,7 +43,7 @@ public class JakartaDominoContextListener implements ServletContextListener {
 		NotesThread.sinitThread();
 		C.initLibrary(null);
 		
-		JakartaPlatform.initContext(new JakartaServletContextWrapper(sce.getServletContext()));
+		JakartaDominoPlatform.initContext(new JakartaServletContextWrapper(sce.getServletContext()));
 		
 		URLStreamHandlerFactory delegate = AccessController.doPrivileged((PrivilegedAction<URLStreamHandlerFactory>) () -> {
 			URLStreamHandlerFactory d;

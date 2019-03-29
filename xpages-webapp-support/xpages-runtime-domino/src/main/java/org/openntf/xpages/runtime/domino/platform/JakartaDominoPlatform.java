@@ -15,7 +15,6 @@
  */
 package org.openntf.xpages.runtime.domino.platform;
 
-import com.ibm.commons.platform.WebAppServerPlatform;
 import com.ibm.commons.util.StringUtil;
 import com.ibm.designer.runtime.Application;
 import com.ibm.designer.runtime.ApplicationException;
@@ -34,11 +33,12 @@ import javax.servlet.ServletContext;
 
 import org.openntf.xpages.runtime.JakartaAppExecutionContext;
 import org.openntf.xpages.runtime.JakartaApplication;
+import org.openntf.xpages.runtime.platform.JakartaPlatform;
 
 import java.io.File;
 import java.util.Properties;
 
-public class JakartaDominoPlatform extends WebAppServerPlatform {
+public class JakartaDominoPlatform extends JakartaPlatform {
 	private static ServletContext servletContext;
 
 	public static void initContext(ServletContext servletContext) {
@@ -103,7 +103,8 @@ public class JakartaDominoPlatform extends WebAppServerPlatform {
 		return var1 != null ? StringUtil.equals(var1.trim(), "1") : false;
 	}
 
-	private Properties loadStaticProperties() {
+	@Override
+	protected Properties loadStaticProperties() {
 		return new Properties();
 	}
 

@@ -15,6 +15,8 @@
  */
 package org.openntf.xpages.runtime;
 
+import com.ibm.xsp.registry.config.XspRegistryLoader;
+import com.ibm.xsp.registry.config.XspRegistryManager;
 import com.ibm.xsp.webapp.DesignerFacesServlet;
 
 import javax.servlet.ServletConfig;
@@ -24,11 +26,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.openntf.xpages.runtime.platform.JakartaPlatform;
+import org.openntf.xpages.runtime.wrapper.JakartaServletConfigWrapper;
 import org.openntf.xpages.runtime.wrapper.JakartaServletRequestWrapper;
+import org.openntf.xpages.runtime.xsp.JakartaXspRegistryLoader;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns="*")
+@WebServlet(urlPatterns="*.xsp")
 public class JakartaXPagesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -44,11 +49,18 @@ public class JakartaXPagesServlet extends HttpServlet {
 		servletConfig = config;
 		
 		this.delegate = new DesignerFacesServlet();
-		delegate.init(config);
+		
+		ServletConfig conf = new JakartaServletConfigWrapper(config);
+		JakartaPlatform.initContext(conf.getServletContext());
+		delegate.init(conf);
+
+      XspRegistryLoader loader = new JakartaXspRegistryLoader();
+      XspRegistryManager.initManager(loader, true);
+      loader.initRegistryManager(XspRegistryManager.getManager());
 	}
 
 	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {	
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		delegate.service(new JakartaServletRequestWrapper(req), resp);
 	}
 

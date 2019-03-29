@@ -29,6 +29,7 @@ import javax.servlet.ServletContextListener;
 
 import org.openntf.xpages.runtime.wrapper.JakartaServletContextWrapperWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,8 +60,8 @@ public class JakartaBootStrap extends BootStrap {
             ServletContextWrapper contextWrapper = new JakartaServletContextWrapperWrapper(servletContext, configFiles, extraFiles);
             ServletContextEvent sce = new ServletContextEvent(contextWrapper);
             this.getListener().contextInitialized(sce);
-            ApplicationFactoryEx var6 = (ApplicationFactoryEx)FactoryFinder.getFactory("javax.faces.application.ApplicationFactory");
-            var6.initCompleted();
+            ApplicationFactoryEx factory = (ApplicationFactoryEx)FactoryFinder.getFactory("javax.faces.application.ApplicationFactory");
+            factory.initCompleted();
         } catch (Throwable t) {
             throw new FacesExceptionEx(t);
         }
@@ -91,8 +92,10 @@ public class JakartaBootStrap extends BootStrap {
 
     @Override
     protected List<String> readConfigFiles() {
-        return super.readConfigFiles().stream()
+    	List<String> sup = super.readConfigFiles().stream()
                 .map(f -> !f.startsWith("/") ? ("/" + f) : f)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
+        sup.add("/META-INF/jakarta-faces-config.xml");
+        return sup;
     }
 }
