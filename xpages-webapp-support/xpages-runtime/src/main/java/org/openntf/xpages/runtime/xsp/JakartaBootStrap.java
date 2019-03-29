@@ -92,10 +92,10 @@ public class JakartaBootStrap extends BootStrap {
 
     @Override
     protected List<String> readConfigFiles() {
-    	List<String> sup = super.readConfigFiles().stream()
-                .map(f -> !f.startsWith("/") ? ("/" + f) : f)
-                .collect(Collectors.toCollection(ArrayList::new));
-        sup.add("/META-INF/jakarta-faces-config.xml");
-        return sup;
+    	List<String> result = super.readConfigFiles().stream()
+            .map(f -> !f.startsWith("/") ? ("/" + f) : f)
+            .collect(Collectors.toCollection(ArrayList::new));
+    	result.add("/META-INF/jakarta-faces-config.xml");
+    	return result;
     }
 }

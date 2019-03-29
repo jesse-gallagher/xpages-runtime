@@ -35,6 +35,9 @@ public class JakartaPlatform extends WebAppServerPlatform {
 	public static void initContext(ServletContext servletContext) {
 		JakartaPlatform.servletContext = servletContext;
 	}
+	public static ServletContext getServletContext() {
+		return servletContext;
+	}
 
 	private File installationDirectory;
 	private File userDataDirectory;
