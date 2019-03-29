@@ -110,17 +110,19 @@ public class JakartaDominoPlatform extends JakartaPlatform {
 
 	@Override
 	public Object getObject(String s) {
-		switch (StringUtil.toString(s)) {
-		case "com.ibm.xsp.designer.ApplicationFinder":
-			return (Application.IApplicationFinder) () -> {
-				try {
-					JakartaAppExecutionContext ctx = new JakartaAppExecutionContext(servletContext);
-					return new JakartaApplication(ctx);
-				} catch (ApplicationException e) {
-					throw new RuntimeException(e);
+		if("com.ibm.xsp.designer.ApplicationFinder".equals(s)) {
+			return new Application.IApplicationFinder() {
+				@Override
+				public Application get() {
+					try {
+						JakartaAppExecutionContext ctx = new JakartaAppExecutionContext(servletContext);
+						return new JakartaApplication(ctx);
+					} catch (ApplicationException e) {
+						throw new RuntimeException(e);
+					}
 				}
 			};
-		default:
+		} else {
 			return super.getObject(s);
 		}
 	}
@@ -186,12 +188,11 @@ public class JakartaDominoPlatform extends JakartaPlatform {
 	
 	@Override
 	public boolean isPlatform(String name) {
-		switch(StringUtil.toString(name)) {
-		case "Domino":
+		if("Domino".equals(name)) {
 			// Sure I am
 			return true;
-		default:
-			return super.isPlatform(name);
+		} else {
+			return false;
 		}
 	}
 	

@@ -45,33 +45,39 @@ public class JakartaDominoContextListener implements ServletContextListener {
 		
 		JakartaDominoPlatform.initContext(new JakartaServletContextWrapper(sce.getServletContext()));
 		
-		URLStreamHandlerFactory delegate = AccessController.doPrivileged((PrivilegedAction<URLStreamHandlerFactory>) () -> {
-			URLStreamHandlerFactory d;
-			try {
-				// This is set by the Equinox dependency, which we definitely don't want
-				Field facField = URL.class.getDeclaredField("factory");
-				facField.setAccessible(true);
-				d = (URLStreamHandlerFactory)facField.get(null);
-				facField.set(null, null);
-			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
-				return null;
-			}
-			return d;
+		final URLStreamHandlerFactory delegate = AccessController.doPrivileged(new PrivilegedAction<URLStreamHandlerFactory>() {
+			@Override
+			public URLStreamHandlerFactory run() {
+				URLStreamHandlerFactory d;
+				try {
+					// This is set by the Equinox dependency, which we definitely don't want
+					Field facField = URL.class.getDeclaredField("factory");
+					facField.setAccessible(true);
+					d = (URLStreamHandlerFactory)facField.get(null);
+					facField.set(null, null);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				return d;
+			}	
 		});
 		
-		URL.setURLStreamHandlerFactory(protocol -> {
-			switch(StringUtil.toString(protocol)) {
-			case "xspnsf":
-				return new URLStreamHandler() {
-					@Override
-					protected URLConnection openConnection(URL u) throws IOException {
-						return NotesURL.getInstance().openConnection(u);
-					}
+		URL.setURLStreamHandlerFactory(new URLStreamHandlerFactory() {
+			@Override
+			public URLStreamHandler createURLStreamHandler(String protocol) {
+				if("xspnsf".equals(StringUtil.toString(protocol))) {
 					
-				};
-			default:
-				return delegate.createURLStreamHandler(protocol);
+					return new URLStreamHandler() {
+						@Override
+						protected URLConnection openConnection(URL u) throws IOException {
+							return NotesURL.getInstance().openConnection(u);
+						}
+						
+					};
+				} else {
+					return delegate.createURLStreamHandler(protocol);
+				}
 			}
 		});
 	}

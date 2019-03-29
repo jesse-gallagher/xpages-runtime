@@ -47,7 +47,12 @@ public class JakartaDominoServletRequestWrapper implements HttpServletRequest, H
     	}
     	Principal d = delegate.getUserPrincipal();
     	if(d == null) {
-    		return () -> "Anonymous";
+    		return new Principal() {
+    			@Override
+				public String getName() {
+					return "Anonymous";
+				}
+    		};
     	}
     	return d;
     }

@@ -47,7 +47,7 @@ public class JakartaFacesApplication extends DesignerApplicationEx {
 			Field factoryLookupField = ApplicationExImpl.class.getDeclaredField("_factoryLookup");
 			factoryLookupField.setAccessible(true);
 			factoryLookupField.set(this, getFactoryLookup());
-		} catch (NoSuchFieldException | IllegalAccessException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

@@ -238,7 +238,7 @@ public class JakartaDojoLibraryFactory extends DojoLibraryFactory {
     public Collection<DojoLibrary> getLibraries() {
         String var2 = findVersionTag();
         String var3 = "/resources/dojo-version";
-        List<DojoLibrary> var4 = new ArrayList<>();
+        List<DojoLibrary> var4 = new ArrayList<DojoLibrary>();
         if (isdev) {
             var4.add(new DevDojo(devDojoStream, mockBundle(), var2, var3));
             var4.add(new DevDojo(devDojoStream, mockBundle(), var2 + "-u", var3));

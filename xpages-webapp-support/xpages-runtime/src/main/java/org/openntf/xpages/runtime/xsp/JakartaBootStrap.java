@@ -31,7 +31,6 @@ import org.openntf.xpages.runtime.wrapper.JakartaServletContextWrapperWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class JakartaBootStrap extends BootStrap {
     private ServletContextListener contextListener;
@@ -92,9 +91,14 @@ public class JakartaBootStrap extends BootStrap {
 
     @Override
     protected List<String> readConfigFiles() {
-    	List<String> result = super.readConfigFiles().stream()
-            .map(f -> !f.startsWith("/") ? ("/" + f) : f)
-            .collect(Collectors.toCollection(ArrayList::new));
+    	List<String> result = new ArrayList<String>();
+    	for(String f : super.readConfigFiles()) {
+    		if(!f.startsWith("/")) {
+    			result.add("/" + f);
+    		} else {
+    			result.add("f");
+    		}
+    	}
     	result.add("/META-INF/jakarta-faces-config.xml");
     	return result;
     }

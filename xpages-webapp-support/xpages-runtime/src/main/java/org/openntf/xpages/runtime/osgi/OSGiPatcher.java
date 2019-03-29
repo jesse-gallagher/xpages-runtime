@@ -35,8 +35,10 @@ public class OSGiPatcher {
 	@SuppressWarnings("unchecked")
 	public static void initKnownBundles() {
 		try {
-			try(InputStream is = OSGiPatcher.class.getResourceAsStream("/META-INF/platformPlugins.txt")) {
-				try(BufferedReader r = new BufferedReader(new InputStreamReader(is))) {
+			InputStream is = OSGiPatcher.class.getResourceAsStream("/META-INF/platformPlugins.txt");
+			try {
+				BufferedReader r = new BufferedReader(new InputStreamReader(is));
+				try {
 					String line;
 					while((line = r.readLine()) != null) {
 						if(StringUtil.isNotEmpty(line) && !line.startsWith("#")) {
@@ -49,7 +51,11 @@ public class OSGiPatcher {
 							inst.start(bundleContext);
 						}
 					}
+				} finally {
+					r.close();
 				}
+			} finally {
+				is.close();
 			}
 		} catch(Exception e) {
 			throw new RuntimeException(e);
