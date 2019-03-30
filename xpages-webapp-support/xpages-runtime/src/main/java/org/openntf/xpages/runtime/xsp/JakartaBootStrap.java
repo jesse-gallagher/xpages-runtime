@@ -96,7 +96,7 @@ public class JakartaBootStrap extends BootStrap {
     		if(!f.startsWith("/")) {
     			result.add("/" + f);
     		} else {
-    			result.add("f");
+    			result.add(f);
     		}
     	}
     	result.add("/META-INF/jakarta-faces-config.xml");

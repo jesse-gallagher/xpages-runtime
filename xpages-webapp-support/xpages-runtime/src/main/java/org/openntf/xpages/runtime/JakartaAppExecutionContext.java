@@ -18,10 +18,35 @@ package org.openntf.xpages.runtime;
 import com.ibm.designer.runtime.ApplicationException;
 import com.ibm.designer.runtime.server.ServletExecutionContext;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import javax.servlet.ServletContext;
 
 public class JakartaAppExecutionContext extends ServletExecutionContext {
+	private String appDirectory;
+	
     public JakartaAppExecutionContext(ServletContext servletContext) throws ApplicationException {
         super("Jakarta App", "jakartaApp", servletContext);
     }
+    
+	public String getApplicationDirectory() {
+		ServletContext servletContext = getServletContext();
+		if (this.appDirectory == null && servletContext != null) {
+			this.appDirectory = servletContext.getRealPath(".");
+			if (this.appDirectory != null) {
+				File var1 = new File(this.appDirectory + File.separator + "WEB-INF");
+				if (!var1.exists()) {
+					try {
+						URL var2 = servletContext.getResource(System.getProperty("user.dir"));
+						this.appDirectory = this.appDirectory + var2.getFile();
+					} catch (MalformedURLException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+		}
+		return this.appDirectory;
+	}
 }

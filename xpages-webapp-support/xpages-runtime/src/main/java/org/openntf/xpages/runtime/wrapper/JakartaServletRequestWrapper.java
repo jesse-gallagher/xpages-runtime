@@ -18,6 +18,8 @@ package org.openntf.xpages.runtime.wrapper;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import org.openntf.xpages.runtime.platform.JakartaPlatform;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -110,7 +112,7 @@ public class JakartaServletRequestWrapper implements HttpServletRequest {
 
     @Override
     public String getContextPath() {
-        return delegate.getContextPath();
+    	return JakartaPlatform.getServletContext().getContextPath();
     }
 
     @Override

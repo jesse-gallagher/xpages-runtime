@@ -41,6 +41,9 @@ public class JakartaServletContextWrapper implements ServletContext {
     	}
     	
         URL url = delegate.getResource(path);
+        if(url == null) {
+        	url = Thread.currentThread().getContextClassLoader().getResource(path);
+        }
         if(url == null && !path.startsWith("/")) {
             url = getClass().getResource("/" + path);
         }
@@ -52,8 +55,11 @@ public class JakartaServletContextWrapper implements ServletContext {
     	if(StringUtil.isEmpty(path)) {
     		return null;
     	}
-    	
+
         InputStream is = delegate.getResourceAsStream(path);
+        if(is == null) {
+        	is = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+        }
         if(is == null && !StringUtil.isEmpty(path) && !path.startsWith("/")) {
             is = getClass().getResourceAsStream("/" + path);
         }

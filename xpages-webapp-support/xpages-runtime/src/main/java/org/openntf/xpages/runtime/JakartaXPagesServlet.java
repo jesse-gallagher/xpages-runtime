@@ -54,7 +54,8 @@ public class JakartaXPagesServlet extends HttpServlet {
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		delegate.service(new JakartaServletRequestWrapper(req), resp);
+		HttpServletRequest wrap = new JakartaServletRequestWrapper(req);
+		delegate.service(wrap, resp);
 	}
 
 	@Override

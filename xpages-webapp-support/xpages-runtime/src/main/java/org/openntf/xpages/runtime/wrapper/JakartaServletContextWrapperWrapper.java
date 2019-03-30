@@ -18,10 +18,40 @@ package org.openntf.xpages.runtime.wrapper;
 import com.ibm.xsp.config.ServletContextWrapper;
 
 import javax.servlet.ServletContext;
+
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 public class JakartaServletContextWrapperWrapper extends ServletContextWrapper {
 	public JakartaServletContextWrapperWrapper(ServletContext delegate, List<String> configFiles, List<String> extraFiles) {
 		super(delegate, configFiles, extraFiles);
+	}
+	
+	@Override
+	public URL getResource(String path) throws MalformedURLException {
+		URL result = super.getResource(path);
+		if(result == null) {
+			result = Thread.currentThread().getContextClassLoader().getResource(path);
+		}
+		if(result == null && path != null && path.startsWith("/")) {
+			// Some platforms need the slash removed
+			result = Thread.currentThread().getContextClassLoader().getResource(path.substring(1));
+		}
+		return result;
+	}
+	
+	@Override
+	public InputStream getResourceAsStream(String path) {
+		InputStream result = super.getResourceAsStream(path);
+		if(result == null) {
+			result = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+		}
+		if(result == null && path != null && path.startsWith("/")) {
+			// Some platforms need the slash removed
+			result = Thread.currentThread().getContextClassLoader().getResourceAsStream(path.substring(1));
+		}
+		return result;
 	}
 }
