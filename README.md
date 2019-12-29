@@ -6,9 +6,33 @@ Since XPages does not inherently require OSGi, this project doesn't bother initi
 
 It has the ability to run XPage classes inside the project (such as the example `xsp.LibertyTest`) using the direct servlet runtime, as well as loading XPages applications from inside an NSF in the active Notes/Domino environment's data directory (see below). In the latter case, the XPages applications still see themselves as running "in Domino" with Servlet 2.4, due to the way the inner runtime works.
 
-## Building
+## Building and Using
 
-To build this project, you must have a Mavenized version of the XPages runtime from Domino 10.0.1, as created by using the "XSP Artifacts" preferences pane in [Darwino Studio](https://www.darwino.com).
+To build this project or use it as a dependency, you must have a property in your Maven ~/.m2/settings.xml named `notes-platform` and containing a URL to a Domino Update Site for Domino 10+. For example:
+
+```xml
+<profiles>
+    <profile>
+        <id>notes</id>
+        <properties>
+            <notes-platform>file:///Users/jesse/Java/Domino10.0.1</notes-platform>
+        </properties>
+    </profile>
+</profile>
+<activeProfiles>
+    <activeProfile>notes</activeProfile>
+</activeProfiles>
+```
+
+Such an update site can be built from a Notes or Domino installation using the [`generate-domino-update-site` Maven plugin](https://github.com/OpenNTF/generate-domino-update-site).
+
+When using this runtime in your downstream project, that project should also include a repository reference for the Update Site accessed via the [`p2-layout-resolver` Maven plugin](https://github.com/OpenNTF/p2-layout-provider), configured with the ID `com.hcl.xsp.repo`.
+
+Additionally, this project expects to find the `xsp.http.bootstrap.jar` file from a Domino or Designer installation installed to your Maven repo with the group ID `com.hcl.xsp`, artifact ID `xsp.http.bootstrap`, and a version of at least 10.0.1. This can be installed from the command line via something like:
+
+```
+mvn install:install-file -Dfile=/Volumes/Windows-Host/Notes/jvm/lib/ext/xsp.http.bootstrap.jar -DgroupId=com.hcl.xsp -DartifactId=xsp.http.bootstrap -Dversion=11.0.0 -Dpackaging=jar
+```
 
 ## Running
 
