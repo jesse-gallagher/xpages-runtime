@@ -22,5 +22,4 @@ import com.ibm.xsp.webapp.DesignerGlobalResourceServlet;
 @WebServlet(urlPatterns="/xsp/.ibmxspres/*")
 public class JakartaGlobalFacesResourceServlet extends DesignerGlobalResourceServlet {
 	private static final long serialVersionUID = 1L;
-
 }

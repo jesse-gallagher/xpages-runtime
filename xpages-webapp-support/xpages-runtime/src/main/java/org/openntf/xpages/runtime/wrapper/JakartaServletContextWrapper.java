@@ -19,9 +19,13 @@ import com.ibm.commons.util.StringUtil;
 
 import javax.servlet.*;
 import javax.servlet.descriptor.JspConfigDescriptor;
+
+import org.openntf.xpages.runtime.util.XSPUtil;
+
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventListener;
 import java.util.Map;
@@ -42,11 +46,12 @@ public class JakartaServletContextWrapper implements ServletContext {
     	
         URL url = delegate.getResource(path);
         if(url == null) {
-        	url = Thread.currentThread().getContextClassLoader().getResource(path);
+        	url = XSPUtil.getResource(path, Thread.currentThread().getContextClassLoader());
         }
         if(url == null && !path.startsWith("/")) {
             url = getClass().getResource("/" + path);
         }
+//		System.out.println("getResource path " + path + " -> " + url);
         return url;
     }
 
@@ -58,18 +63,25 @@ public class JakartaServletContextWrapper implements ServletContext {
 
         InputStream is = delegate.getResourceAsStream(path);
         if(is == null) {
-        	is = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+        	is = XSPUtil.getResourceAsStream(path, Thread.currentThread().getContextClassLoader());
         }
         if(is == null && !StringUtil.isEmpty(path) && !path.startsWith("/")) {
             is = getClass().getResourceAsStream("/" + path);
         }
+//		System.out.println("getResourceAsStream path " + path + " -> " + is);
         return is;
     }
 
-    @Override
-    public Set<String> getResourcePaths(String path) {
-        return delegate.getResourcePaths(path);
-    }
+	@Override
+	public Set<String> getResourcePaths(String path) {
+		Set<String> result;
+		if (StringUtil.isEmpty(path)) {
+			result = delegate.getResourcePaths("/");
+		} else {
+			result = delegate.getResourcePaths(path);
+		}
+		return result == null ? Collections.emptySet() : result;
+	}
 
     @Override
     public String getContextPath() {

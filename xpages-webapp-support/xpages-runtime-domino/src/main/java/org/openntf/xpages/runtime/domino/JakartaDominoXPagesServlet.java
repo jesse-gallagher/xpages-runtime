@@ -39,7 +39,7 @@ import org.openntf.xpages.runtime.wrapper.JakartaServletRequestWrapper;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns="*")
+@WebServlet(urlPatterns="*.nsf")
 public class JakartaDominoXPagesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -49,22 +49,24 @@ public class JakartaDominoXPagesServlet extends HttpServlet {
 	private LCDEnvironment lcdEnvironment;
 
 	public JakartaDominoXPagesServlet() {
+		
+//		try {
+//			// TODO figure out what else to init to get it to work in an alternate context path.
+//			//   Currently, XPages are generated with absolute "/xsp" URLs
+//			// This could be done with UrlProcessors in RequestCustomizers
+//			this.lcdEnvironment = new LCDEnvironment();
+//			this.lcdEnvironment.initialize();
+//		} catch(Throwable t) {
+//			t.printStackTrace();
+//			throw new RuntimeException(t);
+//		}
 	}
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		servletConfig = config;
-		
-		try {
-			// TODO figure out what else to init to get it to work in an alternate context path.
-			//   Currently, XPages are generated with absolute "/xsp" URLs
-			BootstrapEnvironment.getInstance().setGlobalContextPath(config.getServletContext().getContextPath(), true);
-			this.lcdEnvironment = new LCDEnvironment();
-			this.lcdEnvironment.initialize();
-		} catch(Throwable t) {
-			t.printStackTrace();
-			throw new ServletException(t);
-		}
+		BootstrapEnvironment.getInstance().setGlobalContextPath(config.getServletContext().getContextPath(), true);
+		this.lcdEnvironment = LCDEnvironment.getInstance();
 
 		this.delegate = new DesignerFacesServlet();
 		delegate.init(config);
@@ -74,7 +76,7 @@ public class JakartaDominoXPagesServlet extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {	
 		String pathInfo = req.getRequestURI();
 		int nsfIndex = pathInfo.indexOf(".nsf");
-		if(lcdEnvironment != null && nsfIndex > -1) {
+		if(lcdEnvironment != null && (nsfIndex > -1 || true)) {
 			// Pass NSF requests to the stock LCD processor. The advantage here is that it takes care of
 			//   everything. However, it also doesn't take into account the various Liberty adapters, so
 			//   the actual environment is semi-forced down to a crappier Servlet level

@@ -1,1 +1,2 @@
 com.ibm.xsp.minifier.MinifierResourceProvider
+com.ibm.xsp.extlib.resources.ExtlibResourceProvider

@@ -15,14 +15,12 @@
  */
 package org.openntf.xpages.runtime.osgi;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.util.List;
 
-import org.eclipse.core.runtime.Plugin;
+import org.osgi.framework.BundleActivator;
 
-import com.ibm.commons.util.StringUtil;
+import com.ibm.commons.extension.ExtensionManager;
 
 /**
  * This class looks for known OSGi-reliant plugins and initializes them with a mock
@@ -32,30 +30,21 @@ import com.ibm.commons.util.StringUtil;
  * @since 1.0.0
  */
 public class OSGiPatcher {
-	@SuppressWarnings("unchecked")
 	public static void initKnownBundles() {
 		try {
-			InputStream is = OSGiPatcher.class.getResourceAsStream("/META-INF/platformPlugins.txt");
-			try {
-				BufferedReader r = new BufferedReader(new InputStreamReader(is));
-				try {
-					String line;
-					while((line = r.readLine()) != null) {
-						if(StringUtil.isNotEmpty(line) && !line.startsWith("#")) {
-							Class<? extends Plugin> clazz = (Class<? extends Plugin>) Class.forName(line);
-							Field instance = clazz.getDeclaredField("instance");
-							Plugin inst = clazz.newInstance();
-							instance.set(null, inst);
-							MockBundle mockBundle = new MockBundle(inst);
-							MockBundleContext bundleContext = new MockBundleContext(mockBundle);
-							inst.start(bundleContext);
-						}
+			List<ActivatorNameProvider> providers = ExtensionManager.findServices(null, Thread.currentThread().getContextClassLoader(), ActivatorNameProvider.class.getName(), ActivatorNameProvider.class);
+			for(ActivatorNameProvider provider : providers) {
+				for(Class<? extends BundleActivator> clazz : provider.getClasses()) {
+					Field instance = clazz.getDeclaredField("instance");
+					if(instance != null) {
+						BundleActivator inst = clazz.newInstance();
+						instance.set(null, inst);
+						MockBundle mockBundle = new MockBundle(inst);
+						MockBundleContext bundleContext = new MockBundleContext(mockBundle);
+						mockBundle.setBundleContext(bundleContext);
+						inst.start(bundleContext);
 					}
-				} finally {
-					r.close();
 				}
-			} finally {
-				is.close();
 			}
 		} catch(Exception e) {
 			throw new RuntimeException(e);

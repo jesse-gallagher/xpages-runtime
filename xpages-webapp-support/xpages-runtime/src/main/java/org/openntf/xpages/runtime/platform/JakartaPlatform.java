@@ -121,7 +121,7 @@ public class JakartaPlatform extends WebAppServerPlatform {
 	
 	@Override
 	public boolean isPlatform(String name) {
-		if("Jakarta".equals(name)) {
+		if("Jakarta Web Application Server".equals(name)) {
 			return true;
 		} else {
 			return super.isPlatform(name);
@@ -140,6 +140,11 @@ public class JakartaPlatform extends WebAppServerPlatform {
 
 	protected Properties loadStaticProperties() {
 		return new Properties();
+	}
+	
+	@Override
+	public String getName() {
+		return "Jakarta Web Application Server";
 	}
 	
 }

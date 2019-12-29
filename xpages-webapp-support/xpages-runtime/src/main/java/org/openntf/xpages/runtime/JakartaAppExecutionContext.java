@@ -15,6 +15,8 @@
  */
 package org.openntf.xpages.runtime;
 
+import com.ibm.commons.vfs.VFS;
+import com.ibm.commons.vfs.VFSException;
 import com.ibm.designer.runtime.ApplicationException;
 import com.ibm.designer.runtime.server.ServletExecutionContext;
 
@@ -24,11 +26,20 @@ import java.net.URL;
 
 import javax.servlet.ServletContext;
 
+import org.openntf.xpages.runtime.vfs.ClasspathVFS;
+
 public class JakartaAppExecutionContext extends ServletExecutionContext {
 	private String appDirectory;
+	private final VFS vfs;
 	
     public JakartaAppExecutionContext(ServletContext servletContext) throws ApplicationException {
         super("Jakarta App", "jakartaApp", servletContext);
+        
+		try {
+			this.vfs = new ClasspathVFS(this);
+		} catch (VFSException e) {
+			throw new ApplicationException(e);
+		}
     }
     
 	public String getApplicationDirectory() {
@@ -40,7 +51,9 @@ public class JakartaAppExecutionContext extends ServletExecutionContext {
 				if (!var1.exists()) {
 					try {
 						URL var2 = servletContext.getResource(System.getProperty("user.dir"));
-						this.appDirectory = this.appDirectory + var2.getFile();
+						if(var2 != null) {
+							this.appDirectory = this.appDirectory + var2.getFile();
+						}
 					} catch (MalformedURLException e) {
 						throw new RuntimeException(e);
 					}
@@ -48,5 +61,10 @@ public class JakartaAppExecutionContext extends ServletExecutionContext {
 			}
 		}
 		return this.appDirectory;
+	}
+	
+	@Override
+	public VFS getVFS() {
+		return this.vfs;
 	}
 }

@@ -19,10 +19,17 @@ import com.ibm.xsp.application.ApplicationEx;
 import com.ibm.xsp.application.DesignerApplicationFactoryImpl;
 
 import javax.faces.application.Application;
+import javax.faces.application.ApplicationFactory;
 
 public class JakartaFacesApplicationFactory extends DesignerApplicationFactoryImpl {
+    public JakartaFacesApplicationFactory(ApplicationFactory factory) {
+		super(factory);
+	}
+    
+    public JakartaFacesApplicationFactory() {
+	}
 
-    @Override
+	@Override
     protected ApplicationEx createApplicationInstance(Application application) {
         return new JakartaFacesApplication(application);
     }

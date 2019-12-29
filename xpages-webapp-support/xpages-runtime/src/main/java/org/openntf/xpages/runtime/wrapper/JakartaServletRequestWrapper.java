@@ -23,6 +23,7 @@ import org.openntf.xpages.runtime.platform.JakartaPlatform;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.attribute.UserPrincipal;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -31,11 +32,27 @@ import java.util.Map;
 
 public class JakartaServletRequestWrapper implements HttpServletRequest {
     private final HttpServletRequest delegate;
+    private final String servletPath;
+    private final String pathInfo;
 	
 	private Principal overridePrincipal;
+	private static final Principal ANONYMOUS = new UserPrincipal() {
+		@Override
+		public String getName() {
+			return "anonymous";
+		}
+	};
 
     public JakartaServletRequestWrapper(HttpServletRequest delegate) {
         this.delegate = delegate;
+        this.servletPath = null;
+        this.pathInfo = null;
+    }
+    
+    public JakartaServletRequestWrapper(HttpServletRequest delegate, String servletPath, String pathInfo) {
+    	this.delegate = delegate;
+    	this.servletPath = servletPath;
+    	this.pathInfo = pathInfo;
     }
 
     @Override
@@ -43,16 +60,11 @@ public class JakartaServletRequestWrapper implements HttpServletRequest {
     	if(this.overridePrincipal != null) {
     		return this.overridePrincipal;
     	}
-    	Principal d = delegate.getUserPrincipal();
-    	if(d == null) {
-    		return new Principal() {
-    			@Override
-				public String getName() {
-					return "Anonymous";
-				}
-    		};
+    	Principal principal = delegate.getUserPrincipal();
+    	if(principal == null) {
+    		principal = ANONYMOUS;
     	}
-    	return d;
+    	return principal;
     }
 
     @Override
@@ -102,7 +114,7 @@ public class JakartaServletRequestWrapper implements HttpServletRequest {
 
     @Override
     public String getPathInfo() {
-        return delegate.getPathInfo();
+        return pathInfo == null ? delegate.getPathInfo() : pathInfo;
     }
 
     @Override
@@ -147,7 +159,7 @@ public class JakartaServletRequestWrapper implements HttpServletRequest {
 
     @Override
     public String getServletPath() {
-        return delegate.getServletPath();
+        return servletPath == null ? delegate.getServletPath() : servletPath;
     }
 
     @Override
@@ -396,4 +408,24 @@ public class JakartaServletRequestWrapper implements HttpServletRequest {
     public DispatcherType getDispatcherType() {
         return delegate.getDispatcherType();
     }
+    
+	@Override
+	public PushBuilder newPushBuilder() {
+		return delegate.newPushBuilder();
+	}
+
+	@Override
+	public HttpServletMapping getHttpServletMapping() {
+		return delegate.getHttpServletMapping();
+	}
+
+	@Override
+	public Map<String, String> getTrailerFields() {
+		return delegate.getTrailerFields();
+	}
+
+	@Override
+	public boolean isTrailerFieldsReady() {
+		return delegate.isTrailerFieldsReady();
+	}
 }

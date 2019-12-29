@@ -15,11 +15,13 @@
  */
 package org.openntf.xpages.runtime.xsp;
 
-import com.ibm.xsp.FacesExceptionEx;
-import com.ibm.xsp.application.ApplicationFactoryEx;
-import com.ibm.xsp.config.BootStrap;
-import com.ibm.xsp.config.ServletContextWrapper;
-import com.ibm.xsp.util.Delegation;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
@@ -29,8 +31,12 @@ import javax.servlet.ServletContextListener;
 
 import org.openntf.xpages.runtime.wrapper.JakartaServletContextWrapperWrapper;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.ibm.xsp.FacesExceptionEx;
+import com.ibm.xsp.application.ApplicationFactoryEx;
+import com.ibm.xsp.config.BootStrap;
+import com.ibm.xsp.config.ServletContextWrapper;
+import com.ibm.xsp.extlib.library.ExtlibLibrary;
+import com.ibm.xsp.util.Delegation;
 
 public class JakartaBootStrap extends BootStrap {
     private ServletContextListener contextListener;
@@ -52,6 +58,7 @@ public class JakartaBootStrap extends BootStrap {
         }
     }
 
+    @Override
     protected void initContext(ServletContext servletContext) throws FacesException {
         try {
             List<String> configFiles = this.getConfigFiles();
@@ -59,19 +66,23 @@ public class JakartaBootStrap extends BootStrap {
             ServletContextWrapper contextWrapper = new JakartaServletContextWrapperWrapper(servletContext, configFiles, extraFiles);
             ServletContextEvent sce = new ServletContextEvent(contextWrapper);
             this.getListener().contextInitialized(sce);
-            ApplicationFactoryEx factory = (ApplicationFactoryEx)FactoryFinder.getFactory("javax.faces.application.ApplicationFactory");
-            factory.initCompleted();
+            Object fac = FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
+            if(fac instanceof ApplicationFactoryEx) {
+	            ApplicationFactoryEx factory = (ApplicationFactoryEx)fac;
+	            factory.initCompleted();
+            }
         } catch (Throwable t) {
             throw new FacesExceptionEx(t);
         }
     }
 
+    @Override
     protected void destroyContext(ServletContext servletContext) throws FacesException {
         try {
             ServletContextEvent sce = new ServletContextEvent(servletContext);
-            this.getListener().contextDestroyed(sce);
+            getListener().contextDestroyed(sce);
             FactoryFinder.releaseFactories();
-            this.destroyListener();
+            destroyListener();
         } catch (Throwable t) {
             throw new FacesExceptionEx(t);
         }
@@ -93,13 +104,40 @@ public class JakartaBootStrap extends BootStrap {
     protected List<String> readConfigFiles() {
     	List<String> result = new ArrayList<String>();
     	for(String f : super.readConfigFiles()) {
-    		if(!f.startsWith("/")) {
-    			result.add("/" + f);
-    		} else {
+//    		if(!f.startsWith("/")) {
+//    			result.add("/" + f);
+//    		} else {
     			result.add(f);
-    		}
+//    		}
     	}
     	result.add("/META-INF/jakarta-faces-config.xml");
+    	
+    	return result;
+    }
+    
+    @Override
+    protected List<String> readExtraFiles(ServletContext servletContext) {
+    	List<String> result = new ArrayList<String>();
+    	for(String f : super.readExtraFiles(servletContext)) {
+//    		if(!f.startsWith("/")) {
+//    			result.add("/" + f);
+//    		} else {
+    			result.add(f);
+//    		}
+    	}
+    	
+    	// Preload files from the ExtLib library as a workaround to https://github.com/darwino/xpages-runtime/issues/19
+    	ExtlibLibrary lib = new ExtlibLibrary();
+		String[] files = lib.getFacesConfigFiles();
+		if(files != null) {
+			for(String f : files) {
+//				if(!f.startsWith("/")) {
+//	    			result.add("/" + f);
+//	    		} else {
+	    			result.add(f);
+//	    		}
+			}
+		}
     	return result;
     }
 }

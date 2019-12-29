@@ -30,7 +30,7 @@ import org.openntf.xpages.runtime.wrapper.JakartaServletRequestWrapper;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns="*.xsp")
+//@WebServlet(urlPatterns="*.xsp")
 public class JakartaXPagesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	

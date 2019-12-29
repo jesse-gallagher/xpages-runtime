@@ -1,0 +1,2 @@
+com.ibm.xsp.extlib.relational.jdbc.datasource.dbcp.NSFFileJdbcDBCPProvider
+com.ibm.xsp.extlib.relational.jdbc.datasource.xpages.NSFFileJdbcXPCPProvider

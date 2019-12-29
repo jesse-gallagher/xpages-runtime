@@ -23,10 +23,13 @@
 	</developers>
 
     <properties>
-        <maven.compiler.source>1.6</maven.compiler.source>
-        <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         
         <xpages-version>[10.0.0,)</xpages-version>
+        <equinox-version>[3.8.0,)</equinox-version>
     </properties>
 	
 	<modules>

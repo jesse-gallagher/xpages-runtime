@@ -15,30 +15,28 @@
  */
 package org.openntf.xpages.runtime.domino.platform;
 
+import java.io.File;
+import java.util.Properties;
+
+import javax.servlet.ServletContext;
+
+import org.openntf.xpages.runtime.JakartaAppExecutionContext;
+import org.openntf.xpages.runtime.JakartaApplication;
+
 import com.ibm.commons.util.StringUtil;
-import com.ibm.designer.runtime.Application;
+import com.ibm.designer.runtime.Application.IApplicationFinder;
 import com.ibm.designer.runtime.ApplicationException;
 import com.ibm.domino.napi.c.C;
 import com.ibm.domino.napi.c.Os;
 import com.ibm.domino.xsp.module.nsf.platform.AbstractNotesDominoPlatform;
 import com.ibm.domino.xsp.module.nsf.platform.JSDebuggerRuntime;
 import com.ibm.jscript.JSContext;
-import com.ibm.xsp.context.DojoLibraryFactory;
 import com.ibm.xsp.domino.context.DominoDojo;
 import com.ibm.xsp.model.domino.DominoUtils;
 
 import lotus.notes.NotesThread;
 
-import javax.servlet.ServletContext;
-
-import org.openntf.xpages.runtime.JakartaAppExecutionContext;
-import org.openntf.xpages.runtime.JakartaApplication;
-import org.openntf.xpages.runtime.platform.JakartaPlatform;
-
-import java.io.File;
-import java.util.Properties;
-
-public class JakartaDominoPlatform extends JakartaPlatform {
+public class JakartaDominoPlatform extends AbstractNotesDominoPlatform {
 	private static ServletContext servletContext;
 
 	public static void initContext(ServletContext servletContext) {
@@ -62,7 +60,6 @@ public class JakartaDominoPlatform extends JakartaPlatform {
 	private Properties xspProperties;
 
 	public JakartaDominoPlatform() {
-		super();
 		
 		NotesThread.sinitThread();
 		C.initLibrary(null);
@@ -81,7 +78,6 @@ public class JakartaDominoPlatform extends JakartaPlatform {
 		jsDirectory = new File(dataDirectory, AbstractNotesDominoPlatform.DOMINO_ROOT_PREFIX + "/js/");
 		this.xspProperties = this.loadStaticProperties();
 		DominoDojo.installDominoFactory(this.jsDirectory);
-		DojoLibraryFactory.initializeLibraries();
 		this.initJSEngine();
 	}
 	
@@ -103,7 +99,7 @@ public class JakartaDominoPlatform extends JakartaPlatform {
 		return var1 != null ? StringUtil.equals(var1.trim(), "1") : false;
 	}
 
-	@Override
+//	@Override
 	protected Properties loadStaticProperties() {
 		return new Properties();
 	}
@@ -111,20 +107,30 @@ public class JakartaDominoPlatform extends JakartaPlatform {
 	@Override
 	public Object getObject(String s) {
 		if("com.ibm.xsp.designer.ApplicationFinder".equals(s)) {
-			return new Application.IApplicationFinder() {
-				@Override
-				public Application get() {
-					try {
-						JakartaAppExecutionContext ctx = new JakartaAppExecutionContext(servletContext);
-						return new JakartaApplication(ctx);
-					} catch (ApplicationException e) {
-						throw new RuntimeException(e);
-					}
+			return (IApplicationFinder) () -> {
+				if(app == null) {
+					JakartaAppExecutionContext ctx = getAppExecutionContext();
+					app = new JakartaApplication(ctx);
 				}
+				return app;
 			};
 		} else {
 			return super.getObject(s);
 		}
+	}
+	
+	private JakartaAppExecutionContext execContext;
+	private JakartaApplication app;
+	
+	private JakartaAppExecutionContext getAppExecutionContext() {
+		if(execContext == null) {
+			try {
+				execContext = new JakartaAppExecutionContext(servletContext);
+			} catch (ApplicationException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return execContext;
 	}
 
 	@Override
@@ -195,5 +201,9 @@ public class JakartaDominoPlatform extends JakartaPlatform {
 			return false;
 		}
 	}
-	
+
+	@Override
+	public File getNotesIconsDirectory() {
+		return this.notesIconsDirectory;
+	}
 }
