@@ -80,6 +80,7 @@
 			            <exclude>src/test/resources/**</exclude>
 			            <exclude>src/main/resources/**</exclude>
 			            <exclude>src/main/java/xsp/**</exclude>
+			            <exclude>**/platformPlugins.txt</exclude>
 					</excludes>
 					<properties>
 						<owner>Jesse Gallagher</owner>
