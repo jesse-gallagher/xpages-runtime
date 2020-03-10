@@ -191,7 +191,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 			FacesClassLoader facesClassLoader = FacesClassLoaderFactory.createContext(this.getClass());
 			
 			switch(StringUtil.toString(controls.getProtocol())) {
-			case "file":
+			case "file": //$NON-NLS-1$
 				try {
 					Path path = Paths.get(controls.toURI());
 					Files.find(path, 1, (file, attrs) -> file.getFileName().toString().endsWith(".xsp-config"), FileVisitOption.FOLLOW_LINKS) //$NON-NLS-1$
@@ -219,7 +219,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 					throw new RuntimeException(e);
 				}
 				break;
-			case "jar":
+			case "jar": //$NON-NLS-1$
 				// TODO figure out, and maybe account for "wsjar"
 				//   It may be fair to expect the app to be unpacked at runtime, but maybe there could be
 				//   controls in dependencies
