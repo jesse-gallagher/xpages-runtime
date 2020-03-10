@@ -15,6 +15,11 @@
  */
 package org.openntf.xpages.runtime;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 
 import com.ibm.xsp.webapp.DesignerGlobalResourceServlet;
@@ -22,4 +27,17 @@ import com.ibm.xsp.webapp.DesignerGlobalResourceServlet;
 @WebServlet(urlPatterns="/xsp/.ibmxspres/*")
 public class JakartaGlobalFacesResourceServlet extends DesignerGlobalResourceServlet {
 	private static final long serialVersionUID = 1L;
+	
+	@Override
+	public void service(ServletRequest var1, ServletResponse var2) throws ServletException, IOException {
+		try {
+			super.service(var1, var2);
+		} catch(IOException e) {
+			if("Broken pipe".equals(e.getMessage())) { //$NON-NLS-1$
+				// Ignore
+			} else {
+				throw e;
+			}
+		}
+	}
 }
