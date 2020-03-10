@@ -278,12 +278,5 @@
 			<artifactId>com.ibm.xsp.extlibx.bazaar.interpreter</artifactId>
 			<version>2.0.4-SNAPSHOT</version>
 		</dependency>
-
-		<!-- Groovy for generated XSP class interpretation -->
-		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy</artifactId>
-			<version>3.0.1</version>
-		</dependency>
 	</dependencies>
 </project>

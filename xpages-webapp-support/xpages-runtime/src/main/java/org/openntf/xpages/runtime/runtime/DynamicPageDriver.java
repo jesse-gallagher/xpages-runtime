@@ -15,6 +15,8 @@
  */
 package org.openntf.xpages.runtime.runtime;
 
+import static java.text.MessageFormat.format;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -61,7 +63,6 @@ import com.ibm.xsp.page.FacesPageException;
 import com.ibm.xsp.page.compiled.AbstractCompiledPageDispatcher;
 import com.ibm.xsp.page.compiled.DefaultPageErrorHandler;
 import com.ibm.xsp.page.compiled.DispatcherParameter;
-import com.ibm.xsp.page.compiled.PageToClassNameUtil;
 import com.ibm.xsp.registry.FacesProjectImpl;
 import com.ibm.xsp.registry.FacesSharableRegistry;
 import com.ibm.xsp.registry.SharableRegistryImpl;
@@ -72,10 +73,6 @@ import com.ibm.xsp.registry.config.SimpleRegistryProvider;
 import com.ibm.xsp.registry.config.XspRegistryProvider;
 import com.ibm.xsp.registry.parse.ConfigParser;
 import com.ibm.xsp.registry.parse.ConfigParserFactory;
-
-import groovy.lang.GroovyClassLoader;
-
-import static java.text.MessageFormat.format;
 
 public class DynamicPageDriver implements FacesPageDriver {
 	private static class PageHolder {
@@ -96,7 +93,6 @@ public class DynamicPageDriver implements FacesPageDriver {
 			return new JakartaXspSourceClassLoader(Thread.currentThread().getContextClassLoader(), Collections.emptyList(), new String[0]);
 		}
 	};
-	private final GroovyClassLoader groovyClassLoader = new GroovyClassLoader(Thread.currentThread().getContextClassLoader());
 	private final Map<String, PageHolder> pages = new HashMap<>();
 	private static boolean initialized;
 
@@ -143,14 +139,11 @@ public class DynamicPageDriver implements FacesPageDriver {
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
-				String className = PageToClassNameUtil.getClassNameForPage(pageName);
 				
 				try {
 					// TODO investigate using the Bazaar's interpreter instead of compilation
-					String javaSource = dynamicXPageBean.translate(className, pageName, xspSource, registry);
-					String groovySource = cleanSourceForGroovy(javaSource);
 					// In JDK >= 9, it may be possible to do this with the REPL infrastructure
-					Class<? extends AbstractCompiledPageDispatcher> compiled = groovyClassLoader.parseClass(groovySource);
+					Class<? extends AbstractCompiledPageDispatcher> compiled = (Class<? extends AbstractCompiledPageDispatcher>)dynamicXPageBean.compile(pageName, xspSource, registry);
 					AbstractCompiledPageDispatcher page = compiled.newInstance();
 					page.init(new DispatcherParameter(this, pageName, s_errorHandler));
 					return new PageHolder(mod, page);
@@ -163,12 +156,6 @@ public class DynamicPageDriver implements FacesPageDriver {
 		} catch (IOException e) {
 			throw new FacesPageException(e);
 		}
-	}
-	
-	private String cleanSourceForGroovy(String javaSource) {
-		return javaSource.replace("$", "\\$") // Escape $ for GStrings //$NON-NLS-1$ //$NON-NLS-2$
-				.replace("ComponentInfo", "com.ibm.xsp.page.compiled.AbstractCompiledPage.ComponentInfo") // Groovy needs to be told about inner classes //$NON-NLS-1$ //$NON-NLS-2$
-				.replace(" {\"", " new String[] {\""); // String[][] initializers //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	private URL findResource(String pageName) {

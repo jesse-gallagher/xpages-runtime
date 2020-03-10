@@ -21,6 +21,10 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,7 +58,7 @@ public class JakartaSourceFileManager extends SourceFileManager {
 			return sup;
 		} else {
 			return getClasses().stream()
-				.filter(c -> c.binaryName().startsWith(packageName + "."))
+				.filter(c -> c.binaryName().startsWith(packageName + ".")) //$NON-NLS-1$
 				.collect(Collectors.toList());
 		}
 	}
@@ -65,28 +69,30 @@ public class JakartaSourceFileManager extends SourceFileManager {
 		if(classes == null) {
 			try {
 				List<JavaFileObjectClass> list = new LinkedList<>();
-				for(URL url : Collections.list(Thread.currentThread().getContextClassLoader().getResources("/"))) {
+				for(URL url : Collections.list(Thread.currentThread().getContextClassLoader().getResources("/"))) { //$NON-NLS-1$
 					String protocol = StringUtil.toString(url.getProtocol());
-					if("file".equals(protocol)) {
-						File dir = new File(url.toURI());
-						if(dir.isDirectory()) {
-							for(File file : dir.listFiles()) {
-								if(file.isFile() && file.getName().endsWith(".class")) {
-									dir.toPath().relativize(file.toPath());
-									list.add(new JavaFileObjectClass(file.toURI(), removeClassExtension(dir.toPath().relativize(file.toPath()).toString())));
-								}
-							}
+					if("file".equals(protocol)) { //$NON-NLS-1$
+						Path dir = Paths.get(url.toURI());
+						if(Files.isDirectory(dir)) {
+							Files.walk(dir, FileVisitOption.FOLLOW_LINKS)
+								.filter(p -> Files.isRegularFile(p))
+								.filter(p -> p.getFileName().toString().endsWith(JavaSourceClassLoader.CLASS_EXTENSION))
+								.forEach(p -> {
+									String rel = dir.relativize(p).toString();
+									String binaryName = removeClassExtension(StringUtil.replace(rel, File.separatorChar, '.'));
+									list.add(new JavaFileObjectClass(p.toUri(), binaryName));
+								});
 						}
-					} else if(protocol.contains("jar")) {
+					} else if(protocol.contains("jar")) { //$NON-NLS-1$
 						String jarUrl = url.toString();
-						jarUrl = jarUrl.substring(0, jarUrl.indexOf("!/"));
+						jarUrl = jarUrl.substring(0, jarUrl.indexOf("!/")); //$NON-NLS-1$
 						try(InputStream is = new URL(jarUrl).openStream()) {
 							try(ZipInputStream jis = new ZipInputStream(is)) {
 								ZipEntry entry = jis.getNextEntry();
 								while(entry != null) {
 									String name = entry.getName();
 									if(name.endsWith(JavaSourceClassLoader.CLASS_EXTENSION)) {
-										URI uri = new URI(jarUrl + "!/" + name);
+										URI uri = new URI(jarUrl + "!/" + name); //$NON-NLS-1$
 										String binaryName = removeClassExtension(StringUtil.replace(name, '/' , '.'));
 										list.add(new JavaFileObjectClass(uri, binaryName));
 									}
