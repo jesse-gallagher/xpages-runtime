@@ -75,6 +75,8 @@ import com.ibm.xsp.registry.parse.ConfigParserFactory;
 
 import groovy.lang.GroovyClassLoader;
 
+import static java.text.MessageFormat.format;
+
 public class DynamicPageDriver implements FacesPageDriver {
 	private static class PageHolder {
 		private final long modified;
@@ -110,7 +112,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 		// TODO consider a precompile process at app load
 		URL url = findResource(pageName);
 		if(url == null) {
-			throw new PageNotFoundException("Unable to find XPage or Custom Control " + pageName + "; check WEB-INF/xpages and WEB-INF/controls");
+			throw new PageNotFoundException(format("Unable to find XPage or Custom Control {0}; check WEB-INF/xpages and WEB-INF/controls", pageName));
 		}
 		
 		try {
@@ -124,14 +126,14 @@ public class DynamicPageDriver implements FacesPageDriver {
 				if(mod > holder.modified) {
 					// Then invalidate
 					if(log.isLoggable(Level.INFO)) {
-						log.info(StringUtil.format("Page {0} has been modified; recompiling", pageName));
+						log.info(format("Page {0} has been modified; recompiling", pageName));
 					}
 					pages.remove(pageName);
 				}
 			}
 			return pages.computeIfAbsent(pageName, key -> {
 				if(log.isLoggable(Level.FINE)) {
-					log.fine("Looking for page " + pageName);
+					log.fine(format("Looking for page {0}", pageName));
 				}
 				FacesSharableRegistry registry = ApplicationEx.getInstance().getRegistry();
 				
@@ -164,18 +166,18 @@ public class DynamicPageDriver implements FacesPageDriver {
 	}
 	
 	private String cleanSourceForGroovy(String javaSource) {
-		return javaSource.replace("$", "\\$") // Escape $ for GStrings
-				.replace("ComponentInfo", "com.ibm.xsp.page.compiled.AbstractCompiledPage.ComponentInfo") // Groovy needs to be told about inner classes
-				.replace(" {\"", " new String[] {\""); // String[][] initializers
+		return javaSource.replace("$", "\\$") // Escape $ for GStrings //$NON-NLS-1$ //$NON-NLS-2$
+				.replace("ComponentInfo", "com.ibm.xsp.page.compiled.AbstractCompiledPage.ComponentInfo") // Groovy needs to be told about inner classes //$NON-NLS-1$ //$NON-NLS-2$
+				.replace(" {\"", " new String[] {\""); // String[][] initializers //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	private URL findResource(String pageName) {
 		// TODO cache the URLs
 		// TODO consider allowing XPages in the root of the app
-		String path = PathUtil.concat("/WEB-INF/xpages", pageName, '/');
+		String path = PathUtil.concat("/WEB-INF/xpages", pageName, '/'); //$NON-NLS-1$
 		URL is = Thread.currentThread().getContextClassLoader().getResource(path);
 		if(is == null) {
-			path = PathUtil.concat("/WEB-INF/controls", pageName, '/');
+			path = PathUtil.concat("/WEB-INF/controls", pageName, '/'); //$NON-NLS-1$
 			is = Thread.currentThread().getContextClassLoader().getResource(path);
 		}
 		return is;
@@ -191,10 +193,10 @@ public class DynamicPageDriver implements FacesPageDriver {
 	
 	private void registerCustomControls() {
 		// TODO investigate reloading when resources change
-		URL controls = Thread.currentThread().getContextClassLoader().getResource("/WEB-INF/controls");
+		URL controls = Thread.currentThread().getContextClassLoader().getResource("/WEB-INF/controls"); //$NON-NLS-1$
 		if(controls != null) {
 			if(log.isLoggable(Level.FINE)) {
-				log.fine("searching for controls in " + controls);
+				log.fine(format("searching for controls in {0}", controls));
 			}
 			ConfigParser configParser = ConfigParserFactory.getParserInstance();
 			FacesSharableRegistry facesRegistry = ApplicationEx.getInstance().getRegistry();
@@ -205,7 +207,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 			case "file":
 				try {
 					Path path = Paths.get(controls.toURI());
-					Files.find(path, 1, (file, attrs) -> file.getFileName().toString().endsWith(".xsp-config"), FileVisitOption.FOLLOW_LINKS)
+					Files.find(path, 1, (file, attrs) -> file.getFileName().toString().endsWith(".xsp-config"), FileVisitOption.FOLLOW_LINKS) //$NON-NLS-1$
 						.forEach(configPath -> {
 							try {
 								Document xspConfig;
@@ -245,7 +247,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 			.parallel()
 			.map(lib -> lib.getId())
 			.collect(Collectors.toSet());
-		Set<String> desired = new HashSet<>(Arrays.asList(StringUtil.splitString(ApplicationEx.getInstance().getProperty("xsp.library.depends", ""), ',')));
+		Set<String> desired = new HashSet<>(Arrays.asList(StringUtil.splitString(ApplicationEx.getInstance().getProperty("xsp.library.depends", ""), ','))); //$NON-NLS-1$ //$NON-NLS-2$
 		List<Object> libraries = ExtensionManager.findServices((List<Object>)null, LibraryServiceLoader.class, "com.ibm.xsp.Library"); //$NON-NLS-1$
 		libraries.stream()
 			.filter(lib -> lib instanceof XspLibrary)
