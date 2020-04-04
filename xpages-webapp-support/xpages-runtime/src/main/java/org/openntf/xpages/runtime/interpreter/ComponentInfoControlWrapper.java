@@ -29,7 +29,6 @@ public class ComponentInfoControlWrapper {
 		public Control getControl() {
 			return control;
 		}
-		
 	}
 	
 	private ControlComponentInfo[] componentInfo;
