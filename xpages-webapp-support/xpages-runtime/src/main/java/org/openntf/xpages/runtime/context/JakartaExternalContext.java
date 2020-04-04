@@ -41,7 +41,7 @@ public class JakartaExternalContext extends ExternalContextEx {
 		String result = super.encodeResourceURL(var1);
 		// Patch around the parent's "/xsp" prefix
 		// TODO do this more intelligently
-		if(result.startsWith("/xsp/")) {
+		if(result.startsWith("/xsp/")) { //$NON-NLS-1$
 			result = JakartaPlatform.getServletContext().getContextPath() + result;
 		}
 		
@@ -54,11 +54,11 @@ public class JakartaExternalContext extends ExternalContextEx {
 	public InputStream getResourceAsStream(String res) {
 		InputStream is = super.getResourceAsStream(res);
 		// Mobile app compatibility
-		if(is == null && res != null && res.startsWith("/WEB-INF/")) {
-			is = super.getResourceAsStream("/DARWINO-INF/" + res.substring("/WEB-INF/".length()));
+		if(is == null && res != null && res.startsWith("/WEB-INF/")) { //$NON-NLS-1$
+			is = super.getResourceAsStream("/DARWINO-INF/" + res.substring("/WEB-INF/".length())); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			if(is == null) {
-				is = super.getResourceAsStream(res.substring("/WEB-INF/".length()));
+				is = super.getResourceAsStream(res.substring("/WEB-INF/".length())); //$NON-NLS-1$
 			}
 		}
 		return is;
@@ -67,14 +67,14 @@ public class JakartaExternalContext extends ExternalContextEx {
 	// Based on https://github.com/eclipse-ee4j/mojarra/blob/475fb3e88edd2f939d0378c23012277c82d1f7fe/impl/src/main/java/com/sun/faces/context/ExternalContextImpl.java
 	// Licensed under the EPL 2.0
 	
-	private static final String PUSH_SUPPORTED_ATTRIBUTE_NAME = RIConstants.FACES_PREFIX + "ExternalContextImpl.PUSH_SUPPORTED";
-	public static final String PUSH_RESOURCE_URLS_KEY_NAME = RIConstants.FACES_PREFIX + "resourceUrls";
-	public static final String XSP_ENABLE_PUSH = "xsp.http2.push";
+	private static final String PUSH_SUPPORTED_ATTRIBUTE_NAME = RIConstants.FACES_PREFIX + "ExternalContextImpl.PUSH_SUPPORTED"; //$NON-NLS-1$
+	public static final String PUSH_RESOURCE_URLS_KEY_NAME = RIConstants.FACES_PREFIX + "resourceUrls"; //$NON-NLS-1$
+	public static final String XSP_ENABLE_PUSH = "xsp.http2.push"; //$NON-NLS-1$
 	
 	private void pushIfPossibleAndNecessary(String result) {
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		if ("false".equals(ApplicationEx.getInstance(context).getProperty(XSP_ENABLE_PUSH, "true"))) {
+		if ("false".equals(ApplicationEx.getInstance(context).getProperty(XSP_ENABLE_PUSH, "true"))) { //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 
@@ -138,7 +138,7 @@ public class JakartaExternalContext extends ExternalContextEx {
 				// If the request has an If-Modified-Since header, do not push, since it's
 				// possible the resources are already in the cache.
 				isPushSupported = StringUtil
-						.isEmpty(StringUtil.toString(extContext.getRequestHeaderMap().get("If-Modified-Since")));
+						.isEmpty(StringUtil.toString(extContext.getRequestHeaderMap().get("If-Modified-Since"))); //$NON-NLS-1$
 			}
 
 			if (isPushSupported) {
