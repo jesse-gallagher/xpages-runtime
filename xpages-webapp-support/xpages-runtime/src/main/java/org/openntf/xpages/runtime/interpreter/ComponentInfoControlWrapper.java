@@ -47,8 +47,11 @@ public class ComponentInfoControlWrapper {
 		List<ControlComponentInfo> components = new LinkedList<>();
 		
 		List<Integer> childIds = new ArrayList<>();
-		for(IControl child : viewControl.getChildren()) {
-			childIds.add(addChild((Control)child, components));
+		List<IControl> childList = viewControl.getChildren();
+		if(childList != null) {
+			for(IControl child : childList) {
+				childIds.add(addChild((Control)child, components));
+			}
 		}
 		
 		// Add the view root itself
