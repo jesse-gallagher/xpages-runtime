@@ -15,6 +15,8 @@
  */
 package org.openntf.xpages.runtime.runtime;
 
+import org.openntf.xpages.runtime.interpreter.DynamicPageDriver;
+
 import com.ibm.xsp.controller.DesignerFacesController;
 import com.ibm.xsp.page.FacesPageDriver;
 
