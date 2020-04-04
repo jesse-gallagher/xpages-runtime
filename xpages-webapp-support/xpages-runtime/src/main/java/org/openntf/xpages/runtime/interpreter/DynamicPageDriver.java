@@ -125,24 +125,24 @@ public class DynamicPageDriver implements FacesPageDriver {
 						log.info(format("Page {0} has been modified; recompiling", pageName));
 					}
 					pages.remove(pageName);
+					dynamicXPageBean.purgeCompiledPage(pageName);
 				}
 			}
 			return pages.computeIfAbsent(pageName, key -> {
-				if(log.isLoggable(Level.FINE)) {
-					log.fine(format("Looking for page {0}", pageName));
+				if(log.isLoggable(Level.INFO)) {
+					log.info(format("Looking for page {0}", pageName));
 				}
 				FacesSharableRegistry registry = ApplicationEx.getInstance().getRegistry();
 				
 				String xspSource;
-				try(InputStream is = url.openStream()) {
+				try(InputStream is = conn.getInputStream()) {
 					xspSource = StreamUtil.readString(is);
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 				
 				try {
-					// TODO investigate using the Bazaar's interpreter instead of compilation
-					// In JDK >= 9, it may be possible to do this with the REPL infrastructure
+					// TODO In JDK >= 9, it may be possible to do this with the REPL infrastructure
 					Class<? extends AbstractCompiledPageDispatcher> compiled = (Class<? extends AbstractCompiledPageDispatcher>)dynamicXPageBean.compile(pageName, xspSource, registry);
 					AbstractCompiledPageDispatcher page = compiled.newInstance();
 					page.init(new DispatcherParameter(this, pageName, s_errorHandler));
