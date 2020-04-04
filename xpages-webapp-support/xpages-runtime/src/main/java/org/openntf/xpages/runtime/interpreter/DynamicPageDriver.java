@@ -21,17 +21,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,19 +35,22 @@ import java.util.stream.Collectors;
 
 import javax.faces.context.FacesContext;
 
-import org.openntf.xpages.runtime.xsp.JakartaXspSourceClassLoader;
 import org.openntf.xpages.runtime.xsp.LibraryWeightComparator;
 import org.w3c.dom.Document;
 
 import com.ibm.commons.extension.ExtensionManager;
 import com.ibm.commons.util.PathUtil;
 import com.ibm.commons.util.StringUtil;
-import com.ibm.commons.util.io.StreamUtil;
 import com.ibm.commons.xml.DOMUtil;
 import com.ibm.commons.xml.XMLException;
 import com.ibm.designer.runtime.domino.adapter.util.PageNotFoundException;
 import com.ibm.xsp.application.ApplicationEx;
-import com.ibm.xsp.extlib.interpreter.DynamicXPageBean;
+import com.ibm.xsp.extlib.interpreter.interpreter.Control;
+import com.ibm.xsp.extlib.interpreter.interpreter.ControlFactory;
+import com.ibm.xsp.extlib.interpreter.interpreter.XPagesInterpreter;
+import com.ibm.xsp.extlib.interpreter.interpreter.parser.DefaultXPagesCache;
+import com.ibm.xsp.extlib.interpreter.interpreter.parser.XPagesCache;
+import com.ibm.xsp.extlib.interpreter.interpreter.parser.XPagesLoader;
 import com.ibm.xsp.library.ClasspathResourceBundleSource;
 import com.ibm.xsp.library.FacesClassLoader;
 import com.ibm.xsp.library.LibraryServiceLoader;
@@ -60,7 +59,6 @@ import com.ibm.xsp.library.XspLibrary;
 import com.ibm.xsp.page.FacesPageDispatcher;
 import com.ibm.xsp.page.FacesPageDriver;
 import com.ibm.xsp.page.FacesPageException;
-import com.ibm.xsp.page.compiled.AbstractCompiledPageDispatcher;
 import com.ibm.xsp.page.compiled.DefaultPageErrorHandler;
 import com.ibm.xsp.page.compiled.DispatcherParameter;
 import com.ibm.xsp.registry.FacesProjectImpl;
@@ -75,87 +73,43 @@ import com.ibm.xsp.registry.parse.ConfigParser;
 import com.ibm.xsp.registry.parse.ConfigParserFactory;
 
 public class DynamicPageDriver implements FacesPageDriver {
-	private static class PageHolder {
-		private final long modified;
-		private final FacesPageDispatcher page;
-		
-		public PageHolder(long modified, FacesPageDispatcher page) {
-			this.modified = modified;
-			this.page = page;
-		}
-	}
-	
 	private static final Logger log = Logger.getLogger(DynamicPageDriver.class.getName());
-	private static final DefaultPageErrorHandler s_errorHandler = new DefaultPageErrorHandler();
-	
-	private final DynamicXPageBean dynamicXPageBean = new DynamicXPageBean() {
-		protected JakartaXspSourceClassLoader createJavaSourceClassLoader() {
-			return new JakartaXspSourceClassLoader(Thread.currentThread().getContextClassLoader(), Collections.emptyList(), new String[0]);
-		}
-	};
-	private final Map<String, PageHolder> pages = new HashMap<>();
 	private static boolean initialized;
+	private static final DefaultPageErrorHandler s_errorHandler = new DefaultPageErrorHandler();
+			
+	private XPagesInterpreter interpreter;
+	
+	public DynamicPageDriver() {
+		
+	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public FacesPageDispatcher loadPage(FacesContext context, String pageName) throws FacesPageException {
 		if(!initialized) {
 			this.registerCustomControls();
 			this.initLibrary();
+			XPagesCache pageCache = new DefaultXPagesCache(getClass().getName(), 2048);
+			XPagesLoader pageLoader = new URLConnectionPageLoader();
+			ControlFactory controlFactory = new InterpretedControlFactory();
+			this.interpreter = new XPagesInterpreter(
+				null,
+				controlFactory,
+				null,
+				pageLoader,
+				pageCache
+			);
 			initialized = true;
 		}
-
-		// TODO consider a precompile process at app load
 		URL url = findResource(pageName);
 		if(url == null) {
 			throw new PageNotFoundException(format("Unable to find XPage or Custom Control {0}; check WEB-INF/xpages and WEB-INF/controls", pageName));
 		}
 		
-		try {
-			URLConnection conn = url.openConnection();
-			long mod = conn.getLastModified();
-			
-			// Check if it's already parsed
-			PageHolder holder = pages.get(pageName);
-			if(holder != null) {
-				// Check for modifications
-				if(mod > holder.modified) {
-					// Then invalidate
-					if(log.isLoggable(Level.INFO)) {
-						log.info(format("Page {0} has been modified; recompiling", pageName));
-					}
-					pages.remove(pageName);
-				}
-			}
-			return pages.computeIfAbsent(pageName, key -> {
-				if(log.isLoggable(Level.FINE)) {
-					log.fine(format("Looking for page {0}", pageName));
-				}
-				FacesSharableRegistry registry = ApplicationEx.getInstance().getRegistry();
-				
-				String xspSource;
-				try(InputStream is = url.openStream()) {
-					xspSource = StreamUtil.readString(is);
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-				
-				try {
-					// TODO investigate using the Bazaar's interpreter instead of compilation
-					// In JDK >= 9, it may be possible to do this with the REPL infrastructure
-					Class<? extends AbstractCompiledPageDispatcher> compiled = (Class<? extends AbstractCompiledPageDispatcher>)dynamicXPageBean.compile(pageName, xspSource, registry);
-					AbstractCompiledPageDispatcher page = compiled.newInstance();
-					page.init(new DispatcherParameter(this, pageName, s_errorHandler));
-					return new PageHolder(mod, page);
-				} catch (RuntimeException e) {
-					throw e;
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			}).page;
-		} catch (IOException e) {
-			throw new FacesPageException(e);
-		}
+		Control c = interpreter.parseUri(url.toString());
+		
+		InterpretedPageDispatcher dispatcher = new InterpretedPageDispatcher(c);
+		dispatcher.init(new DispatcherParameter(this, pageName, s_errorHandler));
+		return dispatcher;
 	}
 	
 	private URL findResource(String pageName) {
