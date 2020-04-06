@@ -170,12 +170,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 		return is;
 	}
 	
-	private final IconUrlSource iconUrlSource = new IconUrlSource() {
-		@Override public URL getIconUrl(String arg0) {
-			// TODO ???
-			return null;
-		}
-	};
+	private final IconUrlSource iconUrlSource = iconName -> Thread.currentThread().getContextClassLoader().getResource(iconName);
 	private final ResourceBundleSource resourceBundleSource = new ClasspathResourceBundleSource(Thread.currentThread().getContextClassLoader());
 	
 	private void registerCustomControls() {
