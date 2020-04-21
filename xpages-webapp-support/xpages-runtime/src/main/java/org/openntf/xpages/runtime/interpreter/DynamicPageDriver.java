@@ -77,9 +77,9 @@ import com.ibm.xsp.registry.parse.ConfigParserFactory;
 public class DynamicPageDriver implements FacesPageDriver {
 	private static class PageHolder {
 		private final long modified;
-		private final FacesPageDispatcher page;
+		private final Class<? extends AbstractCompiledPageDispatcher> page;
 		
-		public PageHolder(long modified, FacesPageDispatcher page) {
+		public PageHolder(long modified, Class<? extends AbstractCompiledPageDispatcher> page) {
 			this.modified = modified;
 			this.page = page;
 		}
@@ -128,7 +128,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 					dynamicXPageBean.purgeCompiledPage(pageName);
 				}
 			}
-			return pages.computeIfAbsent(pageName, key -> {
+			holder = pages.computeIfAbsent(pageName, key -> {
 				if(log.isLoggable(Level.INFO)) {
 					log.info(format("Looking for page {0}", pageName));
 				}
@@ -144,16 +144,18 @@ public class DynamicPageDriver implements FacesPageDriver {
 				try {
 					// TODO In JDK >= 9, it may be possible to do this with the REPL infrastructure
 					Class<? extends AbstractCompiledPageDispatcher> compiled = (Class<? extends AbstractCompiledPageDispatcher>)dynamicXPageBean.compile(pageName, xspSource, registry);
-					AbstractCompiledPageDispatcher page = compiled.newInstance();
-					page.init(new DispatcherParameter(this, pageName, s_errorHandler));
-					return new PageHolder(mod, page);
+					return new PageHolder(mod, compiled);
 				} catch (RuntimeException e) {
 					throw e;
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
-			}).page;
-		} catch (IOException e) {
+			});
+
+			AbstractCompiledPageDispatcher page = holder.page.newInstance();
+			page.init(new DispatcherParameter(this, pageName, s_errorHandler));
+			return page;
+		} catch (IOException | InstantiationException | IllegalAccessException e) {
 			throw new FacesPageException(e);
 		}
 	}
