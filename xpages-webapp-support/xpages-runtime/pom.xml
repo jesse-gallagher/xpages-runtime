@@ -214,8 +214,8 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp</groupId>
-			<artifactId>xsp.http.bootstrap</artifactId>
+			<groupId>com.hcl.xsp.repo</groupId>
+			<artifactId>com.ibm.xsp.http.bootstrap</artifactId>
 			<version>${xpages-version}</version>
 		</dependency>
 		
