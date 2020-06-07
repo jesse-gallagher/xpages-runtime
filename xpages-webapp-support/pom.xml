@@ -41,7 +41,14 @@
 	<prerequisites>
 		<maven>3.0.1</maven>
 	</prerequisites>
-	
+
+	<distributionManagement>
+		<repository>
+			<id>artifactory.openntf.org</id>
+			<name>artifactory.openntf.org</name>
+			<url>https://artifactory.openntf.org/openntf</url>
+		</repository>
+	</distributionManagement>
 	
 	<pluginRepositories>
 		<pluginRepository>
