@@ -42,7 +42,14 @@ LD_LIBRARY_PATH=/Applications/IBM Notes.app/Contents/MacOS
 DYLD_LIBRARY_PATH=/Applications/IBM Notes.app/Contents/MacOS
 ```
 
-Notes or Domino do not need to be running - indeed, it's probably best if they're not.
+Additionally, for all platforms, add a `jvm.options` file for the Open Libery server:
+
+```
+-Djava.library.path=/Applications/IBM Notes.app/Contents/MacOS
+-Dcom.ibm.commons.platform=org.openntf.xpages.runtime.domino.platform.JakartaDominoPlatform
+```
+
+Notes or Domino do not need to be running - indeed, it's probably best if they're not. To run on an active Domino server, use [the Domino Open Liberty Runtime project](https://github.com/OpenNTF/openliberty-domino).
 
 ## Web App Layout
 
@@ -57,6 +64,7 @@ Apps built using this runtime should be structured generally like a [normal web 
 
 ## Limitations and Expectations
 
+* On Open Liberty, the `jsp` and `jsf` features cannot be enabled. Enabiling either one of them will cause load-order problems and, in the latter case, `ClassCastException`s.
 * There is no context database by default. If you wish to have a default `database` and `session*` variables, they'll have to be created and managed using a variable resolver or other mechanism.
 * Similarly, it's best to avoid Domino-specific components in general, such as `xp:dominoDocument` and `xp:dominoView`. Though they can be made to work, it's asking for trouble.
 * All extensions (such as `XspLibrary` implementations) must be declared using the `META-INF/services` method and not `plugin.xml`. An extension of type `com.ibm.commons.Extension` can be directly translated by taking the `type` and making a file of that name in the services directory, containing a list of newline-separated class names.
