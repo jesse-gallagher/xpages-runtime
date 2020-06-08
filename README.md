@@ -22,15 +22,9 @@ To build this project or use it as a dependency, you must have a property in you
 </activeProfiles>
 ```
 
-Such an update site can be built from a Notes or Domino installation using the [`generate-domino-update-site` Maven plugin](https://github.com/OpenNTF/generate-domino-update-site).
+Such an update site can be built from a Notes or Domino installation using the [`generate-domino-update-site` Maven plugin](https://github.com/OpenNTF/generate-domino-update-site). This project expects an update site built with at leave version 3.3.0 of `generate-domino-update-site`.
 
 When using this runtime in your downstream project, that project should also include a repository reference for the Update Site accessed via the [`p2-layout-resolver` Maven plugin](https://github.com/OpenNTF/p2-layout-provider), configured with the ID `com.hcl.xsp.repo`.
-
-Additionally, this project expects to find the `xsp.http.bootstrap.jar` file from a Domino or Designer installation installed to your Maven repo with the group ID `com.hcl.xsp`, artifact ID `xsp.http.bootstrap`, and a version of at least 10.0.1. This can be installed from the command line via something like:
-
-```
-mvn install:install-file -Dfile=/Volumes/Windows-Host/Notes/jvm/lib/ext/xsp.http.bootstrap.jar -DgroupId=com.hcl.xsp -DartifactId=xsp.http.bootstrap -Dversion=11.0.0 -Dpackaging=jar
-```
 
 ## Running
 
