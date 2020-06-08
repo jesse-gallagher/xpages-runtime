@@ -50,7 +50,7 @@ public class JakartaDominoServletRequestWrapper implements HttpServletRequest, H
     		return new Principal() {
     			@Override
 				public String getName() {
-					return "Anonymous";
+					return "Anonymous"; //$NON-NLS-1$
 				}
     		};
     	}
