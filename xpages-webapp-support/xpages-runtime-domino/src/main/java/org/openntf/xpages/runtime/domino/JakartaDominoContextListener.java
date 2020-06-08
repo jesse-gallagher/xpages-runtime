@@ -40,18 +40,16 @@ import lotus.notes.NotesThread;
 public class JakartaDominoContextListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		NotesThread.sinitThread();
-		C.initLibrary(null);
-		
-		JakartaDominoPlatform.initContext(new JakartaServletContextWrapper(sce.getServletContext()));
-		
-		final URLStreamHandlerFactory delegate = AccessController.doPrivileged(new PrivilegedAction<URLStreamHandlerFactory>() {
-			@Override
-			public URLStreamHandlerFactory run() {
+		NotesThread t = new NotesThread(() -> {
+			C.initLibrary(null);
+			
+			JakartaDominoPlatform.initContext(new JakartaServletContextWrapper(sce.getServletContext()));
+			
+			final URLStreamHandlerFactory delegate = AccessController.doPrivileged((PrivilegedAction<URLStreamHandlerFactory>) () -> {
 				URLStreamHandlerFactory d;
 				try {
 					// This is set by the Equinox dependency, which we definitely don't want
-					Field facField = URL.class.getDeclaredField("factory");
+					Field facField = URL.class.getDeclaredField("factory"); //$NON-NLS-1$
 					facField.setAccessible(true);
 					d = (URLStreamHandlerFactory)facField.get(null);
 					facField.set(null, null);
@@ -60,25 +58,26 @@ public class JakartaDominoContextListener implements ServletContextListener {
 					return null;
 				}
 				return d;
-			}	
-		});
-		
-		URL.setURLStreamHandlerFactory(new URLStreamHandlerFactory() {
-			@Override
-			public URLStreamHandler createURLStreamHandler(String protocol) {
-				if("xspnsf".equals(StringUtil.toString(protocol))) {
-					
+			});
+			
+			URL.setURLStreamHandlerFactory(protocol -> {
+				if("xspnsf".equals(StringUtil.toString(protocol))) { //$NON-NLS-1$
 					return new URLStreamHandler() {
 						@Override
 						protected URLConnection openConnection(URL u) throws IOException {
 							return NotesURL.getInstance().openConnection(u);
 						}
-						
 					};
 				} else {
 					return delegate.createURLStreamHandler(protocol);
 				}
-			}
+			});
 		});
+		t.run();
+		try {
+			t.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
