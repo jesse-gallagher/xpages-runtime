@@ -50,8 +50,8 @@ Notes or Domino do not need to be running - indeed, it's probably best if they'r
 Apps built using this runtime should be structured generally like a [normal web app](https://www.mkyong.com/maven/how-to-create-a-web-application-project-with-maven/), with some important notes about the translation from an NSF-based XPages application to a web app:
 
 * Themes should go in `WEB-INF/themes`
-* XPages should go in `WEB-INF/xpages`
-* Custom controls should go in `WEB-INF/controls`
+* XPages should go in `WEB-INF/xpages` and can have a folder hierarchy
+* Custom controls should go in `WEB-INF/controls`. `.xsp-config` files must be manually managed
 * The faces-config file should be `WEB-INF/faces-config.xml`
 * The XSP properties file should be `WEB-INF/xsp.properties`
 * Unlike in an NSF, images, JavaScript, CSS, and other resources should all go in the content root (`src/main/webapp` in Maven layout) and have no inherent folder structure
@@ -63,7 +63,7 @@ Apps built using this runtime should be structured generally like a [normal web 
 * Similarly, it's best to avoid Domino-specific components in general, such as `xp:dominoDocument` and `xp:dominoView`. Though they can be made to work, it's asking for trouble.
 * All extensions (such as `XspLibrary` implementations) must be declared using the `META-INF/services` method and not `plugin.xml`. An extension of type `com.ibm.commons.Extension` can be directly translated by taking the `type` and making a file of that name in the services directory, containing a list of newline-separated class names.
 * Similarly, this runtime will not recognize servlets declared via the [Equinox servlet extension point](https://www.eclipse.org/equinox/server/http_in_equinox.php) and must be registered either using the `@WebServlet` annotation or in the app's web.xml.
-* Any OSGi Activator classes will not be activated by default, and must instead be explicitly registered. This can be done by registering a service class to `org.openntf.xpages.runtime.osgi.ActivatorNameProvider` implementing the interface of the same name and returning a list of Activator classes to instantiate. These classes are expected to have a public static property named `instance` that will be set to the created instance.
+* Any OSGi Activator classes will not be activated by default, and must instead be explicitly registered. This can be done by registering a service class to `org.openntf.xpages.runtime.osgi.ActivatorNameProvider` implementing the interface of the same name and returning a list of Activator classes to instantiate. These Activator classes are expected to have a public static property named `instance` that will be set to the created instance.
 * Unlike an NSF-hosted XPages application, these apps are not running inside a `com.ibm.designer.runtime.domino.adapter.ComponentModule` and so not all normal capabilities are available.
 * The XPages servlet is mapped to "*" to allow for URLs like `/foo.xsp/bar/baz`.
 
