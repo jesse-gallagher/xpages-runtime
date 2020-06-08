@@ -31,6 +31,12 @@
 			<artifactId>com.ibm.xsp.domino</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.xsp.domino</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.hcl.xsp.repo</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.hcl.xsp.repo</groupId>
@@ -43,6 +49,12 @@
 			<artifactId>com.ibm.domino.xsp.adapter</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.domino.adapter</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.hcl.xsp.repo</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.hcl.xsp.repo</groupId>
@@ -61,6 +73,12 @@
 			<artifactId>com.ibm.domino.xsp.bootstrap</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>xsp.domino.bridge</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.hcl.xsp.repo</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.hcl.xsp.repo</groupId>
