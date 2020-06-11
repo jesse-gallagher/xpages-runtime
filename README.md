@@ -56,6 +56,18 @@ Apps built using this runtime should be structured generally like a [normal web 
 * The XSP properties file should be `WEB-INF/xsp.properties`
 * Unlike in an NSF, images, JavaScript, CSS, and other resources should all go in the content root (`src/main/webapp` in Maven layout) and have no inherent folder structure
 
+## Development Mode
+
+During app development, it is useful to set the `xsp.extlib.dvlp` property to `true` to get the same sort of "pick up on resource changes" behavior that you get with e.g. CSS files in an NSF. This property is reflected in `ExtLibUtil.isDevelopmentMode()` and is determined in [several potential ways](https://github.com/OpenNTF/XPagesExtensionLibrary/blob/25b3b1df7fafb7ceb131e07ade93de5c9ff733d5/extlib/lwp/product/runtime/eclipse/plugins/com.ibm.xsp.extlib.core/src/com/ibm/xsp/extlib/util/ExtLibUtil.java#L65):
+
+- From your app's "xsp.properties" (which will be reflected during deployment as well)
+- From the "properties/xsp.properties" file within your Notes/Domino data directory (esoteric and not recommended)
+- From the "xsp/bootstrap.properties" file within your Notes/Domino installation (similar to above)
+- As a Java system property
+- As the `XPagesDev` notes.ini property
+
+For development purposes, the system property is likely the most convenient. For example, in a Liberty server managed from Eclipse's "Servers" view, this can be set in the "bootstrap.properties" file.
+
 ## Limitations and Expectations
 
 * On Open Liberty, the `jsp` and `jsf` features cannot be enabled. Enabiling either one of them will cause load-order problems and, in the latter case, `ClassCastException`s.
