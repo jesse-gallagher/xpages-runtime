@@ -79,6 +79,49 @@ For development purposes, the system property is likely the most convenient. For
 * Unlike an NSF-hosted XPages application, these apps are not running inside a `com.ibm.designer.runtime.domino.adapter.ComponentModule` and so not all normal capabilities are available.
 * The XPages servlet is mapped to "*" to allow for URLs like `/foo.xsp/bar/baz`.
 
+## XSP Transpiler
+
+The runtime will automatically translate XSP source files to executable pages at runtime, but initial load performance can be improved with the use of the XSP Transpiler Maven Mojo. This can be configured by adding an execution to your project to transpile and one to add the generated source to the build path:
+
+```xml
+<plugin>
+  <groupId>org.openntf.xpages</groupId>
+  <artifactId>xsp-maven-plugin</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <executions>
+    <execution>
+      <id>transpile-xsp</id>
+      <goals>
+        <goal>transpile</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+<plugin>
+  <groupId>org.codehaus.mojo</groupId>
+  <artifactId>build-helper-maven-plugin</artifactId>
+  <version>1.7</version>
+  <executions>
+    <execution>
+      <id>add-source</id>
+      <phase>generate-sources</phase>
+      <goals>
+        <goal>add-source</goal>
+      </goals>
+      <configuration>
+        <sources>
+          <source>${project.build.directory}/generated-sources/java</source>
+        </sources>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+```
+
+This will search for XPages in the `src/main/webapp/WEB-INF/xpages` directory and Custom Controls in the `src/main/webapp/WEB-INF/controls` directory and output translated Java files to `${project.build.directory}/generated-sources/java`.
+
+Note: since this takes place in the `generate-sources` phase by default, it will likely throw an exception if you have a Custom Control that has a property whose type is a class defined inside the current project.
+
 ## License
 
 The code in the project is licensed under the Apache License 2.0. The dependencies in the binary distribution are licensed under IBM or HCL's Domino license to which you must have agreed when building or using this application.

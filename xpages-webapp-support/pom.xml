@@ -35,6 +35,7 @@
 	<modules>
 		<module>xpages-runtime</module>
 		<module>xpages-runtime-domino</module>
+		<module>xsp-maven-plugin</module>
 		<module>xpages-runtime-example</module>
 	</modules>
 	
