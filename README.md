@@ -122,6 +122,8 @@ This will search for XPages in the `src/main/webapp/WEB-INF/xpages` directory an
 
 Note: since this takes place in the `generate-sources` phase by default, it will likely throw an exception if you have a Custom Control that has a property whose type is a class defined inside the current project.
 
+To use this goal, your project must depend on the core `xpages-runtime` project, as this expects classes from the XPages stack to be present in your project's classpath.
+
 ## License
 
 The code in the project is licensed under the Apache License 2.0. The dependencies in the binary distribution are licensed under IBM or HCL's Domino license to which you must have agreed when building or using this application.
