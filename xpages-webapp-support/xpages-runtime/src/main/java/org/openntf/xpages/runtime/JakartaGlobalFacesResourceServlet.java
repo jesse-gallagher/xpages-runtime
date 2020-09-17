@@ -38,6 +38,17 @@ public class JakartaGlobalFacesResourceServlet extends DesignerGlobalResourceSer
 			} else {
 				throw e;
 			}
+		} catch(Throwable t) {
+			// May be wrapped
+			if(t.getCause() instanceof IOException) {
+				if("Broken pipe".equals(t.getCause().getMessage())) { //$NON-NLS-1$
+					// Ignore
+				} else {
+					throw t;
+				}
+			} else {
+				throw t;
+			}
 		}
 	}
 }

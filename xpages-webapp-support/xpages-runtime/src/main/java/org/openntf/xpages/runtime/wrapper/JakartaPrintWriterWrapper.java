@@ -15,14 +15,10 @@
  */
 package org.openntf.xpages.runtime.wrapper;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 
 public class JakartaPrintWriterWrapper extends PrintWriter {
+	@SuppressWarnings("unused")
 	private final PrintWriter delegate;
 
 	public JakartaPrintWriterWrapper(PrintWriter delegate) {
@@ -32,7 +28,6 @@ public class JakartaPrintWriterWrapper extends PrintWriter {
 	
 	@Override
 	public void close() {
-		System.out.println("asked to close!");
 	}
 
 }
