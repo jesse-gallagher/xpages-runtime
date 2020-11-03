@@ -108,17 +108,19 @@ public class DynamicPageDriver implements FacesPageDriver {
 		
 		try {
 			// Check if it's compiled as a class in the current loader
-			try {
-				String className = PageToClassNameUtil.getClassNameForPage(pageName);
-				Class<? extends AbstractCompiledPageDispatcher> existing = (Class<? extends AbstractCompiledPageDispatcher>) Class.forName(className);
-				URL loc = existing.getProtectionDomain().getCodeSource().getLocation();
-				String classPath = className.replace('.', '/') + ".class"; //$NON-NLS-1$
-				loc = new URL(loc, classPath);
-				URLConnection classConn = loc.openConnection();
-				long classMod = classConn.getLastModified();
-				pages.put(pageName, new PageHolder(classMod, existing));
-			} catch(ClassNotFoundException e) {
-				// That's fine - move along to load from source
+			if(!pages.containsKey(pageName)) {
+				try {
+					String className = PageToClassNameUtil.getClassNameForPage(pageName);
+					Class<? extends AbstractCompiledPageDispatcher> existing = (Class<? extends AbstractCompiledPageDispatcher>) Class.forName(className);
+					URL loc = existing.getProtectionDomain().getCodeSource().getLocation();
+					String classPath = className.replace('.', '/') + ".class"; //$NON-NLS-1$
+					loc = new URL(loc, classPath);
+					URLConnection classConn = loc.openConnection();
+					long classMod = classConn.getLastModified();
+					pages.put(pageName, new PageHolder(classMod, existing));
+				} catch(ClassNotFoundException e) {
+					// That's fine - move along to load from source
+				}
 			}
 			
 			// See if there's a local resource version as well
@@ -237,7 +239,8 @@ public class DynamicPageDriver implements FacesPageDriver {
 				}
 				break;
 			case "jar": //$NON-NLS-1$
-				// TODO figure out, and maybe account for "wsjar"
+			case "wsjar": //$NON-NLS-1$
+				// TODO figure out
 				//   It may be fair to expect the app to be unpacked at runtime, but maybe there could be
 				//   controls in dependencies
 				break;
