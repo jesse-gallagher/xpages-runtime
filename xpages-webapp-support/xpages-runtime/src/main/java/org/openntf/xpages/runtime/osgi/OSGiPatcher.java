@@ -15,7 +15,6 @@
  */
 package org.openntf.xpages.runtime.osgi;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import org.osgi.framework.BundleActivator;
@@ -35,15 +34,11 @@ public class OSGiPatcher {
 			List<ActivatorNameProvider> providers = ExtensionManager.findServices(null, Thread.currentThread().getContextClassLoader(), ActivatorNameProvider.class.getName(), ActivatorNameProvider.class);
 			for(ActivatorNameProvider provider : providers) {
 				for(Class<? extends BundleActivator> clazz : provider.getClasses()) {
-					Field instance = clazz.getDeclaredField("instance");
-					if(instance != null) {
-						BundleActivator inst = clazz.newInstance();
-						instance.set(null, inst);
-						MockBundle mockBundle = new MockBundle(inst);
-						MockBundleContext bundleContext = new MockBundleContext(mockBundle);
-						mockBundle.setBundleContext(bundleContext);
-						inst.start(bundleContext);
-					}
+					BundleActivator inst = clazz.newInstance();
+					MockBundle mockBundle = new MockBundle(inst);
+					MockBundleContext bundleContext = new MockBundleContext(mockBundle);
+					mockBundle.setBundleContext(bundleContext);
+					inst.start(bundleContext);
 				}
 			}
 		} catch(Exception e) {

@@ -63,6 +63,7 @@ import com.ibm.xsp.page.FacesPageException;
 import com.ibm.xsp.page.compiled.AbstractCompiledPageDispatcher;
 import com.ibm.xsp.page.compiled.DefaultPageErrorHandler;
 import com.ibm.xsp.page.compiled.DispatcherParameter;
+import com.ibm.xsp.page.compiled.PageToClassNameUtil;
 import com.ibm.xsp.registry.FacesProjectImpl;
 import com.ibm.xsp.registry.FacesSharableRegistry;
 import com.ibm.xsp.registry.SharableRegistryImpl;
@@ -77,9 +78,9 @@ import com.ibm.xsp.registry.parse.ConfigParserFactory;
 public class DynamicPageDriver implements FacesPageDriver {
 	private static class PageHolder {
 		private final long modified;
-		private final FacesPageDispatcher page;
+		private final Class<? extends AbstractCompiledPageDispatcher> page;
 		
-		public PageHolder(long modified, FacesPageDispatcher page) {
+		public PageHolder(long modified, Class<? extends AbstractCompiledPageDispatcher> page) {
 			this.modified = modified;
 			this.page = page;
 		}
@@ -104,56 +105,79 @@ public class DynamicPageDriver implements FacesPageDriver {
 			this.initLibrary();
 			initialized = true;
 		}
-
-		// TODO consider a precompile process at app load
-		URL url = findResource(pageName);
-		if(url == null) {
-			throw new PageNotFoundException(format("Unable to find XPage or Custom Control {0}; check WEB-INF/xpages and WEB-INF/controls", pageName));
-		}
 		
 		try {
-			URLConnection conn = url.openConnection();
-			long mod = conn.getLastModified();
-			
-			// Check if it's already parsed
-			PageHolder holder = pages.get(pageName);
-			if(holder != null) {
-				// Check for modifications
-				if(mod > holder.modified) {
-					// Then invalidate
-					if(log.isLoggable(Level.INFO)) {
-						log.info(format("Page {0} has been modified; recompiling", pageName));
-					}
-					pages.remove(pageName);
+			// Check if it's compiled as a class in the current loader
+			if(!pages.containsKey(pageName)) {
+				try {
+					String className = PageToClassNameUtil.getClassNameForPage(pageName);
+					Class<? extends AbstractCompiledPageDispatcher> existing = (Class<? extends AbstractCompiledPageDispatcher>) Class.forName(className);
+					URL loc = existing.getProtectionDomain().getCodeSource().getLocation();
+					String classPath = className.replace('.', '/') + ".class"; //$NON-NLS-1$
+					loc = new URL(loc, classPath);
+					URLConnection classConn = loc.openConnection();
+					long classMod = classConn.getLastModified();
+					pages.put(pageName, new PageHolder(classMod, existing));
+				} catch(ClassNotFoundException e) {
+					// That's fine - move along to load from source
 				}
 			}
-			return pages.computeIfAbsent(pageName, key -> {
-				if(log.isLoggable(Level.FINE)) {
-					log.fine(format("Looking for page {0}", pageName));
+			
+			// See if there's a local resource version as well
+			URL url = findResource(pageName);
+
+			if(!pages.containsKey(pageName) && url == null) {
+				// Then we have no fallback
+				throw new PageNotFoundException(format("Unable to find XPage or Custom Control {0}; check WEB-INF/xpages and WEB-INF/controls", pageName));
+			}
+			
+
+			// See if we need to invalidate an existing compiled version
+			if (url != null) {
+				URLConnection conn = url.openConnection();
+				long mod = conn.getLastModified();
+				if (pages.containsKey(pageName)) {
+					PageHolder holder = pages.get(pageName);
+					if (mod > holder.modified) {
+						// Then invalidate
+						if (log.isLoggable(Level.INFO)) {
+							log.info(format("Page {0} has been modified; recompiling", pageName));
+						}
+						pages.remove(pageName);
+						dynamicXPageBean.purgeCompiledPage(pageName);
+					}
 				}
-				FacesSharableRegistry registry = ApplicationEx.getInstance().getRegistry();
-				
-				String xspSource;
-				try(InputStream is = url.openStream()) {
-					xspSource = StreamUtil.readString(is);
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-				
-				try {
-					// TODO investigate using the Bazaar's interpreter instead of compilation
-					// In JDK >= 9, it may be possible to do this with the REPL infrastructure
-					Class<? extends AbstractCompiledPageDispatcher> compiled = (Class<? extends AbstractCompiledPageDispatcher>)dynamicXPageBean.compile(pageName, xspSource, registry);
-					AbstractCompiledPageDispatcher page = compiled.newInstance();
-					page.init(new DispatcherParameter(this, pageName, s_errorHandler));
-					return new PageHolder(mod, page);
-				} catch (RuntimeException e) {
-					throw e;
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			}).page;
-		} catch (IOException e) {
+
+				// Compile from source if needed
+				pages.computeIfAbsent(pageName, key -> {
+					if(log.isLoggable(Level.INFO)) {
+						log.info(format("Looking for page {0}", pageName));
+					}
+					FacesSharableRegistry registry = ApplicationEx.getInstance().getRegistry();
+					
+					String xspSource;
+					try(InputStream is = conn.getInputStream()) {
+						xspSource = StreamUtil.readString(is);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+					
+					try {
+						// TODO In JDK >= 9, it may be possible to do this with the REPL infrastructure
+						Class<? extends AbstractCompiledPageDispatcher> compiled = (Class<? extends AbstractCompiledPageDispatcher>)dynamicXPageBean.compile(pageName, xspSource, registry);
+						return new PageHolder(mod, compiled);
+					} catch (RuntimeException e) {
+						throw e;
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				});
+			}
+			
+			AbstractCompiledPageDispatcher page = pages.get(pageName).page.newInstance();
+			page.init(new DispatcherParameter(this, pageName, s_errorHandler));
+			return page;
+		} catch (IOException | InstantiationException | IllegalAccessException e) {
 			throw new FacesPageException(e);
 		}
 	}
@@ -170,12 +194,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 		return is;
 	}
 	
-	private final IconUrlSource iconUrlSource = new IconUrlSource() {
-		@Override public URL getIconUrl(String arg0) {
-			// TODO ???
-			return null;
-		}
-	};
+	private final IconUrlSource iconUrlSource = iconName -> Thread.currentThread().getContextClassLoader().getResource(iconName);
 	private final ResourceBundleSource resourceBundleSource = new ClasspathResourceBundleSource(Thread.currentThread().getContextClassLoader());
 	
 	private void registerCustomControls() {
@@ -220,7 +239,8 @@ public class DynamicPageDriver implements FacesPageDriver {
 				}
 				break;
 			case "jar": //$NON-NLS-1$
-				// TODO figure out, and maybe account for "wsjar"
+			case "wsjar": //$NON-NLS-1$
+				// TODO figure out
 				//   It may be fair to expect the app to be unpacked at runtime, but maybe there could be
 				//   controls in dependencies
 				break;

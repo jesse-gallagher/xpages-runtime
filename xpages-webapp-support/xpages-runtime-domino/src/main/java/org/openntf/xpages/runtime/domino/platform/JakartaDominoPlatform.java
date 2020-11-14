@@ -60,25 +60,31 @@ public class JakartaDominoPlatform extends AbstractNotesDominoPlatform {
 	private Properties xspProperties;
 
 	public JakartaDominoPlatform() {
-		
-		NotesThread.sinitThread();
-		C.initLibrary(null);
-
-		installationDirectory = new File(Os.OSGetExecutableDirectory());
-		dataDirectory = new File(Os.OSGetDataDirectory());
-		sharedDataDirectory = new File(Os.OSGetSharedDataDirectory());
-		userDataDirectory = dataDirectory;
-		propertiesDirectory = new File(dataDirectory, "properties");
-		xspDirectory = new File(installationDirectory, "xsp");
-		nsfDirectory = new File(xspDirectory, "nsf");
-		styleKitsDirectory = new File(nsfDirectory, "themes");
-		serverDirectory = new File(dataDirectory, StringUtil.replace(AbstractNotesDominoPlatform.DOMINO_ROOT_PREFIX + "/java/xsp", '/', File.separatorChar));
-		dominoDirectory = new File(dataDirectory, StringUtil.replace(AbstractNotesDominoPlatform.DOMINO_ROOT_PREFIX + "/html", '/', File.separatorChar));
-		notesIconsDirectory = new File(dataDirectory, StringUtil.replace(AbstractNotesDominoPlatform.DOMINO_ROOT_PREFIX + "/icons", '/', File.separatorChar));
-		jsDirectory = new File(dataDirectory, AbstractNotesDominoPlatform.DOMINO_ROOT_PREFIX + "/js/");
-		this.xspProperties = this.loadStaticProperties();
-		DominoDojo.installDominoFactory(this.jsDirectory);
-		this.initJSEngine();
+		NotesThread t = new NotesThread(() -> {
+			C.initLibrary(null);
+	
+			installationDirectory = new File(Os.OSGetExecutableDirectory());
+			dataDirectory = new File(Os.OSGetDataDirectory());
+			sharedDataDirectory = new File(Os.OSGetSharedDataDirectory());
+			userDataDirectory = dataDirectory;
+			propertiesDirectory = new File(dataDirectory, "properties"); //$NON-NLS-1$
+			xspDirectory = new File(installationDirectory, "xsp"); //$NON-NLS-1$
+			nsfDirectory = new File(xspDirectory, "nsf"); //$NON-NLS-1$
+			styleKitsDirectory = new File(nsfDirectory, "themes"); //$NON-NLS-1$
+			serverDirectory = new File(dataDirectory, StringUtil.replace(AbstractNotesDominoPlatform.DOMINO_ROOT_PREFIX + "/java/xsp", '/', File.separatorChar)); //$NON-NLS-1$
+			dominoDirectory = new File(dataDirectory, StringUtil.replace(AbstractNotesDominoPlatform.DOMINO_ROOT_PREFIX + "/html", '/', File.separatorChar)); //$NON-NLS-1$
+			notesIconsDirectory = new File(dataDirectory, StringUtil.replace(AbstractNotesDominoPlatform.DOMINO_ROOT_PREFIX + "/icons", '/', File.separatorChar)); //$NON-NLS-1$
+			jsDirectory = new File(dataDirectory, AbstractNotesDominoPlatform.DOMINO_ROOT_PREFIX + "/js/"); //$NON-NLS-1$
+			this.xspProperties = this.loadStaticProperties();
+			DominoDojo.installDominoFactory(this.jsDirectory);
+			this.initJSEngine();
+		});
+		t.run();
+		try {
+			t.join();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	protected void initJSEngine() {
@@ -106,7 +112,7 @@ public class JakartaDominoPlatform extends AbstractNotesDominoPlatform {
 
 	@Override
 	public Object getObject(String s) {
-		if("com.ibm.xsp.designer.ApplicationFinder".equals(s)) {
+		if("com.ibm.xsp.designer.ApplicationFinder".equals(s)) { //$NON-NLS-1$
 			return (IApplicationFinder) () -> {
 				if(app == null) {
 					JakartaAppExecutionContext ctx = getAppExecutionContext();
@@ -144,38 +150,38 @@ public class JakartaDominoPlatform extends AbstractNotesDominoPlatform {
 	}
 
 	public File getGlobalResourceFile(String path) {
-		if(path.startsWith("/stylekits/")) {
-			return new File(styleKitsDirectory, path.substring("/stylekits/".length()));
+		if(path.startsWith("/stylekits/")) { //$NON-NLS-1$
+			return new File(styleKitsDirectory, path.substring("/stylekits/".length())); //$NON-NLS-1$
 		}
-		if(path.startsWith("/server/")) {
-			return new File(serverDirectory, path.substring("/server/".length()));
+		if(path.startsWith("/server/")) { //$NON-NLS-1$
+			return new File(serverDirectory, path.substring("/server/".length())); //$NON-NLS-1$
 		}
-		if(path.startsWith("/domino/")) {
-			return new File(dominoDirectory, path.substring("/domino/".length()));
+		if(path.startsWith("/domino/")) { //$NON-NLS-1$
+			return new File(dominoDirectory, path.substring("/domino/".length())); //$NON-NLS-1$
 		}
-		if(path.startsWith("/global/")) {
-			return new File(serverDirectory, path.substring("/global/".length()));
+		if(path.startsWith("/global/")) { //$NON-NLS-1$
+			return new File(serverDirectory, path.substring("/global/".length())); //$NON-NLS-1$
 		}
-		if(path.startsWith("/properties/")) {
+		if(path.startsWith("/properties/")) { //$NON-NLS-1$
 
 			if (userDataDirectory != null) {
-				File localFile = new File(userDataDirectory, "properties/" + path.substring("/properties/".length()));
+				File localFile = new File(userDataDirectory, "properties/" + path.substring("/properties/".length())); //$NON-NLS-1$ //$NON-NLS-2$
 				if (localFile.exists()) {
 					return localFile;
 				}
 			}
 
 			if (sharedDataDirectory != null) {
-				File localFile = new File(sharedDataDirectory, "properties/" + path.substring("/properties/".length()));
+				File localFile = new File(sharedDataDirectory, "properties/" + path.substring("/properties/".length())); //$NON-NLS-1$ //$NON-NLS-2$
 				if (localFile.exists()) {
 					return localFile;
 				}
 			}
 
-			return new File(propertiesDirectory, path.substring("/properties/".length()));
+			return new File(propertiesDirectory, path.substring("/properties/".length())); //$NON-NLS-1$
 		}
-		if(path.startsWith("/icons/")) {
-			return new File(notesIconsDirectory, path.substring("/icons/".length()));
+		if(path.startsWith("/icons/")) { //$NON-NLS-1$
+			return new File(notesIconsDirectory, path.substring("/icons/".length())); //$NON-NLS-1$
 		}
 		return super.getGlobalResourceFile(path);
 	}
@@ -194,7 +200,7 @@ public class JakartaDominoPlatform extends AbstractNotesDominoPlatform {
 	
 	@Override
 	public boolean isPlatform(String name) {
-		if("Domino".equals(name)) {
+		if("Domino".equals(name)) { //$NON-NLS-1$
 			// Sure I am
 			return true;
 		} else {

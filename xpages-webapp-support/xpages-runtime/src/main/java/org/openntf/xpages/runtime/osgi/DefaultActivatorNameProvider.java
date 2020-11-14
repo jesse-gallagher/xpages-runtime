@@ -32,13 +32,13 @@ public class DefaultActivatorNameProvider implements ActivatorNameProvider {
 	public List<Class<? extends BundleActivator>> getClasses() {
 		List<Class<? extends BundleActivator>> result = new ArrayList<Class<? extends BundleActivator>>();
 		try {
-			InputStream is = OSGiPatcher.class.getResourceAsStream("/META-INF/platformPlugins.txt");
+			InputStream is = OSGiPatcher.class.getResourceAsStream("/META-INF/platformPlugins.txt"); //$NON-NLS-1$
 			try {
 				BufferedReader r = new BufferedReader(new InputStreamReader(is));
 				try {
 					String line;
 					while((line = r.readLine()) != null) {
-						if(StringUtil.isNotEmpty(line) && !line.startsWith("#")) {
+						if(StringUtil.isNotEmpty(line) && !line.startsWith("#")) { //$NON-NLS-1$
 							Class<? extends BundleActivator> clazz = (Class<? extends BundleActivator>) Class.forName(line);
 							result.add(clazz);
 						}

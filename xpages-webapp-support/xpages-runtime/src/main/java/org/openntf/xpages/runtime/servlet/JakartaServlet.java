@@ -37,6 +37,7 @@ import com.ibm.commons.util.StringUtil;
 import com.ibm.commons.xml.DOMUtil;
 import com.ibm.commons.xml.XMLException;
 import com.ibm.commons.xml.XResult;
+import com.ibm.xsp.extlib.util.ExtLibUtil;
 import com.ibm.xsp.webapp.FacesResourceServlet;
 import com.ibm.xsp.webapp.resources.JavaResourceProvider;
 
@@ -65,14 +66,19 @@ public class JakartaServlet extends HttpServlet {
 		JakartaPlatform.initContext(conf.getServletContext());
 		delegate.init(conf);
 		
-		resources.addResourceProvider(new JavaResourceProvider("") {
+		resources.addResourceProvider(new JavaResourceProvider("") { //$NON-NLS-1$
 			@Override
 			protected String getResourcePath(HttpServletRequest req, String path) {
-				if(!"/".equals(path) && Thread.currentThread().getContextClassLoader().getResourceAsStream(path) != null) {
+				if(!"/".equals(path) && Thread.currentThread().getContextClassLoader().getResourceAsStream(path) != null) { //$NON-NLS-1$
 					return path;
 				} else {
 					return null;
 				}
+			}
+			
+			@Override
+			protected boolean shouldCacheResources() {
+				return !ExtLibUtil.isDevelopmentMode();
 			}
 		});
 		resources.init(conf);
@@ -81,18 +87,18 @@ public class JakartaServlet extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = StringUtil.toString(req.getServletPath());
-		if("/".equals(path)) {
+		if("/".equals(path)) { //$NON-NLS-1$
 			// Check the welcome-file-list
-			path = PathUtil.concat("/", getIndex(), '/');
+			path = PathUtil.concat("/", getIndex(), '/'); //$NON-NLS-1$
 		}
 		HttpServletResponse resWrap = new JakartaServletResponseWrapper(resp);
-		int xspIndex = path.indexOf(".xsp");
+		int xspIndex = path.indexOf(".xsp"); //$NON-NLS-1$
 		if(xspIndex > -1) {
 			String pathInfo = path.substring(xspIndex+4);
 			HttpServletRequest wrap = new JakartaServletRequestWrapper(req, path.substring(0, xspIndex+4), pathInfo.isEmpty() ? null : pathInfo);
 			delegate.service(wrap, resWrap);
 		} else {
-			HttpServletRequest wrap = new JakartaServletRequestWrapper(req, "/", path);
+			HttpServletRequest wrap = new JakartaServletRequestWrapper(req, "/", path); //$NON-NLS-1$
 			resources.service(wrap, resWrap);
 		}
 	}
@@ -107,10 +113,10 @@ public class JakartaServlet extends HttpServlet {
 		if(this.index == null) {
 			try {
 				Document webXml;
-				try(InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("/WEB-INF/web.xml")) {
+				try(InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("/WEB-INF/web.xml")) { //$NON-NLS-1$
 					webXml = DOMUtil.createDocument(is);
 				}
-				XResult result = DOMUtil.evaluateXPath(webXml, "/*[name()='web-app']/*[name()='welcome-file-list']/*[name()='welcome-file']/text()");
+				XResult result = DOMUtil.evaluateXPath(webXml, "/*[name()='web-app']/*[name()='welcome-file-list']/*[name()='welcome-file']/text()"); //$NON-NLS-1$
 				if(!result.isEmpty()) {
 					Node node = (Node)result.getNodes()[0];
 					return node.getTextContent();

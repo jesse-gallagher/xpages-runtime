@@ -29,10 +29,12 @@ public class JakartaXspSourceClassLoader extends JavaSourceClassLoader {
 
 	public JakartaXspSourceClassLoader(ClassLoader parentClassLoader, List<String> compilerOptions, String[] classPath, boolean resolve) {
 		super(parentClassLoader, compilerOptions, classPath, resolve);
+		setUseSingletonClassLoaders(true);
 	}
 
 	public JakartaXspSourceClassLoader(ClassLoader parentClassLoader, List<String> compilerOptions, String[] classPath) {
 		super(parentClassLoader, compilerOptions, classPath);
+		setUseSingletonClassLoaders(true);
 	}
 
 	@Override

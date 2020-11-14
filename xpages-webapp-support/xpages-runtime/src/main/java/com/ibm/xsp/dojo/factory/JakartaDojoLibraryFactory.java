@@ -15,22 +15,31 @@
  */
 package com.ibm.xsp.dojo.factory;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.ServiceReference;
+
 import com.ibm.commons.Platform;
 import com.ibm.commons.util.StringUtil;
 import com.ibm.commons.util.io.StreamUtil;
 import com.ibm.xsp.context.DojoLibrary;
 import com.ibm.xsp.context.DojoLibraryFactory;
 import com.ibm.xsp.core.Version;
-import com.ibm.xsp.dojo.factory.IbmBundleDojo;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
-import org.osgi.framework.ServiceReference;
-
-import java.io.*;
-import java.net.URL;
-import java.security.cert.X509Certificate;
-import java.util.*;
 
 public class JakartaDojoLibraryFactory extends DojoLibraryFactory {
     private static boolean isdev;

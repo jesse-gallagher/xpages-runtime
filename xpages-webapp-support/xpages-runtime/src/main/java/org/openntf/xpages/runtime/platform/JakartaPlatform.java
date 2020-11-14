@@ -51,13 +51,13 @@ public class JakartaPlatform extends WebAppServerPlatform {
 	public JakartaPlatform() {
 		super();
 
-		installationDirectory = new File(System.getProperty("user.dir"));
-		userDataDirectory = new File(installationDirectory, "xpages");
-		propertiesDirectory = new File(userDataDirectory, "properties");
-		xspDirectory = new File(userDataDirectory, "xsp");
-		nsfDirectory = new File(xspDirectory, "nsf");
-		styleKitsDirectory = new File(nsfDirectory, "themes");
-		serverDirectory = new File(userDataDirectory, StringUtil.replace("java/xsp", '/', File.separatorChar));
+		installationDirectory = new File(System.getProperty("user.dir")); //$NON-NLS-1$
+		userDataDirectory = new File(installationDirectory, "xpages"); //$NON-NLS-1$
+		propertiesDirectory = new File(userDataDirectory, "properties"); //$NON-NLS-1$
+		xspDirectory = new File(userDataDirectory, "xsp"); //$NON-NLS-1$
+		nsfDirectory = new File(xspDirectory, "nsf"); //$NON-NLS-1$
+		styleKitsDirectory = new File(nsfDirectory, "themes"); //$NON-NLS-1$
+		serverDirectory = new File(userDataDirectory, StringUtil.replace("java/xsp", '/', File.separatorChar)); //$NON-NLS-1$
 		this.xspProperties = this.loadStaticProperties();
 		
 		DojoLibraryFactory.initializeLibraries();
@@ -65,7 +65,7 @@ public class JakartaPlatform extends WebAppServerPlatform {
 
 	@Override
 	public Object getObject(String s) {
-		if("com.ibm.xsp.designer.ApplicationFinder".equals(s)) {
+		if("com.ibm.xsp.designer.ApplicationFinder".equals(s)) { //$NON-NLS-1$
 			return new Application.IApplicationFinder() {
 				@Override
 				public Application get() {
@@ -84,25 +84,25 @@ public class JakartaPlatform extends WebAppServerPlatform {
 	
 	@Override
 	public File getGlobalResourceFile(String path) {
-		if(path.startsWith("/stylekits/")) {
-			return new File(styleKitsDirectory, path.substring("/stylekits/".length()));
+		if(path.startsWith("/stylekits/")) { //$NON-NLS-1$
+			return new File(styleKitsDirectory, path.substring("/stylekits/".length())); //$NON-NLS-1$
 		}
-		if(path.startsWith("/server/")) {
-			return new File(serverDirectory, path.substring("/server/".length()));
+		if(path.startsWith("/server/")) { //$NON-NLS-1$
+			return new File(serverDirectory, path.substring("/server/".length())); //$NON-NLS-1$
 		}
-		if(path.startsWith("/global/")) {
-			return new File(serverDirectory, path.substring("/global/".length()));
+		if(path.startsWith("/global/")) { //$NON-NLS-1$
+			return new File(serverDirectory, path.substring("/global/".length())); //$NON-NLS-1$
 		}
-		if(path.startsWith("/properties/")) {
+		if(path.startsWith("/properties/")) { //$NON-NLS-1$
 
 			if (userDataDirectory != null) {
-				File localFile = new File(userDataDirectory, "properties/" + path.substring("/properties/".length()));
+				File localFile = new File(userDataDirectory, "properties/" + path.substring("/properties/".length())); //$NON-NLS-1$ //$NON-NLS-2$
 				if (localFile.exists()) {
 					return localFile;
 				}
 			}
 
-			return new File(propertiesDirectory, path.substring("/properties/".length()));
+			return new File(propertiesDirectory, path.substring("/properties/".length())); //$NON-NLS-1$
 		}
 		return super.getGlobalResourceFile(path);
 	}
@@ -121,7 +121,7 @@ public class JakartaPlatform extends WebAppServerPlatform {
 	
 	@Override
 	public boolean isPlatform(String name) {
-		if("Jakarta Web Application Server".equals(name)) {
+		if("Jakarta Web Application Server".equals(name)) { //$NON-NLS-1$
 			return true;
 		} else {
 			return super.isPlatform(name);
@@ -144,7 +144,7 @@ public class JakartaPlatform extends WebAppServerPlatform {
 	
 	@Override
 	public String getName() {
-		return "Jakarta Web Application Server";
+		return "Jakarta Web Application Server"; //$NON-NLS-1$
 	}
 	
 }

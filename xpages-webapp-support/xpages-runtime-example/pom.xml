@@ -4,7 +4,7 @@
 	<parent>
 	    <groupId>org.openntf.xpages</groupId>
 	    <artifactId>xpages-webapp-support</artifactId>
-	    <version>1.0.0-SNAPSHOT</version>
+	    <version>1.0.0</version>
 	</parent>
 	<artifactId>xpages-runtime-example</artifactId>
     <packaging>war</packaging>
@@ -30,7 +30,19 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <finalName>xpages-runtime-example</finalName>
-    </build>
+	<build>
+		<finalName>xpages-runtime-example</finalName>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
+
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -15,11 +15,10 @@
  */
 package org.openntf.xpages.runtime;
 
-import com.ibm.xsp.webapp.DesignerFacesServlet;
+import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +27,7 @@ import org.openntf.xpages.runtime.platform.JakartaPlatform;
 import org.openntf.xpages.runtime.wrapper.JakartaServletConfigWrapper;
 import org.openntf.xpages.runtime.wrapper.JakartaServletRequestWrapper;
 
-import java.io.IOException;
+import com.ibm.xsp.webapp.DesignerFacesServlet;
 
 //@WebServlet(urlPatterns="*.xsp")
 public class JakartaXPagesServlet extends HttpServlet {
