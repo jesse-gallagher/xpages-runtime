@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.openntf.xpages</groupId>
 		<artifactId>xpages-webapp-support</artifactId>
-		<version>1.0.0</version>
+		<version>1.1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>xpages-runtime</artifactId>
 
@@ -19,40 +19,40 @@
 		
 		<!-- Expected OSGi -->
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>org.eclipse.osgi</artifactId>
 			<version>${equinox-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>org.eclipse.core.runtime</artifactId>
 			<version>${equinox-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>org.eclipse.equinox.common</artifactId>
 			<version>${equinox-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>org.eclipse.equinox.registry</artifactId>
 			<version>[3.6.0,)</version>
 		</dependency>
 		
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.icu</artifactId>
 			<version>[56.0.0,)</version>
 		</dependency>
 
 		<!-- Core JSF -->
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.designer.lib.jsf</artifactId>
 			<version>${xpages-version}</version>
 			<exclusions>
 				<exclusion>
-					<groupId>com.hcl.xsp.repo</groupId>
+					<groupId>com.hcl.xsp.p2</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
 			</exclusions>
@@ -60,78 +60,78 @@
 
 		<!-- XPages Runtime -->
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.xsp.core</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.xsp.core</classifier>
 			<exclusions>
 				<exclusion>
-					<groupId>com.hcl.xsp.repo</groupId>
+					<groupId>com.hcl.xsp.p2</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.xsp.extsn</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.xsp.extsn</classifier>
 			<exclusions>
 				<exclusion>
-					<groupId>com.hcl.xsp.repo</groupId>
+					<groupId>com.hcl.xsp.p2</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.commons</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.commons</classifier>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.commons.vfs</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.commons.vfs</classifier>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.jscript</artifactId>
 			<version>${xpages-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.xsp.designer</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.xsp.designer</classifier>
 			<exclusions>
 				<exclusion>
-					<groupId>com.hcl.xsp.repo</groupId>
+					<groupId>com.hcl.xsp.p2</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.designer.runtime</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.runtime.designer</classifier>
 			<exclusions>
 				<exclusion>
-					<groupId>com.hcl.xsp.repo</groupId>
+					<groupId>com.hcl.xsp.p2</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.designer.runtime.directory</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.runtime.directory</classifier>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.commons.xml</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.commons.xml</classifier>
@@ -139,19 +139,19 @@
 
 		<!-- Themes and Dojo -->
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.xsp.dojo</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>xsp.dojo</classifier>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.xsp.theme.oneui.idx</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>xsp.theme.oneui.idx</classifier>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.xsp.theme.oneuiv302</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>xsp.theme.oneuiv302</classifier>
@@ -159,53 +159,53 @@
 		
 		<!-- ExtLib -->
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.xsp.extlib</artifactId>
 			<version>${xpages-version}</version>
 			<exclusions>
 				<exclusion>
-					<groupId>com.hcl.xsp.repo</groupId>
+					<groupId>com.hcl.xsp.p2</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.xsp.extlib.core</artifactId>
 			<version>${xpages-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.xsp.extlib.controls</artifactId>
 			<version>${xpages-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.xsp.extlib.oneui</artifactId>
 			<version>${xpages-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.xsp.theme.bootstrap</artifactId>
 			<version>${xpages-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.xsp.extlib.mobile</artifactId>
 			<version>${xpages-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.xsp.extlib.domino</artifactId>
 			<version>${xpages-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.xsp.extlib.relational</artifactId>
 			<version>${xpages-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.repo</groupId>
+			<groupId>com.hcl.xsp.p2</groupId>
 			<artifactId>com.ibm.commons.jdbc</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.commons.jdbc</classifier>
