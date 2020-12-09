@@ -188,6 +188,17 @@ public class XspTranspiler {
 		return library;
 	}
 	
+	/**
+	 * @since 1.2.0
+	 */
+	private static final String[] OVERRIDE_METHOD_SIGNATURES = {
+		"public int getComponentForId(String id)", //$NON-NLS-1$
+		"public UIComponent createComponent(int id, FacesContext context,", //$NON-NLS-1$
+		"protected void initIncluderAsRoot(FacesContext context,", //$NON-NLS-1$
+		"protected AbstractCompiledPage createPage(int pageIndex)", //$NON-NLS-1$
+		"protected String[][] getLibraryTagVersions()" //$NON-NLS-1$
+	};
+	
 	public Map<Path, String> transpile(Path rootDir, Path xspFile) {
 		try {
 			String xspSource;
@@ -199,6 +210,11 @@ public class XspTranspiler {
 			String className = PageToClassNameUtil.getClassNameForPage(relativeFile.toString());
 		
 			String javaSource = dynamicXPageBean.translate(className, relativeFile.toString(), xspSource, facesRegistry);
+			
+			// Apply some fixes for pre-1.5-style source generation
+			for(String methodSignature : OVERRIDE_METHOD_SIGNATURES) {
+				javaSource = javaSource.replace(methodSignature, "@Override " + methodSignature); //$NON-NLS-1$
+			}
 			
 			String outputFileName = className.replace('.', File.separatorChar) + ".java"; //$NON-NLS-1$
 			Path outputFile = Paths.get(outputFileName);
