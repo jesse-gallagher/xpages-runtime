@@ -115,7 +115,7 @@ public class MockBundle implements Bundle {
     	if(this.manifest == null) {
         	// TODO have this look for the specific context class's manifest, which may require parsing URLs
         	String path = context.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-        	if(StringUtil.isNotEmpty(path) && path.endsWith(".jar")) {
+        	if(StringUtil.isNotEmpty(path) && path.endsWith(".jar")) { //$NON-NLS-1$
         		try {
 					JarFile f = new JarFile(new File(path));
 					try {
@@ -132,7 +132,7 @@ public class MockBundle implements Bundle {
         		// Check if it's available as a directory
         		Path dir = Paths.get(path);
         		if(Files.isDirectory(dir)) {
-        			Path manifest = dir.resolve("META-INF").resolve("MANIFEST.MF");
+        			Path manifest = dir.resolve("META-INF").resolve("MANIFEST.MF"); //$NON-NLS-1$ //$NON-NLS-2$
         			if(Files.isRegularFile(manifest) && Files.isReadable(manifest)) {
         				try(InputStream is = Files.newInputStream(manifest)) {
         					this.manifest.read(is);
@@ -141,7 +141,7 @@ public class MockBundle implements Bundle {
         				}
         			} else {
 	        			// It's also possible it's up one level, e.g. in an Eclipse workspace project
-	        			manifest = dir.getParent().resolve("MANIFEST.MF");
+	        			manifest = dir.getParent().resolve("MANIFEST.MF"); //$NON-NLS-1$
 	        			if(Files.isRegularFile(manifest) && Files.isReadable(manifest)) {
 	        				try(InputStream is = Files.newInputStream(manifest)) {
 	        					this.manifest.read(is);
@@ -158,9 +158,9 @@ public class MockBundle implements Bundle {
 
     @Override
     public String getSymbolicName() {
-    	String name = getHeaders().get("Bundle-SymbolicName");
+    	String name = getHeaders().get("Bundle-SymbolicName"); //$NON-NLS-1$
     	if(StringUtil.isNotEmpty(name)) {
-	    	int semiIndex = name.indexOf(";");
+	    	int semiIndex = name.indexOf(";"); //$NON-NLS-1$
 	    	if(semiIndex > -1) {
 	    		name = name.substring(0, semiIndex);
 	    	}
@@ -170,7 +170,7 @@ public class MockBundle implements Bundle {
 
     @Override
     public org.osgi.framework.Version getVersion() {
-    	String v = getHeaders().get("Bundle-Version");
+    	String v = getHeaders().get("Bundle-Version"); //$NON-NLS-1$
     	if(StringUtil.isEmpty(v)) {
     		return null;
     	} else {

@@ -39,7 +39,7 @@ public class JakartaServletRequestWrapper implements HttpServletRequest {
 	private static final Principal ANONYMOUS = new UserPrincipal() {
 		@Override
 		public String getName() {
-			return "anonymous";
+			return "anonymous"; //$NON-NLS-1$
 		}
 	};
 

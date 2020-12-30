@@ -75,6 +75,7 @@ import com.ibm.xsp.registry.config.XspRegistryProvider;
 import com.ibm.xsp.registry.parse.ConfigParser;
 import com.ibm.xsp.registry.parse.ConfigParserFactory;
 
+@SuppressWarnings("nls")
 public class DynamicPageDriver implements FacesPageDriver {
 	private static class PageHolder {
 		private final long modified;

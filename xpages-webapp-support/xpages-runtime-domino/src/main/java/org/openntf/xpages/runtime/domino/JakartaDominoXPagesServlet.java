@@ -75,7 +75,7 @@ public class JakartaDominoXPagesServlet extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {	
 		String pathInfo = req.getRequestURI();
-		int nsfIndex = pathInfo.indexOf(".nsf");
+		int nsfIndex = pathInfo.indexOf(".nsf"); //$NON-NLS-1$
 		if(lcdEnvironment != null && (nsfIndex > -1 || true)) {
 			// Pass NSF requests to the stock LCD processor. The advantage here is that it takes care of
 			//   everything. However, it also doesn't take into account the various Liberty adapters, so
@@ -90,8 +90,8 @@ public class JakartaDominoXPagesServlet extends HttpServlet {
 				lcdEnvironment.service(requestContext, sessionAdapter, requestAdapter, responseAdapter);
 			} catch(NoAccessSignal s) {
 				// TODO see if this can signal the container for form-based auth
-				resp.setHeader("WWW-Authenticate", "Basic realm=\"XPagesRuntime\"");
-				resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "You must log in");
+				resp.setHeader("WWW-Authenticate", "Basic realm=\"XPagesRuntime\""); //$NON-NLS-1$ //$NON-NLS-2$
+				resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "You must log in"); //$NON-NLS-1$
 			}
 		} else {
 			// In-app XPage

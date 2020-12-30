@@ -54,11 +54,11 @@ public class JakartaDojoLibraryFactory extends DojoLibraryFactory {
 
         String var6;
         try {
-            URL var2 = JakartaDojoLibraryFactory.class.getResource("/resources/dojo-src-version.txt");
+            URL var2 = JakartaDojoLibraryFactory.class.getResource("/resources/dojo-src-version.txt"); //$NON-NLS-1$
             if (var2 == null) {
                 devDojoStream = findDevSourceDir();
                 if (devDojoStream != null) {
-                    File var3 = new File(devDojoStream, "dojo.01\\dojo-src\\lwp\\version.txt");
+                    File var3 = new File(devDojoStream, "dojo.01\\dojo-src\\lwp\\version.txt"); //$NON-NLS-1$
                     if (var3.exists()) {
                         isdev = true;
                         var2 = var3.toURL();
@@ -67,13 +67,13 @@ public class JakartaDojoLibraryFactory extends DojoLibraryFactory {
             }
 
             if (var2 == null) {
-                return "0.0.0";
+                return "0.0.0"; //$NON-NLS-1$
             }
 
             var0 = new BufferedReader(new InputStreamReader(var2.openStream()));
             String var13 = var0.readLine();
             if (var13 == null || var13.length() <= 0) {
-                return "0.0.0";
+                return "0.0.0"; //$NON-NLS-1$
             }
 
             int var4 = var13.indexOf(45);
@@ -85,11 +85,11 @@ public class JakartaDojoLibraryFactory extends DojoLibraryFactory {
                 Version.parseVersion(var13);
                 var6 = var13;
             } catch (IllegalArgumentException var10) {
-                return "0.0.0";
+                return "0.0.0"; //$NON-NLS-1$
             }
         } catch (IOException var11) {
             var11.printStackTrace();
-            return "0.0.0";
+            return "0.0.0"; //$NON-NLS-1$
         } finally {
             StreamUtil.close(var0);
         }
@@ -98,7 +98,7 @@ public class JakartaDojoLibraryFactory extends DojoLibraryFactory {
     }
 
     private static File findDevSourceDir() {
-        String var0 = Platform.getInstance().getProperty("xsp.dev.dojostream");
+        String var0 = Platform.getInstance().getProperty("xsp.dev.dojostream"); //$NON-NLS-1$
 
         if (StringUtil.isNotEmpty(var0)) {
             File var1 = new File(var0);
@@ -261,14 +261,14 @@ public class JakartaDojoLibraryFactory extends DojoLibraryFactory {
 
     public Collection<DojoLibrary> getLibraries() {
         String var2 = findVersionTag();
-        String var3 = "/resources/dojo-version";
+        String var3 = "/resources/dojo-version"; //$NON-NLS-1$
         List<DojoLibrary> var4 = new ArrayList<DojoLibrary>();
         if (isdev) {
             var4.add(new DevDojo(devDojoStream, mockBundle(), var2, var3));
-            var4.add(new DevDojo(devDojoStream, mockBundle(), var2 + "-u", var3));
+            var4.add(new DevDojo(devDojoStream, mockBundle(), var2 + "-u", var3)); //$NON-NLS-1$
         } else {
             var4.add(new IbmBundleDojo(mockBundle(), var2, var3));
-            var4.add(new IbmBundleDojo(mockBundle(), var2 + "-u", var3));
+            var4.add(new IbmBundleDojo(mockBundle(), var2 + "-u", var3)); //$NON-NLS-1$
         }
 
         return var4;

@@ -43,8 +43,8 @@ public class JakartaDominoPlatform extends AbstractNotesDominoPlatform {
 		JakartaDominoPlatform.servletContext = servletContext;
 	}
 
-	public static final String DOMINO_ROOT_PREFIX = "domino";
-	public static final String DOMINO_RESOURCE_ROOT = "/.ibmxspres/domino";
+	public static final String DOMINO_ROOT_PREFIX = "domino"; //$NON-NLS-1$
+	public static final String DOMINO_RESOURCE_ROOT = "/.ibmxspres/domino"; //$NON-NLS-1$
 	private File installationDirectory;
 	private File dataDirectory;
 	private File sharedDataDirectory;
@@ -97,12 +97,12 @@ public class JakartaDominoPlatform extends AbstractNotesDominoPlatform {
 
 	protected boolean isJavaDebugEnabled() {
 		String var1 = DominoUtils.getEnvironmentString(AbstractNotesDominoPlatform.PROP_JAVADEBUG);
-		return var1 != null ? StringUtil.equals(var1.trim(), "1") : false;
+		return var1 != null ? StringUtil.equals(var1.trim(), "1") : false; //$NON-NLS-1$
 	}
 
 	protected boolean isJavaScriptDebugEnabled() {
 		String var1 = DominoUtils.getEnvironmentString(AbstractNotesDominoPlatform.PROP_JAVASCRIPTDEBUG);
-		return var1 != null ? StringUtil.equals(var1.trim(), "1") : false;
+		return var1 != null ? StringUtil.equals(var1.trim(), "1") : false; //$NON-NLS-1$
 	}
 
 //	@Override

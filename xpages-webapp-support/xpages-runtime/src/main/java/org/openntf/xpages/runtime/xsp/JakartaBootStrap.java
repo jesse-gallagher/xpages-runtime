@@ -85,7 +85,7 @@ public class JakartaBootStrap extends BootStrap {
 
     private ServletContextListener getListener() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         if (this.contextListener == null) {
-            this.contextListener = (ServletContextListener)Delegation.getImplementation("context-listener");
+            this.contextListener = (ServletContextListener)Delegation.getImplementation("context-listener"); //$NON-NLS-1$
         }
 
         return this.contextListener;
@@ -105,7 +105,7 @@ public class JakartaBootStrap extends BootStrap {
     			result.add(f);
 //    		}
     	}
-    	result.add("/META-INF/jakarta-faces-config.xml");
+    	result.add("/META-INF/jakarta-faces-config.xml"); //$NON-NLS-1$
     	
     	return result;
     }

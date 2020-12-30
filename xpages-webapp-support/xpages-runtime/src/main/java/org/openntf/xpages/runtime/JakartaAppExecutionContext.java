@@ -33,7 +33,7 @@ public class JakartaAppExecutionContext extends ServletExecutionContext {
 	private final VFS vfs;
 	
     public JakartaAppExecutionContext(ServletContext servletContext) throws ApplicationException {
-        super("Jakarta App", "jakartaApp", servletContext);
+        super("Jakarta App", "jakartaApp", servletContext); //$NON-NLS-1$ //$NON-NLS-2$
         
 		try {
 			this.vfs = new ClasspathVFS(this);
@@ -45,12 +45,12 @@ public class JakartaAppExecutionContext extends ServletExecutionContext {
 	public String getApplicationDirectory() {
 		ServletContext servletContext = getServletContext();
 		if (this.appDirectory == null && servletContext != null) {
-			this.appDirectory = servletContext.getRealPath(".");
+			this.appDirectory = servletContext.getRealPath("."); //$NON-NLS-1$
 			if (this.appDirectory != null) {
-				File var1 = new File(this.appDirectory + File.separator + "WEB-INF");
+				File var1 = new File(this.appDirectory + File.separator + "WEB-INF"); //$NON-NLS-1$
 				if (!var1.exists()) {
 					try {
-						URL var2 = servletContext.getResource(System.getProperty("user.dir"));
+						URL var2 = servletContext.getResource(System.getProperty("user.dir")); //$NON-NLS-1$
 						if(var2 != null) {
 							this.appDirectory = this.appDirectory + var2.getFile();
 						}

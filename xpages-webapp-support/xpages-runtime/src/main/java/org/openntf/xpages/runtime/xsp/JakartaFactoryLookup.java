@@ -31,12 +31,12 @@ public class JakartaFactoryLookup extends FactoryLookup {
 	public JakartaFactoryLookup(FactoryLookup delegate) {
 		this.delegate = delegate;
 
-		delegate.setFactory("com.ibm.xsp.XSP_CONTEXT_FACTORY", new ServletXSPContextFactory());
-		delegate.setFactory("com.ibm.xsp.EXTSN_DATAMODEL_FACTORY", new ExtsnDataModelFactory());
-		delegate.setFactory("com.ibm.xsp.JAVASCRIPT_FACTORY", new JavaScriptFactoryImpl());
-		delegate.setFactory("javascript", new JavaScriptBindingFactoryImpl());
-		delegate.setFactory("xpath", new XPathBindingFactoryImpl());
-		delegate.setFactory("id", new ClientIdBindingFactory());
+		delegate.setFactory("com.ibm.xsp.XSP_CONTEXT_FACTORY", new ServletXSPContextFactory()); //$NON-NLS-1$
+		delegate.setFactory("com.ibm.xsp.EXTSN_DATAMODEL_FACTORY", new ExtsnDataModelFactory()); //$NON-NLS-1$
+		delegate.setFactory("com.ibm.xsp.JAVASCRIPT_FACTORY", new JavaScriptFactoryImpl()); //$NON-NLS-1$
+		delegate.setFactory("javascript", new JavaScriptBindingFactoryImpl()); //$NON-NLS-1$
+		delegate.setFactory("xpath", new XPathBindingFactoryImpl()); //$NON-NLS-1$
+		delegate.setFactory("id", new ClientIdBindingFactory()); //$NON-NLS-1$
 	}
 
 	@Override
