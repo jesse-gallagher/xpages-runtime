@@ -23,6 +23,7 @@ import org.openntf.xpages.runtime.platform.JakartaPlatform;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.attribute.UserPrincipal;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -35,7 +36,12 @@ public class JakartaServletRequestWrapper implements HttpServletRequest {
     private final String pathInfo;
 	
 	private Principal overridePrincipal;
-	private static final Principal ANONYMOUS = () -> "anonymous"; //$NON-NLS-1$
+	private static final Principal ANONYMOUS = new UserPrincipal() {
+		@Override
+		public String getName() {
+			return "anonymous"; //$NON-NLS-1$
+		}
+	};
 
     public JakartaServletRequestWrapper(HttpServletRequest delegate) {
         this.delegate = delegate;
