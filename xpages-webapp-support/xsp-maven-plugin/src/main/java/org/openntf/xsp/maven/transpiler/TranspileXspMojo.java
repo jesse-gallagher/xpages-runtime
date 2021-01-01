@@ -108,7 +108,7 @@ public class TranspileXspMojo extends AbstractMojo {
 			}
 		}
 		if(log.isInfoEnabled()) {
-			log.info("Using XSP source root: " + xspSourceRoot);
+			log.info(MessageFormat.format(Messages.getString("TranspileXspMojo.usingXspSourceRoot"), xspSourceRoot)); //$NON-NLS-1$
 		}
 		
 		Path ccSourceRoot = this.ccSourceRoot == null ? null : this.ccSourceRoot.toPath();
@@ -118,7 +118,7 @@ public class TranspileXspMojo extends AbstractMojo {
 			}
 		}
 		if(log.isInfoEnabled()) {
-			log.info("Using Custom Control source root: " + ccSourceRoot);
+			log.info(MessageFormat.format(Messages.getString("TranspileXspMojo.usingCcSourceRoot"), ccSourceRoot)); //$NON-NLS-1$
 		}
 		
 		// Check if a build is needed
@@ -201,11 +201,11 @@ public class TranspileXspMojo extends AbstractMojo {
 					}
 				}
 			} catch (Exception e) {
-				throw new MojoExecutionException("Exception transpiling XSP source", e);
+				throw new MojoExecutionException(Messages.getString("TranspileXspMojo.exceptionTranspilingSource"), e); //$NON-NLS-1$
 			}
 		} else {
-			if(log.isErrorEnabled()) {
-				log.error("No changes detected");
+			if(log.isInfoEnabled()) {
+				log.info(Messages.getString("TranspileXspMojo.noChangesDetected")); //$NON-NLS-1$
 			}
 		}
 	}
@@ -219,13 +219,13 @@ public class TranspileXspMojo extends AbstractMojo {
 				.map(File::toPath)
 				.peek(p -> {
 					if(log.isDebugEnabled()) {
-						log.debug(MessageFormat.format("Adding project classpath entry: {0}", p));
+						log.debug(MessageFormat.format(Messages.getString("TranspileXspMojo.addingClasspathEntry"), p)); //$NON-NLS-1$
 					}
 				})
 				.collect(Collectors.toCollection(LinkedList::new));
 			
 		} catch (Exception e) {
-			throw new MojoExecutionException("Exception when building project classpath", e);
+			throw new MojoExecutionException(Messages.getString("TranspileXspMojo.exceptionBuildingClasspath"), e); //$NON-NLS-1$
 		}
 		
 		return new NonVerifyingPathClassLoader(dependencies, ClassLoader.getSystemClassLoader());
@@ -240,7 +240,7 @@ public class TranspileXspMojo extends AbstractMojo {
 				.map(sourceRoot::resolve)
 				.peek(p -> {
 					if(log.isDebugEnabled()) {
-						log.debug("Found changed file: " + p);
+						log.debug(MessageFormat.format(Messages.getString("TranspileXspMojo.foundChangedFile"), p)); //$NON-NLS-1$
 					}
 				})
 				.collect(Collectors.toList());
@@ -258,7 +258,7 @@ public class TranspileXspMojo extends AbstractMojo {
 			.filter(Files::isRegularFile)
 			.peek(p -> {
 				if(log.isDebugEnabled()) {
-					log.debug("Clearing deleted XSP translation: " + p);
+					log.debug(MessageFormat.format(Messages.getString("TranspileXspMojo.clearingDeletedTranslation"), p)); //$NON-NLS-1$
 				}
 			})
 			.forEach(p -> {

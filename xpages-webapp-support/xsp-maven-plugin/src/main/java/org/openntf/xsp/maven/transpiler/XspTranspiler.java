@@ -23,6 +23,7 @@ import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -87,7 +88,7 @@ public class XspTranspiler {
 	public void defineCustomControls(Path ccSourceRoot) throws IOException {
 		if(ccSourceRoot != null) {
 			if(debug) {
-				System.out.println("Initializing Custom Control definitions");
+				System.out.println("Initializing Custom Control definitions"); //$NON-NLS-1$
 			}
 			
 			// Generate a classpath, which the CC library needs to find classes for property types
@@ -154,7 +155,7 @@ public class XspTranspiler {
 			.map(lib -> (XspLibrary)lib)
 			.peek(lib -> {
 				if(debug) {
-					System.out.println("Adding XSP library: " + lib);
+					System.out.println(MessageFormat.format("Adding XSP library: {0}", lib)); //$NON-NLS-1$
 				}
 			})
 			.sorted(LibraryWeightComparator.INSTANCE)
@@ -220,7 +221,7 @@ public class XspTranspiler {
 			Path outputFile = Paths.get(outputFileName);
 			return Collections.singletonMap(outputFile, javaSource);
 		} catch(Exception e) {
-			throw new RuntimeException("Exception processing page " + rootDir.relativize(xspFile), e);
+			throw new RuntimeException(MessageFormat.format("Exception processing page {0}", rootDir.relativize(xspFile)), e); //$NON-NLS-1$
 		}
 	}
 }

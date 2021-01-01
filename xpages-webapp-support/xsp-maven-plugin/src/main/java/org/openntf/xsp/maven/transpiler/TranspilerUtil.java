@@ -124,6 +124,7 @@ public enum TranspilerUtil {
 		}
 	}
 	
+	@SuppressWarnings("nls")
 	public static Path xspPathToJavaPath(Path xspFile) {
 		if(xspFile.isAbsolute()) {
 			throw new IllegalArgumentException("xspFile must be relative");
