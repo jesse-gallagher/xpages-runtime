@@ -1,9 +1,0 @@
-com.ibm.xsp.theme.oneuiv302.ThemeActivator
-com.ibm.xsp.theme.oneui_idx.ThemeActivator
-com.ibm.xsp.dojo.factory.DojoLibraryActivator
-
-com.ibm.xsp.extlib.library.ExtlibActivator
-com.ibm.xsp.extlib.plugin.ControlsPluginActivator
-com.ibm.xsp.theme.bootstrap.plugin.Activator
-com.ibm.xsp.extlib.plugin.MobilePluginActivator
-com.ibm.xsp.extlib.plugin.OneUIPluginActivator
