@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.openntf.xpages</groupId>
 		<artifactId>xpages-webapp-support</artifactId>
-		<version>1.3.0</version>
+		<version>1.4.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>xpages-runtime-domino</artifactId>
 	
