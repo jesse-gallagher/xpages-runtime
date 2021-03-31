@@ -106,12 +106,14 @@
 				</configuration>
 				<executions>
 					<execution>
+						<?m2e ignore?>
 						<id>mojo-descriptor</id>
 						<goals>
 							<goal>descriptor</goal>
 						</goals>
 					</execution>
 					<execution>
+						<?m2e ignore?>
 						<id>help-goal</id>
 						<goals>
 							<goal>helpmojo</goal>
