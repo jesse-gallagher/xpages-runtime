@@ -24,8 +24,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.openntf.xpages.runtime.platform.JakartaPlatform;
-
+import com.ibm.commons.util.PathUtil;
 import com.ibm.commons.util.StringUtil;
 import com.ibm.xsp.application.ApplicationEx;
 import com.ibm.xsp.context.ExternalContextEx;
@@ -41,8 +40,9 @@ public class JakartaExternalContext extends ExternalContextEx {
 		String result = super.encodeResourceURL(var1);
 		// Patch around the parent's "/xsp" prefix
 		// TODO do this more intelligently
-		if(result.startsWith("/xsp/")) { //$NON-NLS-1$
-			result = JakartaPlatform.getServletContext().getContextPath() + result;
+		String contextPrefix = PathUtil.concat(getDelegate().getRequestContextPath(), "/xsp/", '/');
+		if(result.startsWith(contextPrefix)) { //$NON-NLS-1$
+			result = PathUtil.concat(getDelegate().getRequestContextPath(), result.substring(contextPrefix.length()), '/');
 		}
 		
 		pushIfPossibleAndNecessary(result);
