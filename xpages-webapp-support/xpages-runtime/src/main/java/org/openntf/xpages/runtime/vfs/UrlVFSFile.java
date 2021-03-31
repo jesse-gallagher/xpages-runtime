@@ -1,5 +1,5 @@
-/**
- * Copyright © 2019-2020 Jesse Gallagher
+/*
+ * Copyright © 2019-2021 Jesse Gallagher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@ public class UrlVFSFile extends VFSFile {
 	}
 
 	@Override
+	@SuppressWarnings("nls")
 	protected InputStream doGetInputStream() throws VFSException {
 		try {
 			return url.openStream();
@@ -56,6 +57,7 @@ public class UrlVFSFile extends VFSFile {
 	}
 
 	@Override
+	@SuppressWarnings("nls")
 	protected long doGetSize() throws VFSException {
 		try {
 			return url.openConnection().getContentLength();
@@ -84,6 +86,7 @@ public class UrlVFSFile extends VFSFile {
 	}
 
 	@Override
+	@SuppressWarnings("nls")
 	protected long doGetLastModificationDate() throws VFSException {
 		try {
 			return url.openConnection().getLastModified();

@@ -1,5 +1,5 @@
-/**
- * Copyright © 2019-2020 Jesse Gallagher
+/*
+ * Copyright © 2019-2021 Jesse Gallagher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,15 +41,15 @@ public class JakartaServletContextWrapper implements ServletContext {
     @Override
     public URL getResource(String path) throws MalformedURLException {
     	if(StringUtil.isEmpty(path)) {
-    		return getResource(".");
+    		return getResource("."); //$NON-NLS-1$
     	}
     	
         URL url = delegate.getResource(path);
         if(url == null) {
         	url = XSPUtil.getResource(path, Thread.currentThread().getContextClassLoader());
         }
-        if(url == null && !path.startsWith("/")) {
-            url = getClass().getResource("/" + path);
+        if(url == null && !path.startsWith("/")) { //$NON-NLS-1$
+            url = getClass().getResource("/" + path); //$NON-NLS-1$
         }
 //		System.out.println("getResource path " + path + " -> " + url);
         return url;
@@ -65,8 +65,8 @@ public class JakartaServletContextWrapper implements ServletContext {
         if(is == null) {
         	is = XSPUtil.getResourceAsStream(path, Thread.currentThread().getContextClassLoader());
         }
-        if(is == null && !StringUtil.isEmpty(path) && !path.startsWith("/")) {
-            is = getClass().getResourceAsStream("/" + path);
+        if(is == null && !StringUtil.isEmpty(path) && !path.startsWith("/")) { //$NON-NLS-1$
+            is = getClass().getResourceAsStream("/" + path); //$NON-NLS-1$
         }
 //		System.out.println("getResourceAsStream path " + path + " -> " + is);
         return is;
@@ -76,7 +76,7 @@ public class JakartaServletContextWrapper implements ServletContext {
 	public Set<String> getResourcePaths(String path) {
 		Set<String> result;
 		if (StringUtil.isEmpty(path)) {
-			result = delegate.getResourcePaths("/");
+			result = delegate.getResourcePaths("/"); //$NON-NLS-1$
 		} else {
 			result = delegate.getResourcePaths(path);
 		}

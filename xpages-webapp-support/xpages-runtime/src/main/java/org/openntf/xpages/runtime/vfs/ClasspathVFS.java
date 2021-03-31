@@ -1,5 +1,5 @@
-/**
- * Copyright © 2019-2020 Jesse Gallagher
+/*
+ * Copyright © 2019-2021 Jesse Gallagher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ public class ClasspathVFS extends VFS {
 	/**
 	 * Pattern matcher for local XSP classes, assumed to be in the "xsp" package.
 	 */
-	private static final Pattern XSP_CLASS = Pattern.compile("^xsp/[^/\\.]+\\.class$");
+	private static final Pattern XSP_CLASS = Pattern.compile("^xsp/[^/\\.]+\\.class$"); //$NON-NLS-1$
 	
 	public ClasspathVFS(ServletExecutionContext context) throws VFSException {
 		this.delegate = new WarVFS(context);
@@ -102,7 +102,7 @@ public class ClasspathVFS extends VFS {
 	@Override
 	protected Entry findEntry(String path) {
 		if(DEBUG) {
-			System.out.println("findEntry " + path);
+			System.out.println("findEntry " + path); //$NON-NLS-1$
 		}
 		String localPath = localResolve(path);
 		if(isBadClassResource(path)) {
@@ -113,7 +113,7 @@ public class ClasspathVFS extends VFS {
 	@Override
 	protected FileEntry findFileEntry(String path) {
 		if(DEBUG) {
-			System.out.println("findFileEntry " + path);
+			System.out.println("findFileEntry " + path); //$NON-NLS-1$
 		}
 		String localPath = localResolve(path);
 		URL uri = null;
@@ -133,7 +133,7 @@ public class ClasspathVFS extends VFS {
 	@Override
 	protected FolderEntry findFolderEntry(String path) {
 		if(DEBUG) {
-			System.out.println("findFolderEntry " + path);
+			System.out.println("findFolderEntry " + path); //$NON-NLS-1$
 		}
 		VFSFolder folder = delegate.getFolder(path);
 		try {
@@ -161,17 +161,17 @@ public class ClasspathVFS extends VFS {
 	//   not successful
 	private String localResolve(String path) {
 		String p = StringUtil.toString(path);
-		if("WebContent/WEB-INF/classes".equals(p)) {
-			return ".";
-		} else if(p.startsWith("WebContent/WEB-INF/classes/")) {
-			return p.substring("WebContent/WEB-INF/classes/".length());
+		if("WebContent/WEB-INF/classes".equals(p)) { //$NON-NLS-1$
+			return "."; //$NON-NLS-1$
+		} else if(p.startsWith("WebContent/WEB-INF/classes/")) { //$NON-NLS-1$
+			return p.substring("WebContent/WEB-INF/classes/".length()); //$NON-NLS-1$
 		} else {
 			return p;
 		}
 	}
 	
 	private boolean isBadClassResource(String path) {
-		return path.endsWith(".class") && !XSP_CLASS.matcher(path).matches();
+		return path.endsWith(".class") && !XSP_CLASS.matcher(path).matches(); //$NON-NLS-1$
 	}
 
 	// *******************************************************************************

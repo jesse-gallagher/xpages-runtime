@@ -1,5 +1,5 @@
-/**
- * Copyright © 2020-2020 Jesse Gallagher
+/*
+ * Copyright © 2020-2021 Jesse Gallagher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -124,6 +124,7 @@ public enum TranspilerUtil {
 		}
 	}
 	
+	@SuppressWarnings("nls")
 	public static Path xspPathToJavaPath(Path xspFile) {
 		if(xspFile.isAbsolute()) {
 			throw new IllegalArgumentException("xspFile must be relative");

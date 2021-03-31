@@ -1,5 +1,5 @@
-/**
- * Copyright © 2019-2020 Jesse Gallagher
+/*
+ * Copyright © 2019-2021 Jesse Gallagher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,6 +75,7 @@ import com.ibm.xsp.registry.config.XspRegistryProvider;
 import com.ibm.xsp.registry.parse.ConfigParser;
 import com.ibm.xsp.registry.parse.ConfigParserFactory;
 
+@SuppressWarnings("nls")
 public class DynamicPageDriver implements FacesPageDriver {
 	private static class PageHolder {
 		private final long modified;

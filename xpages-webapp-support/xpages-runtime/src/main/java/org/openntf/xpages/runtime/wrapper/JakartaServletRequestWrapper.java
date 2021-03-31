@@ -1,5 +1,5 @@
-/**
- * Copyright © 2019-2020 Jesse Gallagher
+/*
+ * Copyright © 2019-2021 Jesse Gallagher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ public class JakartaServletRequestWrapper implements HttpServletRequest {
 	private static final Principal ANONYMOUS = new UserPrincipal() {
 		@Override
 		public String getName() {
-			return "anonymous";
+			return "anonymous"; //$NON-NLS-1$
 		}
 	};
 

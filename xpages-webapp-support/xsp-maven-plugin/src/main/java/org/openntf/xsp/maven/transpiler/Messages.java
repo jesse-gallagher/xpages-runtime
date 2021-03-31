@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019-2021 Jesse Gallagher
+ * Copyright © 2020-2021 Jesse Gallagher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openntf.xpages.runtime.xsp;
+package org.openntf.xsp.maven.transpiler;
 
-import javax.faces.application.ViewHandler;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
-import com.ibm.xsp.application.ViewHandlerExImpl;
+public class Messages {
+	private static final String BUNDLE_NAME = "org.openntf.xsp.maven.transpiler.messages"; //$NON-NLS-1$
 
-public class JakartaViewHandler extends ViewHandlerExImpl {
+	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
-	public JakartaViewHandler(ViewHandler delegate) {
-		super(delegate);
+	private Messages() {
+	}
+
+	public static String getString(String key) {
+		try {
+			return RESOURCE_BUNDLE.getString(key);
+		} catch (MissingResourceException e) {
+			return '!' + key + '!';
+		}
 	}
 }

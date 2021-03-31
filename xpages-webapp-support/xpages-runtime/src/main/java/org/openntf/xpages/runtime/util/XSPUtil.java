@@ -1,5 +1,5 @@
-/**
- * Copyright © 2019-2020 Jesse Gallagher
+/*
+ * Copyright © 2019-2021 Jesse Gallagher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,12 +29,12 @@ public enum XSPUtil {
 	public static URL getResource(String path, ClassLoader... cls) {
 		for(ClassLoader cl : cls) {
 			URL result = cl.getResource(path);
-			if(result == null && path != null && path.startsWith("/")) {
+			if(result == null && path != null && path.startsWith("/")) { //$NON-NLS-1$
 				// Try without the leading slash
 				result = cl.getResource(path.substring(1));
 			}
-			if(result == null && path != null && !path.startsWith("/")) {
-				result = cl.getResource("/" + path);
+			if(result == null && path != null && !path.startsWith("/")) { //$NON-NLS-1$
+				result = cl.getResource("/" + path); //$NON-NLS-1$
 			}
 			if(result != null) {
 				return result;
@@ -45,11 +45,11 @@ public enum XSPUtil {
 		if(!Arrays.asList(cls).contains(Thread.currentThread().getContextClassLoader())) {
 			ClassLoader cl = Thread.currentThread().getContextClassLoader();
 			URL result = cl.getResource(path);
-			if(result == null && path != null && path.startsWith("/")) {
+			if(result == null && path != null && path.startsWith("/")) { //$NON-NLS-1$
 				result = cl.getResource(path.substring(1));
 			}
-			if(result == null && path != null && !path.startsWith("/")) {
-				result = cl.getResource("/" + path);
+			if(result == null && path != null && !path.startsWith("/")) { //$NON-NLS-1$
+				result = cl.getResource("/" + path); //$NON-NLS-1$
 			}
 			if(result != null) {
 				return result;
@@ -62,11 +62,11 @@ public enum XSPUtil {
 	public static InputStream getResourceAsStream(String path, ClassLoader... cls) {
 		for(ClassLoader cl : cls) {
 			InputStream result = cl.getResourceAsStream(path);
-			if(result == null && path != null && path.startsWith("/")) {
+			if(result == null && path != null && path.startsWith("/")) { //$NON-NLS-1$
 				result = cl.getResourceAsStream(path.substring(1));
 			}
-			if(result == null && path != null && !path.startsWith("/")) {
-				result = cl.getResourceAsStream("/" + path);
+			if(result == null && path != null && !path.startsWith("/")) { //$NON-NLS-1$
+				result = cl.getResourceAsStream("/" + path); //$NON-NLS-1$
 			}
 			if(result != null) {
 				return result;
@@ -77,11 +77,11 @@ public enum XSPUtil {
 		if(!Arrays.asList(cls).contains(Thread.currentThread().getContextClassLoader())) {
 			ClassLoader cl = Thread.currentThread().getContextClassLoader();
 			InputStream result = cl.getResourceAsStream(path);
-			if(result == null && path != null && path.startsWith("/")) {
+			if(result == null && path != null && path.startsWith("/")) { //$NON-NLS-1$
 				result = cl.getResourceAsStream(path.substring(1));
 			}
-			if(result == null && path != null && !path.startsWith("/")) {
-				result = cl.getResourceAsStream("/" + path);
+			if(result == null && path != null && !path.startsWith("/")) { //$NON-NLS-1$
+				result = cl.getResourceAsStream("/" + path); //$NON-NLS-1$
 			}
 			if(result != null) {
 				return result;
@@ -95,11 +95,11 @@ public enum XSPUtil {
 		String path = StringUtil.toString(p);
 		
 		Enumeration<URL> result = cl.getResources(path);
-		if((result == null || !result.hasMoreElements()) && path != null && path.startsWith("/")) {
+		if((result == null || !result.hasMoreElements()) && path != null && path.startsWith("/")) { //$NON-NLS-1$
 			result = cl.getResources(path.substring(1));
 		}
 		
-		if((result == null || !result.hasMoreElements()) && path != null && path.startsWith("/")) {
+		if((result == null || !result.hasMoreElements()) && path != null && path.startsWith("/")) { //$NON-NLS-1$
 			result = Thread.currentThread().getContextClassLoader().getResources(path.substring(1));
 		}
 		

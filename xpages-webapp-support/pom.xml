@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.openntf.xpages</groupId>
     <artifactId>xpages-webapp-support</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
     <packaging>pom</packaging>
     
     <inceptionYear>2019</inceptionYear>
@@ -28,6 +28,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         
+        <xpages-groupId>com.hcl.xsp.p2</xpages-groupId>
         <xpages-version>[10.0.0,)</xpages-version>
         <equinox-version>[3.8.0,)</equinox-version>
     </properties>
@@ -36,7 +37,6 @@
 		<module>xpages-runtime</module>
 		<module>xpages-runtime-domino</module>
 		<module>xsp-maven-plugin</module>
-		<module>xpages-runtime-example</module>
 	</modules>
 	
 	<prerequisites>
@@ -58,23 +58,234 @@
 			<url>https://artifactory.openntf.org/openntf</url>
 		</pluginRepository>
 	</pluginRepositories>
-
-	<repositories>
-		<repository>
-			<id>com.hcl.xsp.p2</id>
-			<url>${notes-platform}</url>
-			<layout>p2</layout>
-		</repository>
-	</repositories>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>jakarta.servlet</groupId>
+				<artifactId>jakarta.servlet-api</artifactId>
+				<version>4.0.4</version>
+			</dependency>
+		
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>org.eclipse.osgi</artifactId>
+				<version>${equinox-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>org.eclipse.core.runtime</artifactId>
+				<version>${equinox-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>org.eclipse.equinox.common</artifactId>
+				<version>${equinox-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>org.eclipse.equinox.registry</artifactId>
+				<version>[3.6.0,)</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.icu</artifactId>
+				<version>[56.0.0,)</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.designer.lib.jsf</artifactId>
+				<version>${xpages-version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.core</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>lwpd.xsp.core</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.extsn</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>lwpd.xsp.extsn</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.commons</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>lwpd.commons</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.commons.vfs</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>lwpd.commons.vfs</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.jscript</artifactId>
+				<version>${xpages-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.designer</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>lwpd.xsp.designer</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.designer.runtime</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>lwpd.runtime.designer</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.designer.runtime.directory</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>lwpd.runtime.directory</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.commons.xml</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>lwpd.commons.xml</classifier>
+			</dependency>
+	
+			<!-- Themes and Dojo -->
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.dojo</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>xsp.dojo</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.theme.oneui.idx</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>xsp.theme.oneui.idx</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.theme.oneuiv302</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>xsp.theme.oneuiv302</classifier>
+			</dependency>
+			
+			<!-- ExtLib -->
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.extlib</artifactId>
+				<version>${xpages-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.extlib.core</artifactId>
+				<version>${xpages-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.extlib.controls</artifactId>
+				<version>${xpages-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.extlib.oneui</artifactId>
+				<version>${xpages-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.theme.bootstrap</artifactId>
+				<version>${xpages-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.extlib.mobile</artifactId>
+				<version>${xpages-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.extlib.domino</artifactId>
+				<version>${xpages-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.extlib.relational</artifactId>
+				<version>${xpages-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.commons.jdbc</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>lwpd.commons.jdbc</classifier>
+			</dependency>
+		
+			<!-- Domino-specific -->
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.domino</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>lwpd.xsp.domino</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.domino.napi</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>lwpd.domino.napi</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.domino.xsp.adapter</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>lwpd.domino.adapter</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.domino.xsp.adapter.nsf</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>lwpd.domino.adapter.nsf</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.notes.java.api.win32.linux</artifactId>
+				<version>[9.0.1,)</version>
+				<classifier>Notes</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.domino.xsp.bootstrap</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>xsp.domino.bridge</classifier>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.xsp.http.bootstrap</artifactId>
+				<version>${xpages-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${xpages-groupId}</groupId>
+				<artifactId>com.ibm.domino.services</artifactId>
+				<version>${xpages-version}</version>
+			</dependency>
+			
+			<!-- XPages Bazaar -->
+			<dependency>
+				<groupId>com.ibm.xsp.extlib.bazaar</groupId>
+				<artifactId>com.ibm.xsp.extlibx.bazaar</artifactId>
+				<version>2.0.6</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ibm.xsp.extlib.bazaar</groupId>
+				<artifactId>com.ibm.xsp.extlibx.bazaar.interpreter</artifactId>
+				<version>2.0.6</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	
     <build>
         <plugins>
-			<plugin>
-				<groupId>org.openntf.maven</groupId>
-				<artifactId>p2-layout-resolver</artifactId>
-				<version>1.2.0-SNAPSHOT</version>
-				<extensions>true</extensions>
-			</plugin>
 			<plugin>
 				<groupId>com.mycila</groupId>
 				<artifactId>license-maven-plugin</artifactId>
@@ -92,10 +303,43 @@
 					</excludes>
 					<properties>
 						<owner>Jesse Gallagher</owner>
-						<copyrightYear>2020</copyrightYear>
+						<copyrightYear>2021</copyrightYear>
 					</properties>
+					<mapping>
+						<java>SLASHSTAR_STYLE</java>
+					</mapping>
 				</configuration>
 			</plugin>
         </plugins>
     </build>
+
+	<profiles>
+		<profile>
+			<id>p2-layout-resolver</id>
+			<activation>
+				<property>
+					<name>notes-platform</name>
+				</property>
+			</activation>
+
+			<repositories>
+				<repository>
+					<id>com.hcl.xsp.p2</id>
+					<url>${notes-platform}</url>
+					<layout>p2</layout>
+				</repository>
+			</repositories>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.openntf.maven</groupId>
+						<artifactId>p2-layout-resolver</artifactId>
+						<version>1.2.0</version>
+						<extensions>true</extensions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

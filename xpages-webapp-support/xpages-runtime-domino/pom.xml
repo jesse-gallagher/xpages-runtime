@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.openntf.xpages</groupId>
 		<artifactId>xpages-webapp-support</artifactId>
-		<version>1.2.0</version>
+		<version>1.3.0</version>
 	</parent>
 	<artifactId>xpages-runtime-domino</artifactId>
 	
@@ -19,76 +19,67 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>4.0.0</version>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		
 		<!-- Domino-specific -->
 		<dependency>
-			<groupId>com.hcl.xsp.p2</groupId>
+			<groupId>${xpages-groupId}</groupId>
 			<artifactId>com.ibm.xsp.domino</artifactId>
-			<version>${xpages-version}</version>
 			<classifier>lwpd.xsp.domino</classifier>
 			<exclusions>
 				<exclusion>
-					<groupId>com.hcl.xsp.p2</groupId>
+					<groupId>${xpages-groupId}</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.p2</groupId>
+			<groupId>${xpages-groupId}</groupId>
 			<artifactId>com.ibm.domino.napi</artifactId>
-			<version>${xpages-version}</version>
 			<classifier>lwpd.domino.napi</classifier>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.p2</groupId>
+			<groupId>${xpages-groupId}</groupId>
 			<artifactId>com.ibm.domino.xsp.adapter</artifactId>
-			<version>${xpages-version}</version>
 			<classifier>lwpd.domino.adapter</classifier>
 			<exclusions>
 				<exclusion>
-					<groupId>com.hcl.xsp.p2</groupId>
+					<groupId>${xpages-groupId}</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.p2</groupId>
+			<groupId>${xpages-groupId}</groupId>
 			<artifactId>com.ibm.domino.xsp.adapter.nsf</artifactId>
-			<version>${xpages-version}</version>
 			<classifier>lwpd.domino.adapter.nsf</classifier>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.p2</groupId>
+			<groupId>${xpages-groupId}</groupId>
 			<artifactId>com.ibm.notes.java.api.win32.linux</artifactId>
-			<version>[9.0.1,)</version>
 			<classifier>Notes</classifier>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.p2</groupId>
+			<groupId>${xpages-groupId}</groupId>
 			<artifactId>com.ibm.domino.xsp.bootstrap</artifactId>
-			<version>${xpages-version}</version>
 			<classifier>xsp.domino.bridge</classifier>
 			<exclusions>
 				<exclusion>
-					<groupId>com.hcl.xsp.p2</groupId>
+					<groupId>${xpages-groupId}</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.p2</groupId>
+			<groupId>${xpages-groupId}</groupId>
 			<artifactId>com.ibm.xsp.http.bootstrap</artifactId>
-			<version>${xpages-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.hcl.xsp.p2</groupId>
+			<groupId>${xpages-groupId}</groupId>
 			<artifactId>com.ibm.domino.services</artifactId>
-			<version>${xpages-version}</version>
 		</dependency>
 	</dependencies>
 </project>
