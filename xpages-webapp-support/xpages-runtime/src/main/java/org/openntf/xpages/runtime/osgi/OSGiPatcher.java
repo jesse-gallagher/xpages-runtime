@@ -15,8 +15,10 @@
  */
 package org.openntf.xpages.runtime.osgi;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
+import org.eclipse.core.internal.runtime.InternalPlatform;
 import org.osgi.framework.BundleActivator;
 
 import com.ibm.commons.extension.ExtensionManager;
@@ -41,6 +43,12 @@ public class OSGiPatcher {
 					inst.start(bundleContext);
 				}
 			}
+			
+			// Set the "context" property in InternalPlatform to an empty MockBundle to avoid trouble in file-upload controls
+			InternalPlatform platform = InternalPlatform.getDefault();
+			Field contextField = InternalPlatform.class.getDeclaredField("context");
+			contextField.setAccessible(true);
+			contextField.set(platform, new MockBundleContext(null));
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		}
