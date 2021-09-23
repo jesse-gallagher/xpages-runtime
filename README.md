@@ -87,7 +87,7 @@ The runtime will automatically translate XSP source files to executable pages at
 <plugin>
   <groupId>org.openntf.xpages</groupId>
   <artifactId>xsp-maven-plugin</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.5.0-SNAPSHOT</version>
   <executions>
     <execution>
       <id>transpile-xsp</id>

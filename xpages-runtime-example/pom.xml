@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 	<groupId>org.openntf.xpages</groupId>
 	<artifactId>xpages-runtime-example</artifactId>
-	<version>1.3.0-SNAPSHOT</version>
+	<version>1.5.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <properties>
