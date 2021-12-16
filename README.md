@@ -36,7 +36,7 @@ LD_LIBRARY_PATH=/Applications/IBM Notes.app/Contents/MacOS
 DYLD_LIBRARY_PATH=/Applications/IBM Notes.app/Contents/MacOS
 ```
 
-Additionally, for all platforms, add a `jvm.options` file for the Open Libery server:
+Additionally, for all platforms, add a `jvm.options` file for the Open Liberty server:
 
 ```
 -Djava.library.path=/Applications/IBM Notes.app/Contents/MacOS
