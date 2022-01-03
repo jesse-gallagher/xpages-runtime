@@ -18,17 +18,18 @@ package org.openntf.xpages.runtime.servlet;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.openntf.xpages.runtime.platform.JakartaPlatform;
 import org.openntf.xpages.runtime.wrapper.JakartaServletConfigWrapper;
 import org.openntf.xpages.runtime.wrapper.JakartaServletRequestWrapper;
 import org.openntf.xpages.runtime.wrapper.JakartaServletResponseWrapper;
+import org.openntf.xsp.jakartaee.servlet.ServletUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -62,13 +63,17 @@ public class JakartaServlet extends HttpServlet {
 		
 		this.delegate = new JakartaFacesServlet();
 		
-		ServletConfig conf = new JakartaServletConfigWrapper(config);
+		javax.servlet.ServletConfig conf = new JakartaServletConfigWrapper(ServletUtil.newToOld(config));
 		JakartaPlatform.initContext(conf.getServletContext());
-		delegate.init(conf);
+		try {
+			delegate.init(conf);
+		} catch (javax.servlet.ServletException e) {
+			throw new ServletException(e);
+		}
 		
 		resources.addResourceProvider(new JavaResourceProvider("") { //$NON-NLS-1$
 			@Override
-			protected String getResourcePath(HttpServletRequest req, String path) {
+			protected String getResourcePath(javax.servlet.http.HttpServletRequest req, String path) {
 				if(!"/".equals(path) && Thread.currentThread().getContextClassLoader().getResourceAsStream(path) != null) { //$NON-NLS-1$
 					return path;
 				} else {
@@ -81,7 +86,11 @@ public class JakartaServlet extends HttpServlet {
 				return !ExtLibUtil.isDevelopmentMode();
 			}
 		});
-		resources.init(conf);
+		try {
+			resources.init(conf);
+		} catch (javax.servlet.ServletException e) {
+			throw new ServletException(e);
+		}
 	}
 
 	@Override
@@ -91,15 +100,23 @@ public class JakartaServlet extends HttpServlet {
 			// Check the welcome-file-list
 			path = PathUtil.concat("/", getIndex(), '/'); //$NON-NLS-1$
 		}
-		HttpServletResponse resWrap = new JakartaServletResponseWrapper(resp);
+		javax.servlet.http.HttpServletResponse resWrap = new JakartaServletResponseWrapper(ServletUtil.newToOld(resp));
 		int xspIndex = path.indexOf(".xsp"); //$NON-NLS-1$
 		if(xspIndex > -1) {
 			String pathInfo = path.substring(xspIndex+4);
-			HttpServletRequest wrap = new JakartaServletRequestWrapper(req, path.substring(0, xspIndex+4), pathInfo.isEmpty() ? null : pathInfo);
-			delegate.service(wrap, resWrap);
+			javax.servlet.http.HttpServletRequest wrap = new JakartaServletRequestWrapper(ServletUtil.newToOld(req), path.substring(0, xspIndex+4), pathInfo.isEmpty() ? null : pathInfo);
+			try {
+				delegate.service(wrap, resWrap);
+			} catch (javax.servlet.ServletException | IOException e) {
+				throw new ServletException(e);
+			}
 		} else {
-			HttpServletRequest wrap = new JakartaServletRequestWrapper(req, "/", path); //$NON-NLS-1$
-			resources.service(wrap, resWrap);
+			javax.servlet.http.HttpServletRequest wrap = new JakartaServletRequestWrapper(ServletUtil.newToOld(req), "/", path); //$NON-NLS-1$
+			try {
+				resources.service(wrap, resWrap);
+			} catch (javax.servlet.ServletException | IOException e) {
+				throw new ServletException(e);
+			}
 		}
 	}
 

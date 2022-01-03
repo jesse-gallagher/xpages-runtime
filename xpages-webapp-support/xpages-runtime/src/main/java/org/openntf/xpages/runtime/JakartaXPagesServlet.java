@@ -17,15 +17,16 @@ package org.openntf.xpages.runtime;
 
 import java.io.IOException;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.openntf.xpages.runtime.platform.JakartaPlatform;
 import org.openntf.xpages.runtime.wrapper.JakartaServletConfigWrapper;
 import org.openntf.xpages.runtime.wrapper.JakartaServletRequestWrapper;
+import org.openntf.xsp.jakartaee.servlet.ServletUtil;
 
 import com.ibm.xsp.webapp.DesignerFacesServlet;
 
@@ -46,15 +47,23 @@ public class JakartaXPagesServlet extends HttpServlet {
 		
 		this.delegate = new DesignerFacesServlet();
 		
-		ServletConfig conf = new JakartaServletConfigWrapper(config);
+		javax.servlet.ServletConfig conf = new JakartaServletConfigWrapper(ServletUtil.newToOld(config));
 		JakartaPlatform.initContext(conf.getServletContext());
-		delegate.init(conf);
+		try {
+			delegate.init(conf);
+		} catch (javax.servlet.ServletException e) {
+			throw new ServletException(e);
+		}
 	}
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		HttpServletRequest wrap = new JakartaServletRequestWrapper(req);
-		delegate.service(wrap, resp);
+		javax.servlet.http.HttpServletRequest wrap = new JakartaServletRequestWrapper(ServletUtil.newToOld(req));
+		try {
+			delegate.service(wrap, ServletUtil.newToOld(resp));
+		} catch (javax.servlet.ServletException | IOException e) {
+			throw new ServletException(e);
+		}
 	}
 
 	@Override

@@ -15,29 +15,29 @@
  */
 package org.openntf.xpages.runtime.listener;
 
-import com.ibm.xsp.config.BootStrap;
-import com.ibm.xsp.config.ConfigureCoreListener;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.annotation.WebListener;
-
 import org.openntf.xpages.runtime.wrapper.JakartaServletContextWrapper;
 import org.openntf.xpages.runtime.xsp.JakartaBootStrap;
+import org.openntf.xsp.jakartaee.servlet.ServletUtil;
+
+import com.ibm.xsp.config.BootStrap;
+
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
 
 @WebListener
-public class JakartaConfigureCoreListener extends ConfigureCoreListener {
+public class JakartaConfigureCoreListener implements ServletContextListener {
     BootStrap bootstrap;
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        ServletContext context = new JakartaServletContextWrapper(servletContextEvent.getServletContext());
+        javax.servlet.ServletContext context = new JakartaServletContextWrapper(ServletUtil.newToOld(servletContextEvent.getServletContext()));
         bootstrap = new JakartaBootStrap(context);
         bootstrap.init(context);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        bootstrap.destroy(new JakartaServletContextWrapper(servletContextEvent.getServletContext()));
+        bootstrap.destroy(new JakartaServletContextWrapper(ServletUtil.newToOld(servletContextEvent.getServletContext())));
     }
 }

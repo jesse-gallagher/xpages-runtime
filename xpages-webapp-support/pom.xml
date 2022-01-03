@@ -51,6 +51,14 @@
 		</repository>
 	</distributionManagement>
 	
+	<repositories>
+		<repository>
+			<id>artifactory.openntf.org</id>
+			<name>artifactory.openntf.org</name>
+			<url>https://artifactory.openntf.org/openntf</url>
+		</repository>
+	</repositories>
+	
 	<pluginRepositories>
 		<pluginRepository>
 			<id>artifactory.openntf.org</id>
@@ -62,9 +70,19 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>4.0.1</version>
+			</dependency>
+			<dependency>
 				<groupId>jakarta.servlet</groupId>
 				<artifactId>jakarta.servlet-api</artifactId>
-				<version>4.0.4</version>
+				<version>5.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openntf.xsp</groupId>
+				<artifactId>org.openntf.xsp.jakartaee.commons</artifactId>
+				<version>2.1.0</version>
 			</dependency>
 		
 			<dependency>
