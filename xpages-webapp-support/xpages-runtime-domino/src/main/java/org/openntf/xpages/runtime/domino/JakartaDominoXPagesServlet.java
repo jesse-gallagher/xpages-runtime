@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019-2021 Jesse Gallagher
+ * Copyright © 2019-2022 Jesse Gallagher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,17 +25,18 @@ import com.ibm.designer.runtime.domino.bootstrap.adapter.HttpSessionAdapter;
 import com.ibm.xsp.acl.NoAccessSignal;
 import com.ibm.xsp.webapp.DesignerFacesServlet;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.openntf.xpages.runtime.domino.adapter.ServletHttpServletResponseAdapter;
 import org.openntf.xpages.runtime.domino.adapter.ServletHttpSessionAdapter;
 import org.openntf.xpages.runtime.domino.wrapper.JakartaDominoServletRequestWrapper;
 import org.openntf.xpages.runtime.wrapper.JakartaServletRequestWrapper;
+import org.openntf.xsp.jakartaee.servlet.ServletUtil;
 
 import java.io.IOException;
 
@@ -69,7 +70,11 @@ public class JakartaDominoXPagesServlet extends HttpServlet {
 		this.lcdEnvironment = LCDEnvironment.getInstance();
 
 		this.delegate = new DesignerFacesServlet();
-		delegate.init(config);
+		try {
+			delegate.init(ServletUtil.newToOld(config));
+		} catch (javax.servlet.ServletException e) {
+			throw new ServletException(e);
+		}
 	}
 
 	@Override
@@ -83,19 +88,25 @@ public class JakartaDominoXPagesServlet extends HttpServlet {
 			String contextPath = StringUtil.toString(req.getContextPath());
 			String path = pathInfo.substring(contextPath.length());
 			RequestContext requestContext = new RequestContext(contextPath, path);
-			HttpSessionAdapter sessionAdapter = new ServletHttpSessionAdapter(req.getSession());
-			HttpServletRequestAdapter requestAdapter = new JakartaDominoServletRequestWrapper(req);
-			HttpServletResponseAdapter responseAdapter = new ServletHttpServletResponseAdapter(resp);
+			HttpSessionAdapter sessionAdapter = new ServletHttpSessionAdapter(ServletUtil.newToOld(req.getSession()));
+			HttpServletRequestAdapter requestAdapter = new JakartaDominoServletRequestWrapper(ServletUtil.newToOld(req));
+			HttpServletResponseAdapter responseAdapter = new ServletHttpServletResponseAdapter(ServletUtil.newToOld(resp));
 			try {
 				lcdEnvironment.service(requestContext, sessionAdapter, requestAdapter, responseAdapter);
 			} catch(NoAccessSignal s) {
 				// TODO see if this can signal the container for form-based auth
 				resp.setHeader("WWW-Authenticate", "Basic realm=\"XPagesRuntime\""); //$NON-NLS-1$ //$NON-NLS-2$
 				resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "You must log in"); //$NON-NLS-1$
+			} catch (javax.servlet.ServletException e) {
+				throw new ServletException(e);
 			}
 		} else {
 			// In-app XPage
-			delegate.service(new JakartaServletRequestWrapper(req), resp);
+			try {
+				delegate.service(new JakartaServletRequestWrapper(ServletUtil.newToOld(req)), ServletUtil.newToOld(resp));
+			} catch (javax.servlet.ServletException e) {
+				throw new ServletException(e);
+			}
 		}
 	}
 

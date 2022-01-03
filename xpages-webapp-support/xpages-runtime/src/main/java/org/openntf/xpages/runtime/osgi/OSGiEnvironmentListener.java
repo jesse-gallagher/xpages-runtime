@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019-2021 Jesse Gallagher
+ * Copyright © 2019-2022 Jesse Gallagher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ package org.openntf.xpages.runtime.osgi;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
 
 @WebListener
 public class OSGiEnvironmentListener implements ServletContextListener {

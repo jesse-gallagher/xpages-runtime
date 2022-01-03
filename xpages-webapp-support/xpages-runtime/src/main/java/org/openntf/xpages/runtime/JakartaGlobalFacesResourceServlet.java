@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019-2021 Jesse Gallagher
+ * Copyright © 2019-2022 Jesse Gallagher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,21 +17,28 @@ package org.openntf.xpages.runtime;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebServlet;
+import org.openntf.xsp.jakartaee.servlet.ServletUtil;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.ibm.xsp.webapp.DesignerGlobalResourceServlet;
 
 @WebServlet(urlPatterns="/xsp/.ibmxspres/*")
-public class JakartaGlobalFacesResourceServlet extends DesignerGlobalResourceServlet {
+public class JakartaGlobalFacesResourceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private final DesignerGlobalResourceServlet delegate = new DesignerGlobalResourceServlet();
 	
 	@Override
 	public void service(ServletRequest var1, ServletResponse var2) throws ServletException, IOException {
 		try {
-			super.service(var1, var2);
+			delegate.service(ServletUtil.newToOld((HttpServletRequest)var1), ServletUtil.newToOld((HttpServletResponse)var2));
 		} catch(IOException e) {
 			if("Broken pipe".equals(e.getMessage())) { //$NON-NLS-1$
 				// Ignore
@@ -44,10 +51,10 @@ public class JakartaGlobalFacesResourceServlet extends DesignerGlobalResourceSer
 				if("Broken pipe".equals(t.getCause().getMessage())) { //$NON-NLS-1$
 					// Ignore
 				} else {
-					throw t;
+					throw new ServletException(t);
 				}
 			} else {
-				throw t;
+				throw new ServletException(t);
 			}
 		}
 	}

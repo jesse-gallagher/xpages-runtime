@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019-2021 Jesse Gallagher
+ * Copyright © 2019-2022 Jesse Gallagher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,13 @@ import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
 
 import org.openntf.xpages.runtime.domino.platform.JakartaDominoPlatform;
 import org.openntf.xpages.runtime.wrapper.JakartaServletContextWrapper;
+import org.openntf.xsp.jakartaee.servlet.ServletUtil;
 
 import com.ibm.commons.util.StringUtil;
 import com.ibm.domino.napi.c.C;
@@ -43,7 +44,7 @@ public class JakartaDominoContextListener implements ServletContextListener {
 		NotesThread t = new NotesThread(() -> {
 			C.initLibrary(null);
 			
-			JakartaDominoPlatform.initContext(new JakartaServletContextWrapper(sce.getServletContext()));
+			JakartaDominoPlatform.initContext(new JakartaServletContextWrapper(ServletUtil.newToOld(sce.getServletContext())));
 			
 			final URLStreamHandlerFactory delegate = AccessController.doPrivileged((PrivilegedAction<URLStreamHandlerFactory>) () -> {
 				URLStreamHandlerFactory d;
