@@ -36,7 +36,7 @@ LD_LIBRARY_PATH=/Applications/IBM Notes.app/Contents/MacOS
 DYLD_LIBRARY_PATH=/Applications/IBM Notes.app/Contents/MacOS
 ```
 
-Additionally, for all platforms, add a `jvm.options` file for the Open Libery server:
+Additionally, for all platforms, add a `jvm.options` file for the Open Liberty server:
 
 ```
 -Djava.library.path=/Applications/IBM Notes.app/Contents/MacOS
@@ -87,7 +87,7 @@ The runtime will automatically translate XSP source files to executable pages at
 <plugin>
   <groupId>org.openntf.xpages</groupId>
   <artifactId>xsp-maven-plugin</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.5.0-SNAPSHOT</version>
   <executions>
     <execution>
       <id>transpile-xsp</id>
