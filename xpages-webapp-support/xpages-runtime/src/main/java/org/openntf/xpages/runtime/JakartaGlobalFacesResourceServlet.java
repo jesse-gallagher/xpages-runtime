@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import org.openntf.xsp.jakartaee.servlet.ServletUtil;
 
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -34,6 +35,26 @@ public class JakartaGlobalFacesResourceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private final DesignerGlobalResourceServlet delegate = new DesignerGlobalResourceServlet();
+	
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		try {
+			delegate.init();
+		} catch (javax.servlet.ServletException e) {
+			throw new ServletException(e);
+		}
+	}
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		try {
+			delegate.init(ServletUtil.newToOld(config));
+		} catch (javax.servlet.ServletException e) {
+			throw new ServletException(e);
+		}
+	}
 	
 	@Override
 	public void service(ServletRequest var1, ServletResponse var2) throws ServletException, IOException {
@@ -57,5 +78,11 @@ public class JakartaGlobalFacesResourceServlet extends HttpServlet {
 				throw new ServletException(t);
 			}
 		}
+	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		delegate.destroy();
 	}
 }
