@@ -6,14 +6,14 @@ Since XPages does not inherently require OSGi, this project doesn't bother initi
 
 ## Building and Using
 
-To build this project or use it as a dependency, you must have a property in your Maven ~/.m2/settings.xml named `notes-platform` and containing a URL to a Domino Update Site for Domino 10+. For example:
+To build this project or use it as a dependency, you must have a property in your Maven ~/.m2/settings.xml named `notes-platform` and containing a URL to a Domino Update Site for Domino 12.0.2+. For example:
 
 ```xml
 <profiles>
     <profile>
         <id>notes</id>
         <properties>
-            <notes-platform>file:///Users/jesse/Java/Domino10.0.1</notes-platform>
+            <notes-platform>file:///Users/jesse/Java/Domino12.0.2</notes-platform>
         </properties>
     </profile>
 </profile>
@@ -22,7 +22,7 @@ To build this project or use it as a dependency, you must have a property in you
 </activeProfiles>
 ```
 
-Such an update site can be built from a Notes or Domino installation using the [`generate-domino-update-site` Maven plugin](https://github.com/OpenNTF/generate-domino-update-site). This project expects an update site built with at least version 3.3.0 of `generate-domino-update-site`.
+Such an update site can be built from a Notes or Domino installation using the [`generate-domino-update-site` Maven plugin](https://github.com/OpenNTF/generate-domino-update-site). This project expects an update site built with at least version 4.2.0 of `generate-domino-update-site`.
 
 When using this runtime in your downstream project, that project should also include a repository reference for the Update Site accessed via the [`p2-layout-resolver` Maven plugin](https://github.com/OpenNTF/p2-layout-provider), configured with the ID `com.hcl.xsp.repo`.
 
@@ -87,7 +87,7 @@ The runtime will automatically translate XSP source files to executable pages at
 <plugin>
   <groupId>org.openntf.xpages</groupId>
   <artifactId>xsp-maven-plugin</artifactId>
-  <version>1.5.0-SNAPSHOT</version>
+  <version>2.2.0-SNAPSHOT</version>
   <executions>
     <execution>
       <id>transpile-xsp</id>

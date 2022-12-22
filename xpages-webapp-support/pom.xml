@@ -29,7 +29,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         
         <xpages-groupId>com.hcl.xsp.p2</xpages-groupId>
-        <xpages-version>[10.0.0,)</xpages-version>
+        <xpages-version>[12.0.2,)</xpages-version>
         <equinox-version>[3.8.0,)</equinox-version>
     </properties>
 	
@@ -249,7 +249,7 @@
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
-				<artifactId>com.ibm.domino.napi</artifactId>
+				<artifactId>com.ibm.domino.napi.impl</artifactId>
 				<version>${xpages-version}</version>
 				<classifier>lwpd.domino.napi</classifier>
 			</dependency>
@@ -353,7 +353,7 @@
 					<plugin>
 						<groupId>org.openntf.maven</groupId>
 						<artifactId>p2-layout-resolver</artifactId>
-						<version>1.2.0</version>
+						<version>1.4.0</version>
 						<extensions>true</extensions>
 					</plugin>
 				</plugins>
