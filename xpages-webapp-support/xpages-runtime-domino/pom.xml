@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.openntf.xpages</groupId>
 		<artifactId>xpages-webapp-support</artifactId>
-		<version>2.1.0</version>
+		<version>2.2.0</version>
 	</parent>
 	<artifactId>xpages-runtime-domino</artifactId>
 	
@@ -46,7 +46,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${xpages-groupId}</groupId>
-			<artifactId>com.ibm.domino.napi</artifactId>
+			<artifactId>com.ibm.domino.napi.impl</artifactId>
 			<classifier>lwpd.domino.napi</classifier>
 		</dependency>
 		<dependency>
