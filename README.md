@@ -4,6 +4,8 @@ This project allows for running XPages applications outside of Domino. It has be
 
 Since XPages does not inherently require OSGi, this project doesn't bother initializing an OSGi runtime (though some Eclipse dependencies are brought along for the ride).
 
+This project is generally a developer tool, as XPages outside of Domino is thoroughly unsupportable currently and isn't suitable for production, even before getting to licensing requirements.
+
 ## Building and Using
 
 To build this project or use it as a dependency, you must have a property in your Maven ~/.m2/settings.xml named `notes-platform` and containing a URL to a Domino Update Site for Domino 12.0.2+. For example:
