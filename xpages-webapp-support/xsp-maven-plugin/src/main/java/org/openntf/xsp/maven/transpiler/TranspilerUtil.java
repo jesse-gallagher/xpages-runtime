@@ -29,8 +29,6 @@ import java.util.Collection;
 import org.w3c.dom.Document;
 
 import com.ibm.commons.util.io.StreamUtil;
-import com.ibm.commons.xml.DOMUtil;
-import com.ibm.commons.xml.XMLException;
 import com.ibm.xsp.page.compiled.PageToClassNameUtil;
 
 public enum TranspilerUtil {
@@ -92,8 +90,8 @@ public enum TranspilerUtil {
 	
 	public static Document readXml(Path file) {
 		try(InputStream is = Files.newInputStream(file)) {
-			return DOMUtil.createDocument(is);
-		} catch(IOException | XMLException e) {
+			return TranspilerDomUtil.createDocument(is);
+		} catch(IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
