@@ -39,8 +39,6 @@ import com.ibm.commons.extension.ExtensionManager;
 import com.ibm.commons.platform.GenericPlatform;
 import com.ibm.commons.util.StringUtil;
 import com.ibm.commons.util.io.StreamUtil;
-import com.ibm.commons.xml.DOMUtil;
-import com.ibm.commons.xml.XMLException;
 import com.ibm.xsp.extlib.interpreter.DynamicFacesClassLoader;
 import com.ibm.xsp.extlib.interpreter.DynamicXPageBean;
 import com.ibm.xsp.extlib.javacompiler.JavaSourceClassLoader;
@@ -101,30 +99,26 @@ public class XspTranspiler {
 					
 					try(Stream<Path> ccConfigs = Files.find(ccSourceRoot, Integer.MAX_VALUE, (path, attr) -> attr.isRegularFile() && path.toString().toLowerCase().endsWith(".xsp-config"), FileVisitOption.FOLLOW_LINKS)) { //$NON-NLS-1$
 						ccConfigs.forEach(ccConfig -> {
-							try {
-								Document xspConfig = TranspilerUtil.readXml(ccConfig);
-								
-								String namespace = StringUtil.trim(DOMUtil.evaluateXPath(xspConfig, "/faces-config/faces-config-extension/namespace-uri/text()").getStringValue()); //$NON-NLS-1$
-								Path fileName = ccSourceRoot.relativize(ccConfig);
-								LibraryFragmentImpl fragment = (LibraryFragmentImpl)configParser.createFacesLibraryFragment(
-										facesProject,
-										facesClassLoader,
-										fileName.toString(),
-										xspConfig.getDocumentElement(),
-										resourceBundleSource,
-										iconUrlSource,
-										namespace
-								);
-								UpdatableLibrary library = getLibrary(namespace);
-								library.addLibraryFragment(fragment);
-								
-								// Load the definition to refresh its parent ref
-								String controlName = StringUtil.trim(DOMUtil.evaluateXPath(xspConfig, "/faces-config/composite-component/composite-name/text()").getStringValue()); //$NON-NLS-1$
-								CompositeComponentDefinitionImpl def = (CompositeComponentDefinitionImpl)library.getDefinition(controlName);
-								def.refreshReferences();
-							} catch (XMLException e) {
-								throw new RuntimeException(e);
-							}
+							Document xspConfig = TranspilerUtil.readXml(ccConfig);
+							
+							String namespace = StringUtil.trim(TranspilerDomUtil.node(xspConfig, "/faces-config/faces-config-extension/namespace-uri/text()").get().getNodeValue()); //$NON-NLS-1$
+							Path fileName = ccSourceRoot.relativize(ccConfig);
+							LibraryFragmentImpl fragment = (LibraryFragmentImpl)configParser.createFacesLibraryFragment(
+									facesProject,
+									facesClassLoader,
+									fileName.toString(),
+									xspConfig.getDocumentElement(),
+									resourceBundleSource,
+									iconUrlSource,
+									namespace
+							);
+							UpdatableLibrary library = getLibrary(namespace);
+							library.addLibraryFragment(fragment);
+							
+							// Load the definition to refresh its parent ref
+							String controlName = StringUtil.trim(TranspilerDomUtil.node(xspConfig, "/faces-config/composite-component/composite-name/text()").get().getNodeValue()); //$NON-NLS-1$
+							CompositeComponentDefinitionImpl def = (CompositeComponentDefinitionImpl)library.getDefinition(controlName);
+							def.refreshReferences();
 						});
 					}
 				}
