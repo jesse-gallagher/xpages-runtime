@@ -353,7 +353,7 @@
 					<plugin>
 						<groupId>org.openntf.maven</groupId>
 						<artifactId>p2-layout-resolver</artifactId>
-						<version>1.8.0</version>
+						<version>1.9.0</version>
 						<extensions>true</extensions>
 					</plugin>
 				</plugins>
