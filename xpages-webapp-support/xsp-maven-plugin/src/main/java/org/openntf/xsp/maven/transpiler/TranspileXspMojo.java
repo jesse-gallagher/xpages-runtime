@@ -151,6 +151,9 @@ public class TranspileXspMojo extends AbstractMojo {
 				try(InputStream is = getClass().getResourceAsStream("/" + TranspilerUtil.class.getName().replace('.', '/') + ".class")) { //$NON-NLS-1$ //$NON-NLS-2$
 					projectClassLoader.defineClass(TranspilerUtil.class.getName(), is);
 				}
+				try(InputStream is = getClass().getResourceAsStream("/" + TranspilerDomUtil.class.getName().replace('.', '/') + ".class")) {
+					projectClassLoader.defineClass(TranspilerDomUtil.class.getName(), is);
+				}
 				
 				// Handle deletions first, which may skip having to establish the full environment
 				deleteChanges(projectClassLoader, deletedXPages, xspSourceRoot, output);
