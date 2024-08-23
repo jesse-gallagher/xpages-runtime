@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020-2022 Jesse Gallagher
+ * Copyright © 2020-2024 Jesse Gallagher
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -150,6 +150,9 @@ public class TranspileXspMojo extends AbstractMojo {
 				// Shim TranspilerUtil into this classloader, as it's used in multiple places
 				try(InputStream is = getClass().getResourceAsStream("/" + TranspilerUtil.class.getName().replace('.', '/') + ".class")) { //$NON-NLS-1$ //$NON-NLS-2$
 					projectClassLoader.defineClass(TranspilerUtil.class.getName(), is);
+				}
+				try(InputStream is = getClass().getResourceAsStream("/" + TranspilerDomUtil.class.getName().replace('.', '/') + ".class")) {
+					projectClassLoader.defineClass(TranspilerDomUtil.class.getName(), is);
 				}
 				
 				// Handle deletions first, which may skip having to establish the full environment

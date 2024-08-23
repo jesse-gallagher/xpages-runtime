@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.openntf.xpages</groupId>
 		<artifactId>xpages-webapp-support</artifactId>
-		<version>2.2.1</version>
+		<version>2.2.2</version>
 	</parent>
 	<artifactId>xsp-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
@@ -94,7 +94,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
-				<version>3.5.1</version>
+				<version>3.14.0</version>
 				<configuration>
 					<goalPrefix>xsp</goalPrefix>
 					<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
