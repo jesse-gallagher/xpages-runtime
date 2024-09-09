@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.openntf.xpages</groupId>
     <artifactId>xpages-webapp-support</artifactId>
-    <version>2.2.2</version>
+    <version>2.2.3</version>
     <packaging>pom</packaging>
     
     <inceptionYear>2019</inceptionYear>
@@ -29,10 +29,6 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         
         <xpages-groupId>com.hcl.xsp.p2</xpages-groupId>
-        <xpages-version>[12.0.2,)</xpages-version>
-        <!-- This version was kept behind in 14 for some reason -->
-        <xpages-commons-version>[12.0.2,)</xpages-commons-version>
-        <equinox-version>[3.8.0,)</equinox-version>
     </properties>
 	
 	<modules>
@@ -90,87 +86,87 @@
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>org.eclipse.osgi</artifactId>
-				<version>${equinox-version}</version>
+				<version>3.11.3.20221010-1810</version>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>org.eclipse.core.runtime</artifactId>
-				<version>${equinox-version}</version>
+				<version>3.12.0.v20160606-1342</version>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>org.eclipse.equinox.common</artifactId>
-				<version>${equinox-version}</version>
+				<version>3.8.0.20221010-1810</version>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>org.eclipse.equinox.registry</artifactId>
-				<version>[3.6.0,)</version>
+				<version>3.6.100.v20160223-2218</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.icu</artifactId>
-				<version>[56.0.0,)</version>
+				<version>56.1.0.v201601250100</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.designer.lib.jsf</artifactId>
-				<version>${xpages-version}</version>
+				<version>12.0.2.20221101-2131</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.core</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>lwpd.xsp.core</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.extsn</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>lwpd.xsp.extsn</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.commons</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>lwpd.commons</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.commons.vfs</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>lwpd.commons.vfs</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.jscript</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.designer</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>lwpd.xsp.designer</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.designer.runtime</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>lwpd.runtime.designer</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.designer.runtime.directory</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>lwpd.runtime.directory</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.commons.xml</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>lwpd.commons.xml</classifier>
 			</dependency>
 	
@@ -178,19 +174,19 @@
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.dojo</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>xsp.dojo</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.theme.oneui.idx</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>xsp.theme.oneui.idx</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.theme.oneuiv302</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>xsp.theme.oneuiv302</classifier>
 			</dependency>
 			
@@ -198,47 +194,47 @@
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.extlib</artifactId>
-				<version>${xpages-version}</version>
+				<version>12.0.2.v00_00_20221101-2131</version>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.extlib.core</artifactId>
-				<version>${xpages-version}</version>
+				<version>12.0.2.v00_00_20221101-2131</version>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.extlib.controls</artifactId>
-				<version>${xpages-version}</version>
+				<version>12.0.2.v00_00_20221101-2131</version>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.extlib.oneui</artifactId>
-				<version>${xpages-version}</version>
+				<version>12.0.2.v00_00_20221101-2131</version>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.theme.bootstrap</artifactId>
-				<version>${xpages-version}</version>
+				<version>12.0.2.v00_00_20221101-2131</version>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.extlib.mobile</artifactId>
-				<version>${xpages-version}</version>
+				<version>12.0.2.v00_00_20221101-2131</version>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.extlib.domino</artifactId>
-				<version>${xpages-version}</version>
+				<version>12.0.2.v00_00_20221101-2131</version>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.extlib.relational</artifactId>
-				<version>${xpages-version}</version>
+				<version>12.0.2.v00_00_20221101-2131</version>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.commons.jdbc</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>lwpd.commons.jdbc</classifier>
 			</dependency>
 		
@@ -246,48 +242,48 @@
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.domino</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>lwpd.xsp.domino</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.domino.napi.impl</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221103-1500</version>
 				<classifier>lwpd.domino.napi</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.domino.xsp.adapter</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>lwpd.domino.adapter</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.domino.xsp.adapter.nsf</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>lwpd.domino.adapter.nsf</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.notes.java.api.win32.linux</artifactId>
-				<version>[9.0.1,)</version>
+				<version>12.0.2.20221103-1500</version>
 				<classifier>Notes</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.domino.xsp.bootstrap</artifactId>
-				<version>${xpages-commons-version}</version>
+				<version>12.0.2.20221101-2131</version>
 				<classifier>xsp.domino.bridge</classifier>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.xsp.http.bootstrap</artifactId>
-				<version>${xpages-version}</version>
+				<version>12.0.2.20221103-1500</version>
 			</dependency>
 			<dependency>
 				<groupId>${xpages-groupId}</groupId>
 				<artifactId>com.ibm.domino.services</artifactId>
-				<version>${xpages-version}</version>
+				<version>12.0.2.v00_00_20221101-2131</version>
 			</dependency>
 			
 			<!-- XPages Bazaar -->
