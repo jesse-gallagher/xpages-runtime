@@ -8,14 +8,14 @@ This project is generally a developer tool, as XPages outside of Domino is thoro
 
 ## Building and Using
 
-To build this project or use it as a dependency, you must have a property in your Maven ~/.m2/settings.xml named `notes-platform` and containing a URL to a Domino Update Site for Domino 12.0.2+. For example:
+To build this project or use it as a dependency, you must have a property in your Maven ~/.m2/settings.xml named `notes-platform14` and containing a URL to a Domino Update Site for Domino 14.0.0. For example:
 
 ```xml
 <profiles>
     <profile>
         <id>notes</id>
         <properties>
-            <notes-platform>file:///Users/jesse/Java/Domino12.0.2</notes-platform>
+            <notes-platform14>file:///Users/jdoe/Java/Domino14.0.0</notes-platform14>
         </properties>
     </profile>
 </profile>
